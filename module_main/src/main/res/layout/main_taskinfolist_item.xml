@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/type_img"
+            android:src="@drawable/kc_p_img"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp" />
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/type_img"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="60dp">
+            <TextView
+                android:textSize="@dimen/title3"
+                android:textColor="@color/main_text_black_33"
+                android:id="@+id/title_tv"
+                android:text="fsfsd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/type_t_img"
+                    android:src="@drawable/kc_t_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/progress_tv"
+                    android:textSize="@dimen/title5"
+                    android:layout_marginLeft="10dp"
+                    android:text="完成"
+                    android:textColor="@color/main_text_grey_7c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/wc_t_img"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wc_t_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_line_ea"/>
+</LinearLayout>

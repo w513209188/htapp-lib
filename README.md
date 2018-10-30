@@ -1,0 +1,143 @@
+# 1.项目配置说明
+
+
+>项目提供两种clone方式：
+
+>svn方式svn://gitee.com/swwq_admin/hua_tu_app_library
+
+>git方式https://gitee.com/swwq_admin/hua_tu_app_library.git（*不提供ssh方式）
+
+>model_liveplay：直播模块业务
+
+>module_blackplay：回放模块业务
+
+>module_down：下载模块业务
+
+>module_main：主依赖库
+
+>module_playvideo：点播业务模块
+
+>versions.gradle：统一版本管理
+
+# 2.项目使用
+#### 2.1 项目gradle配置如下
+```
+buildscript {
+    apply from: 'versions.gradle'
+    addRepos(repositories)
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.0'
+    }
+}
+allprojects {
+    addRepos(repositories)
+    // Android dependency 'com.android.support:design' has different version for the compile (25.3.1) and runtime (25.4.0) classpath.
+    // You should manually set the same version via DependencyResolution
+    subprojects {
+        project.configurations.all {
+            resolutionStrategy.eachDependency { details ->
+                if (details.requested.group == 'com.android.support'
+                        && !details.requested.name.contains('multidex')) {
+                    details.useVersion  "27.0.2"
+                }
+            }
+        }
+    }
+    // 组件缓存更新时间设置（默认每次build都更新）
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'minutes'
+    }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+```
+#### 2.2 复制version.gradle到项目中
+>version.gradle参考  戳这里☞[传送门](https://gitee.com/swwq_admin/hua_tu_app_library/blob/master/versions.gradle)
+#### 2.3主app的gradle配置如下
+```
+defaultConfig{
+ multiDexEnabled true//开启分包
+ packagingOptions {
+            exclude 'META-INF/rxjava.properties' //解决不同版本的rxjava
+        }
+ ndk {
+            abiFilters 'armeabi-v7a', 'armeabi', 'x86' //x86虚拟机测试用，发版可去掉
+        }
+}
+```
+#### 2.4 Application配置
+  >1.Application继承BaseApplication
+      2.实现getRootPackAge（）方法（*模块类的根目录）
+     3.onCreate中初始化
+```
+//APP配置
+List<Integer> httpCodeOff = new ArrayList<>();
+        httpCodeOff.add(201);
+        AppConfig appConfig = new AppConfig.Bulider()
+                .setMaxPage(10)
+                .setHttpCodeOff(httpCodeOff)
+                .bulider();
+        AppConfigManager.newInstance().setAppConfig(appConfig);
+      //网络请求配置
+
+        HttpConfig.HttpConfigBuilder httpConfig =
+                new HttpConfig.HttpConfigBuilder()
+                .setmBaseUrl("http://test-px.huatu.com")
+                .setmIsUseLog(true);
+        HttpConfig.newInstanceBuild(httpConfig);
+        hApp.newInstance().initVideoPlay(this);
+//初始化视频播放器
+        hApp.newInstance().initVideoPlay(this);
+  ```
+
+ 
+
+### AppConfig属性列表
+
+| Property        | Format           | Des  |
+| ------------- |:-------------:| -----:|
+| mBaseUrl    | String | 网络请求的域名 (http://www.baidu.com)|
+| mConnectTimeout      |int      |  连接请求超时时间  |
+| mIsUseLog | boolean     |   是否开启请求日志 |
+| mIsUseCache      | boolean | 是否开启缓存 |
+| mCacheFolder      | File      |   缓存文件地址  |
+| mCacheSize |int      |    缓存大小 |
+| mCacheTimeWithNet      | int | 缓存连接时间 |
+| mCacheTimeWithoutNet      | int      |   读取缓存超时时间 |
+| mMapHeader | Map<String, String>      |    报头 |
+|isUseCustGson      | boolean      |   是否开启指定gson解析器  |
+| isReshConfig | boolean     |    是否重新刷新配置信息 |
+在此给出AppConfig配置详情 戳这里☞[传送门](https://github.com/w513209188/BaseLib/blob/master/common_base/src/main/java/com/wb/baselib/appconfig/AppConfig.java)
+### HttpConfig属性列表
+
+| Property        | Format           | Des  |
+| ------------- |:-------------:| -----:|
+| glideSize    | int | 图片缓存大小|
+| glidePath      |String      |  图片缓存大小 |
+| maxPage | int     |   列表最大显示页数 |
+| httpCodeSuccess      | int | 网络请求成功code码 |
+| httpCodeOff      | List<Integer>      |   下线code码  |
+| appCarshPath |String      |    app奔溃日志存放路径 |
+| isSendCarshLog      | boolean | 是否将奔溃日志发送至钉钉群组 |
+| isCatshLog      | boolean      |   是否开启奔溃日志收集 |
+| rootPackAge | String    |    根目录 |
+|ddAccount      | String      |   钉钉账号  |
+| ddToken | String     |    钉钉token |
+| flgs | String     |    扩展字段 |
+ 在此给出HttpConfig配置详情 戳这里☞[传送门](https://github.com/w513209188/BaseLib/blob/master/common_base/src/main/java/com/wb/baselib/http/HttpConfig.java)
+>因为属于正常调起故此正常调起方法如下:
+```
+  hApp.newInstance().toMainActivity(MainActivity.this, "1", "dfsfsfds", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+                        Log.e("---->>",msg+code);
+                    }
+                });
+
+```
+其他协议形式后续补齐
+
+

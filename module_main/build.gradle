@@ -1,0 +1,76 @@
+//if (isModule.toBoolean()) {
+//    apply plugin: 'com.android.application'
+//} else {
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.gitee.swwq_admin'
+//}
+android {
+    compileSdkVersion 27
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+//        if(isModule.toBoolean()){
+//            multiDexEnabled true
+//        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resourcePrefix "main_"
+        ndk {
+            abiFilters 'armeabi-v7a', 'armeabi', 'x86' //x86虚拟机测试用，发版可去掉
+        }
+    }
+
+    sourceSets {
+        main {
+//            if (isModule.toBoolean()) {
+//                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+//            } else {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            //集成开发模式下排除debug文件夹中的所有Java文件
+            java {
+                exclude 'debug/**'
+            }
+//            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    api deps.base
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+    compile 'com.android.support:cardview-v7:27.0.0'
+    compile 'cn.bingoogolapple:bga-progressbar:1.0.1@aar'
+    compile project(':model_liveplay')
+    compile project(':module_blackplay')
+    compile project(':module_down')
+    compile project(':module_playvideo')
+    compile 'com.github.xuexiangjys:XQRCode:1.0.1'
+    compile 'com.github.w513209188:BaseLib:v1.0.9'
+}

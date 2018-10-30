@@ -1,0 +1,276 @@
+package com.zhiyun88.www.module_main.course.fragment;
+
+import android.Manifest;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.Toast;
+
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.jungan.www.common_down.BjyBackPlayDownManager;
+import com.jungan.www.common_down.BjyPlayDownManager;
+import com.jungan.www.common_down.bean.PlayDownConfig;
+import com.jungan.www.common_down.config.BjyPlayDownConfig;
+import com.jungan.www.model_liveplay.activity.LiveRoomActivity;
+import com.jungan.www.module_blackplay.activity.PBRoomActivity;
+import com.jungan.www.module_playvideo.ui.PlayVodActivity;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.wb.baselib.app.AppUtils;
+import com.wb.baselib.base.fragment.LazyFragment;
+import com.wb.baselib.base.fragment.MvpFragment;
+import com.wb.baselib.log.LogTools;
+import com.wb.baselib.permissions.PerMissionsManager;
+import com.wb.baselib.permissions.interfaces.PerMissionCall;
+import com.wb.baselib.user.AppLoginUserInfoUtils;
+import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.course.adapter.OutLineAdapter;
+import com.zhiyun88.www.module_main.course.bean.BjyTokenBean;
+import com.zhiyun88.www.module_main.course.bean.ChapterBean;
+import com.zhiyun88.www.module_main.course.bean.CourseChildBean;
+import com.zhiyun88.www.module_main.course.call.VideoStatusCall;
+import com.zhiyun88.www.module_main.course.mvp.contranct.BjyTokenContranct;
+import com.zhiyun88.www.module_main.course.mvp.presenter.BjyTokenPresenter;
+import com.zhiyun88.www.module_main.course.view.MyExpandableListView;
+import com.zhiyun88.www.module_main.main.ui.TestActivity;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.support.test.InstrumentationRegistry.getArguments;
+
+public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements BjyTokenContranct.BjyTokenView{
+    private MyExpandableListView myExpandableListView;
+    private List<ChapterBean> courseInfoChildData;
+    private OutLineAdapter mAdapter;
+    private boolean isTaskInfo;
+    private String  courseName;
+    private boolean isBuy;
+    public static CourseOutFragment newInstcace(List<ChapterBean> courseInfoChildData,boolean isTaskInfo,String courseName,boolean isbu){
+        CourseOutFragment courseOutFragment=new CourseOutFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("courseName",courseName);
+        bundle.putParcelableArrayList("courseInfoChildData", (ArrayList<? extends Parcelable>) courseInfoChildData);
+        bundle.putBoolean("isBuy",isbu);
+        bundle.putBoolean("isTaskInfo",isTaskInfo);
+        courseOutFragment.setArguments(bundle);
+        return courseOutFragment;
+    }
+    @Override
+    public boolean isLazyFragment() {
+        return true;
+    }
+
+    @Override
+    protected BjyTokenPresenter onCreatePresenter() {
+        return new BjyTokenPresenter(this);
+    }
+
+    @Override
+    protected void onCreateViewLazy(Bundle savedInstanceState) {
+        super.onCreateViewLazy(savedInstanceState);
+        setContentView(R.layout.main_course_courseout_layout);
+        new BjyPlayDownConfig.Builder().with(getActivity()).setBjyId(33177992).setFilePath(getVideoDownLoadPath()).bulider();
+        courseInfoChildData=getArguments().getParcelableArrayList("courseInfoChildData");
+        courseName=getArguments().getString("courseName");
+        isBuy=getArguments().getBoolean("isBuy",false);
+        isTaskInfo=getArguments().getBoolean("isTaskInfo",false);
+        myExpandableListView=getViewById(R.id.course_exl);
+        mAdapter=new OutLineAdapter(courseInfoChildData,getActivity(),isTaskInfo);
+        myExpandableListView.setAdapter(mAdapter);
+        myExpandableListView.expandGroup(0);
+        myExpandableListView.setIndicatorBounds(myExpandableListView.getWidth()-140, myExpandableListView.getWidth()-10);
+        setListener();
+    }
+
+    @Override
+    protected void setListener() {
+        super.setListener();
+        myExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+
+                if(isTaskInfo){
+                       // showErrorMsg("暂无请求");
+
+                    }else {
+                    ChapterBean chapterBean = courseInfoChildData.get(i);
+                    CourseChildBean chapterBean1 = chapterBean.getChild().get(i1);
+                    if (isBuy) {
+                        mPresenter.getBjyToken(chapterBean1.getVideo_id(), false, chapterBean1);
+                    } else {
+                        showErrorMsg("请加入学习后观看！");
+                    }
+                }
+                return true;
+            }
+        });
+        mAdapter.setmCall(new VideoStatusCall() {
+            @Override
+            public void getVideoCall(CourseChildBean courseInfoChildData) {
+                if(isTaskInfo){
+                    // showErrorMsg("暂无请求");
+                }else {
+                    if(isBuy){
+                        mPresenter.getBjyToken(courseInfoChildData.getVideo_id(),true,courseInfoChildData);
+                    }else {
+                        showErrorMsg("请加入学习后观看！");
+                    }
+                }
+            }
+        });
+    }
+    public  String getVideoDownLoadPath(){
+        String mCacheDirPath=null;
+        File cacheDir = getActivity().getExternalFilesDir("VideoFiles");
+        if(null != cacheDir){
+            mCacheDirPath = cacheDir.getAbsolutePath() ;
+        }
+        if(TextUtils.isEmpty(mCacheDirPath)){
+            if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+                mCacheDirPath = Environment.getExternalStorageDirectory().getPath() + "/Android/data/com.zhiyun88.www/cache/VideoFiles/";
+            }
+        }
+        return mCacheDirPath;
+    }
+    @Override
+    public void showErrorMsg(String msg) {
+            showLongToast(msg);
+    }
+
+    @Override
+    public void showLoadV(String msg) {
+            showLoadDiaLog(msg);
+    }
+
+    @Override
+    public void closeLoadV() {
+        hidLoadDiaLog();
+    }
+
+    @Override
+    public void SuccessData(Object o) {
+
+    }
+
+    @Override
+    public LifecycleTransformer binLifecycle() {
+        return bindToLifecycle();
+    }
+    @Override
+    public void SuccessBjyToken(final BjyTokenBean bjyTokenData, boolean isDown, final CourseChildBean courseInfoChildData) {
+        if(isDown){
+            if(bjyTokenData.getType().equals("1")){
+                showErrorMsg("直播课程，不支持下载！");
+            }else if(bjyTokenData.getType().equals("2")||bjyTokenData.getType().equals("3")){
+            //视频
+
+                PerMissionsManager.newInstance().getUserPerMissions(getActivity(), new PerMissionCall() {
+                    @Override
+                    public void userPerMissionStatus(boolean is) {
+                        PlayDownConfig playDownConfig=new PlayDownConfig.Bulider()
+                                .setCourerName(courseName)
+                                .setEncryptType(0)
+                                .setFileName(courseInfoChildData.getPeriods_title())
+                                .setOccName("华图视频")
+                                .setSectionName(courseInfoChildData.getChapter_title())
+                                .setSessionId("0")
+                                .setToken(bjyTokenData.getToken())
+                                .setuId(Long.parseLong(AppLoginUserInfoUtils.getInstance().getUserLoginInfo().getUid()))
+                                .setVideoId(Long.parseLong(bjyTokenData.getVideo_id()))
+                                .builder();
+                        try {
+                            BjyPlayDownManager.Instance().startDown(playDownConfig);
+                            Toast.makeText(getActivity(),"已加入课程缓存中....",Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+//                        PlayDownConfig playDownConfig=new PlayDownConfig.Bulider()
+//                                .setCourerName(courseName)
+//                                .setEncryptType(0)
+//                                .setFileName(courseInfoChildData.getPeriods_title())
+//                                .setOccName("下载完成")
+//                                .setSectionName(courseInfoChildData.getChapter_title())
+//                                .setSessionId("0")
+//                                .setToken(bjyTokenData.getToken())
+//                                .setuId(Long.parseLong(AppLoginUserInfoUtils.getInstance().getUserLoginInfo().getUid()))
+//                                .setVideoId(Long.parseLong(bjyTokenData.getVideo_id()))
+//                                .builder();
+//                        try {
+//                            BjyBackPlayDownManager.Instance().startDown(playDownConfig);
+//                            Toast.makeText(getActivity(),"已加入课程缓存中....",Toast.LENGTH_LONG).show();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                },new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE});
+            }else if(bjyTokenData.getType().equals("4")){
+                //回放
+                PlayDownConfig playDownConfig=new PlayDownConfig.Bulider()
+                        .setCourerName(courseName)
+                        .setEncryptType(0)
+                        .setFileName(courseInfoChildData.getPeriods_title())
+                        .setOccName("华图视频")
+                        .setSectionName(courseInfoChildData.getChapter_title())
+                        .setSessionId("0")
+                        .setToken(bjyTokenData.getToken())
+                        .setuId(Long.parseLong(AppLoginUserInfoUtils.getInstance().getUserLoginInfo().getUid()))
+                        .setVideoId(Long.parseLong(bjyTokenData.getVideo_id()))
+                        .builder();
+                try {
+                    BjyBackPlayDownManager.Instance().startDown(playDownConfig);
+                    Toast.makeText(getActivity(),"已加入课程缓存中....",Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }else {
+            if(bjyTokenData.getType().equals("1")){
+                //直播
+                Intent intent=new Intent(getActivity(), LiveRoomActivity.class);
+                intent.putExtra("name",bjyTokenData.getName());
+                intent.putExtra("code",bjyTokenData.getVideo_id());
+                intent.putExtra("avatar",bjyTokenData.getAvatar());
+                intent.putExtra("userNum", bjyTokenData.getUser_id());
+                intent.putExtra("roomId",Long.parseLong(bjyTokenData.getVideo_id()));
+                intent.putExtra("sign",bjyTokenData.getToken());
+                startActivity(intent);
+            }else if(bjyTokenData.getType().equals("2")){
+                //点播
+//                ARouter.getInstance().build("/backplay/play").with(bundle).navigation();
+                Intent intent=new Intent(getActivity(), PlayVodActivity.class);
+                intent.putExtra("videoId",Long.parseLong(bjyTokenData.getVideo_id()));
+                intent.putExtra("token",bjyTokenData.getToken());
+                intent.putExtra("isOnLine","1");
+                intent.putExtra("bjyId",bjyTokenData.getUser_id());
+                startActivity(intent);
+            }else if(bjyTokenData.getType().equals("3")){
+                //音频
+                Intent intent=new Intent(getActivity(), PlayVodActivity.class);
+                intent.putExtra("videoId",Long.parseLong(bjyTokenData.getVideo_id()));
+                intent.putExtra("token",bjyTokenData.getToken());
+                intent.putExtra("isOnLine","1");
+                intent.putExtra("bjyId",bjyTokenData.getUser_id());
+                startActivity(intent);
+            }else {
+                //回放
+                Intent intent=new Intent(getActivity(),PBRoomActivity.class);
+                intent.putExtra("pb_room_id",bjyTokenData.getVideo_id()+"");
+                intent.putExtra("pb_room_token",bjyTokenData.getToken());
+                intent.putExtra("pb_room_session_id","-1");
+                intent.putExtra("pb_room_deploy",2);
+                startActivity(intent);
+            }
+        }
+    }
+    public void setisBuy(boolean is){
+        LogTools.e("购买是否成功"+is);
+        this.isBuy=is;
+    }
+}
