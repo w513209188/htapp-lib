@@ -1,1 +1,1 @@
-include ':app', ':module_main', ':module_playvideo',':model_liveplay', ':module_blackplay',':module_down'
+include ':app', ':module_main', ':module_playvideo',':model_liveplay', ':module_blackplay',':module_down',':common_dotest'

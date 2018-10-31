@@ -10,6 +10,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.LazyFragment;
 import com.wb.baselib.base.fragment.MvpFragment;
