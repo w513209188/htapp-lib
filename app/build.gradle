@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+//    signingConfigs {
+//        config {
+//            keyAlias 'dfjgj'
+//            keyPassword '123456'
+//            storeFile file('E:/sign/dfjgj.jks')
+//            storePassword '123456'
+//        }
+//    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.seele.newht"
@@ -23,7 +31,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -33,8 +40,18 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation project(':module_main')
-//    implementation 'com.github.w513209188:htapp-lib:v1.0.0'
-//    implementation 'com.github.w513209188:htapp-lib:v1.0.0'
-
+//    compile('com.github.w513209188:htapp-lib:v1.0.1', {
+//        exclude module: 'refresh-layout'
+//    })
+//    implementation 'com.github.w513209188:htapp-lib:v1.0.1'
+//    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5'
+//    implementation ('com.scwang.smartrefresh:SmartRefreshLayout:1.0.5',{
+//                exclude group:'com.scwang.smartrefresh',module:'BuildConfig'
+//            })
+        implementation project(':module_main')
+    ////    implementation ('com.github.w513209188:htapp-lib:v1.0.1',{
+    ////        exclude module:'com.github.w513209188.BaseLib:refresh-layout'
+    ////    })
+//        implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5'
+//        implementation 'com.github.w513209188:htapp-lib:v1.0.0'
 }
