@@ -72,6 +72,6 @@ dependencies {
     compile project(':module_down')
     compile project(':module_playvideo')
     compile 'com.github.xuexiangjys:XQRCode:1.0.1'
-    compile 'com.github.w513209188:BaseLib:v1.0.9'
+    compile 'com.github.w513209188:BaseLib:v1.1.3'
     implementation project(':common_dotest')
 }

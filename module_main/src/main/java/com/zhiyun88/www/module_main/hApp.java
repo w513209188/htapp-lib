@@ -83,7 +83,6 @@ public class hApp {
                                  .setmMapHeader(map1)
                                 .setIsReshConfig(true)
                                 .setmIsUseLog(HttpManager.newInstance().getHttpConfig().ismIsUseLog());
-
                         HttpConfig.newInstanceBuild(httpConfig);
                         Log.e("刷新了",HttpManager.newInstance().getHttpConfig().getmBaseUrl());
                         MainActivity.startForResult((Activity) source);
