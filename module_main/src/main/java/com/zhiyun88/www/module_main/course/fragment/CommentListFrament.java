@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
+import com.wangbo.smartrefresh.layout.api.RefreshLayout;
+import com.wangbo.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
+import com.wangbo.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.LazyFragment;
 import com.wb.baselib.base.fragment.MvpFragment;

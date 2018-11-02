@@ -54,7 +54,7 @@ public class CourseMainAdapter extends ListBaseAdapter<CourseMainData> {
                 mContext.startActivity(intent);
             }
         });
-        GlideManager.getInstance().setCommonPhoto(holder.coursemain_image,R.drawable.course_image,mContext,courseMainData.getCover(),true);
+        GlideManager.getInstance().setCommonPhoto(holder.coursemain_image,R.drawable.course_image,mContext,courseMainData.getCover(),false);
         return convertView;
     }
     class CourseMainHolder{
