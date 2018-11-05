@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.wb.baselib.adapter.ListBaseAdapter;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.course.bean.CommentListBean;
 import com.zhiyun88.www.module_main.course.bean.CommentListData;
 import com.zhiyun88.www.module_main.course.view.MyRatingBar;
+import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.util.List;
 
@@ -45,7 +47,8 @@ public class CommentListAdapter extends ListBaseAdapter<CommentListData> {
         holder.comment_tv.setText(commentListData.getContent());
         holder.time_tv.setText(commentListData.getCreated_at().substring(0,10));
         holder.user_nice_tv.setText(commentListData.getCreated_name());
-        GlideManager.getInstance().setGlideRoundTransImage(holder.user_img,R.drawable.user_head,mContext,commentListData.getAvatar());
+        Picasso.with(mContext).load(commentListData.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+//        GlideManager.getInstance().setGlideRoundTransImage(holder.user_img,R.drawable.user_head,mContext,commentListData.getAvatar());
         return convertView;
     }
     class CommentListHolder{

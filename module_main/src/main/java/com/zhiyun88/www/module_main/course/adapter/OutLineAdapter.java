@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.baijia.player.playback.downloader.PlaybackDownloader;
 import com.baijiayun.download.DownloadManager;
+import com.baijiayun.download.DownloadTask;
 import com.baijiayun.download.constant.TaskStatus;
 import com.jungan.www.common_down.BjyBackPlayDownManager;
 import com.wb.baselib.log.LogTools;
@@ -166,7 +167,18 @@ public class OutLineAdapter implements ExpandableListAdapter {
     }
     private void setVideoState(ChildViewHolder holder,CourseChildBean courseChildBean){
         DownloadManager downloadManager= BjyBackPlayDownManager.Instance().getDownloadManager().getManager();
-        Log.e("下载","获取下载"+downloadManager.getAllTasks().size());
+        List<DownloadTask> downloadTaskLists=downloadManager.getAllTasks();
+        boolean isDown=false;
+        try {
+            for(DownloadTask downloadTask:downloadTaskLists){
+                if(downloadTask.getVideoDownloadInfo().roomId==Long.parseLong(courseChildBean.getVideo_id())){
+                    isDown=true;
+                    break;
+                }
+            }
+        }catch (Exception e){
+            isDown=false;
+        }
         String stateDes="";
         if(courseChildBean.getCourse_type().equals("1")){
             //直播
@@ -193,11 +205,9 @@ public class OutLineAdapter implements ExpandableListAdapter {
                 holder.course_time.setText("已生成");
 
                 stateDes="[回放] ";
-                if(downloadManager.getTaskByVideoId(Long.parseLong(courseChildBean.getVideo_id()))==null){
-                    Log.e("未下载","未下载");
+                if(!isDown){
                     holder.downVideo.setVisibility(View.VISIBLE);
                 }else {
-                    Log.e("已下载","已下载");
                     holder.downVideo.setVisibility(View.GONE);
                 }
             }else if(courseChildBean.getPlay_type().equals("4")){
@@ -214,21 +224,17 @@ public class OutLineAdapter implements ExpandableListAdapter {
             holder.course_time.setBackgroundResource(R.drawable.main_courseinfo_live_no_bg);
             holder.course_time.setTextColor(mContext.getResources().getColor(R.color.qhs));
             holder.course_time.setVisibility(View.GONE);
-            if(downloadManager.getTaskByVideoId(Long.parseLong(courseChildBean.getVideo_id()))==null){
-                Log.e("未下载","未下载");
+            if(!isDown){
                 holder.downVideo.setVisibility(View.VISIBLE);
             }else {
-                Log.e("已下载","已下载");
                 holder.downVideo.setVisibility(View.GONE);
             }
         }else if(courseChildBean.getCourse_type().equals("3")){
             //音频
             stateDes="[音频] ";
-            if(downloadManager.getTaskByVideoId(Long.parseLong(courseChildBean.getVideo_id()))==null){
-                Log.e("未下载","未下载");
+            if(!isDown){
                 holder.downVideo.setVisibility(View.VISIBLE);
             }else {
-                Log.e("已下载","已下载");
                 holder.downVideo.setVisibility(View.GONE);
             }
             holder.course_time.setBackgroundResource(R.drawable.main_courseinfo_live_no_bg);

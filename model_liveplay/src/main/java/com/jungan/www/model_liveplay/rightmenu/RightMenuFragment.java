@@ -7,7 +7,6 @@ import com.baijiahulian.livecore.utils.LPErrorPrintSubscriber;
 import com.jungan.www.model_liveplay.R;
 import com.jungan.www.model_liveplay.base.BaseFragment;
 import com.jungan.www.model_liveplay.viewsupport.CountdownCircleView;
-import com.wb.baselib.log.LogTools;
 
 import java.util.concurrent.TimeUnit;
 
@@ -98,7 +97,6 @@ public class RightMenuFragment extends BaseFragment implements RightMenuContract
 
     @Override
     public void showSpeakApplyCanceled() {
-        LogTools.e("showSpeakApplyCanceled"+"showSpeakApplyCanceled");
         $.id(R.id.fragment_right_speak_apply).image(R.drawable.live_ic_handup);
         $.id(R.id.fragment_right_pen).gone();
         $.id(R.id.fragment_right_hand_countdown).invisible();
@@ -168,7 +166,6 @@ public class RightMenuFragment extends BaseFragment implements RightMenuContract
 
     @Override
     public void showAutoSpeak() {
-        LogTools.e("showAutoSpeak"+"showAutoSpeak");
         $.id(R.id.fragment_right_pen).visible();
         $.id(R.id.fragment_right_speak_apply).gone();
     }

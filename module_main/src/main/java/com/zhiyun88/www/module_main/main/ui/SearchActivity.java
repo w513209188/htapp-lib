@@ -1,5 +1,6 @@
 package com.zhiyun88.www.module_main.main.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -7,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -67,7 +69,18 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
         processLogic(savedInstanceState);
     }
 
-
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
     @Override
     protected void setListener() {
         back.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +92,8 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
         search_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Search();
+//                Search();
+                finish();
             }
 
 
@@ -93,6 +107,7 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
         ss_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                hintKeyBoard();
                     Search();
                 return true;
             }
@@ -167,7 +182,7 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        search_tv.setText("搜索");
+        search_tv.setText("取消");
         RefreshUtils.getInstance(smartRefreshLayout, SearchActivity.this).defaultRefreSh();
         history();
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -94,12 +94,10 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
                 mTitles.add("培训详情");
                 mTitles.add("培训大纲");
                 mTitles.add("培训评价");
-             //   isbuy_tv.setText("立即报名");
             }else {
                 mTitles.add("课程详情");
                 mTitles.add("课程大纲");
                 mTitles.add("课程评价");
-             //   isbuy_tv.setText("加入学习");
             }
              mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
             mViewPager.setOffscreenPageLimit(3);
@@ -135,8 +133,8 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     public void initCoorLayout(CourseInfoBean courseInfoBean) {
         LogTools.e(courseInfoBean.toString()+"------>>>");
         this.courseInfoBean=courseInfoBean;
+        courseOrTrain(courseInfoBean);
         if(isCourseTaskInfo){
-            courseOrTrain(courseInfoBean,"立即报名","已报名","已截止","已结束");
             mCoordinatorTabLayout
                     .setBackEnable(true)
                     .setClassFly(true)
@@ -149,14 +147,14 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
                     .setsyl("（剩余"+courseInfoBean.getInfo().getSurplus_num()+"名额）")
                     .setupWithViewPager(mViewPager);
         }else {
-            if(courseInfoBean.getInfo().getIs_buy().equals("0")){
-                //未添加
-                isbuy_state("加入学习",true,false,false);
-            }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
-                //已加入
-                isbuy_state("已加入",false,false,true);
-//                isbuy_tv.setVisibility(View.GONE);
-            }
+//            if(courseInfoBean.getInfo().getIs_buy().equals("0")){
+//                //未添加
+//                isbuy_state("加入学习",true,false,false);
+//            }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
+//                //已加入
+//                isbuy_state("已加入",false,false,true);
+////                isbuy_tv.setVisibility(View.GONE);
+//            }
             mCoordinatorTabLayout
                     .setBackEnable(true)
                     .setClassFly(false)
@@ -173,25 +171,30 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         GlideManager.getInstance().setCommonPhoto(mCoordinatorTabLayout.getImageView(),R.drawable.course_image,CourseInfoActivity.this,courseInfoBean.getInfo().getCover(),false);
     }
 
-    private void courseOrTrain(CourseInfoBean courseInfoBean, String apply, String applied, String abort,String finished) {
+    private void courseOrTrain(CourseInfoBean courseInfoBean) {
         if(courseInfoBean.getInfo().getIs_buy().equals("0")){
             //未添加
-            isbuy_state(apply,true,false,false);
+            isbuy_state(isCourseTaskInfo?"立即报名":"立即加入",true,false,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
             //已加入
-            isbuy_state(applied,false,true,true);
+//            isbuy_state(applied,false,true,true);
+            isbuy_state(isCourseTaskInfo?"已报名":"已加入",false,false,true);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("2")){
             //已截止
-            isbuy_state(abort,false,true,false);
+//            isbuy_state(abort,false,true,false);
+            isbuy_state("已截止",false,true,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("3")){
             //已结束
-            isbuy_state(finished,false,true,false);
+//            isbuy_state(finished,false,true,false);
+            isbuy_state("已结束",false,true,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("4")){
             //已截止并报名
-            isbuy_state(abort,false,true,true);
+//            isbuy_state(abort,false,true,true);
+            isbuy_state("已截止并报名",false,true,true);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("5")){
             //已结束并报名
-            isbuy_state(finished,false,true,true);
+//            isbuy_state(finished,false,true,true);
+            isbuy_state("已结束并报名",false,true,true);
         }
     }
 
@@ -205,11 +208,12 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     @Override
     public void joinSuccess(String msg) {
         courseInfoBean.getInfo().setIs_buy("1");
-        if(isCourseTaskInfo){
-            courseOrTrain(courseInfoBean,"立即报名","已报名","已截止","已结束");
-        }else {
-            isbuy_state("已报名",false,true,true);
-        }
+//        if(isCourseTaskInfo){
+//            courseOrTrain(courseInfoBean);
+//        }else {
+//            isbuy_state("已报名",false,true,true);
+//        }
+        courseOrTrain(courseInfoBean);
         showErrorMsg(msg);
         courseOutFragment.setisBuy(true);
     }

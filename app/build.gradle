@@ -9,6 +9,11 @@ android {
 //            storePassword '123456'
 //        }
 //    }
+    aaptOptions {
+                 cruncherEnabled = false
+                useNewCruncher = false
+
+             }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.seele.newht"
@@ -26,10 +31,11 @@ android {
         }
     }
     buildTypes {
-        release {
-            minifyEnabled false
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
 }
 
@@ -43,7 +49,7 @@ dependencies {
 //    compile('com.github.w513209188:htapp-lib:v1.0.1', {
 //        exclude module: 'refresh-layout'
 //    })
-//    implementation 'com.github.w513209188:htapp-lib:v1.0.4'
+//    implementation 'com.github.w513209188:htapp-lib:v1.2.1.1'
 //    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5'
 //    implementation ('com.scwang.smartrefresh:SmartRefreshLayout:1.0.5',{
 //                exclude group:'com.scwang.smartrefresh',module:'BuildConfig'

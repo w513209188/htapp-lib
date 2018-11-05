@@ -13,7 +13,7 @@
         app:leftImageResource="@drawable/public_back_hs"
         app:leftType="imageButton"
         app:centerTextColor="@color/black"
-        app:centerText="课程缓存"
+        app:centerText="我的下载"
         app:centerType="textView"
         app:rightText="删除"
         app:rightType="textView"

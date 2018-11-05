@@ -53,7 +53,6 @@ import java.util.Map;
 import com.jungan.www.module_playvideo.R;
 import com.jungan.www.module_playvideo.view.BJBottomViewPresenterCopy;
 import com.jungan.www.module_playvideo.view.BJTopViewPresenterCopy;
-import com.wb.baselib.base.fragment.BaseFragment;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

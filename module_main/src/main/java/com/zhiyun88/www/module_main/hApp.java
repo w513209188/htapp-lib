@@ -48,7 +48,7 @@ public class hApp {
      * @param token
      * @param loginStatusCall
      */
-    public void toMainActivity(final Object source, String uid, final String token, final LoginStatusCall loginStatusCall){
+    public void toMainActivity(final Object source, final String uid, final String token, final LoginStatusCall loginStatusCall){
         if(loginStatusCall==null){
             throw new NullPointerException("loginStatusCall is not null");
         }
@@ -70,6 +70,7 @@ public class hApp {
                         Map<String,String> map1=new HashMap<>();
                         map1.put("httoken",token);
                         map1.put("Authorization","bearer "+o.getData().getRemember_token());
+                        map1.put("uid",uid);
                         Log.e("---->>>",map1.toString());
                         HttpConfig.HttpConfigBuilder httpConfig =
                                 new HttpConfig.HttpConfigBuilder()

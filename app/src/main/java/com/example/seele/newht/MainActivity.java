@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.wb.baselib.crash.CrashHandler;
+import com.wb.baselib.http.HttpConfig;
 import com.wb.baselib.permissions.PerMissionsManager;
 import com.wb.baselib.permissions.interfaces.PerMissionCall;
 import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.hApp;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Button toact1,toact2,toact3,toact4;
@@ -45,18 +48,27 @@ public class MainActivity extends AppCompatActivity {
         toact3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hApp.newInstance().toSchemme("htnx://investigation/1",MainActivity.this);
-            }
-        });
-        toact4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 hApp.newInstance().toMainActivity(MainActivity.this, "1", "dfsfsfds", new LoginStatusCall() {
                     @Override
                     public void LoginError(String msg, int code) {
                         Log.e("---->>",msg+code);
                     }
                 });
+            }
+        });
+        toact4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (Map.Entry<String, String> entry :  HttpConfig.newInstance().getmMapHeader().entrySet()) {
+                    Log.e("baotou",entry.getKey()+"---"+entry.getValue());
+                }
+
+//                hApp.newInstance().toMainActivity(MainActivity.this, "30860", "dfsfsfds", new LoginStatusCall() {
+//                    @Override
+//                    public void LoginError(String msg, int code) {
+//                        Log.e("---->>",msg+code);
+//                    }
+//                });
             }
         });
     }

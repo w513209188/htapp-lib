@@ -8,9 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.UserInfoBean;
+import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.util.List;
 
@@ -55,7 +57,8 @@ public class UserInfoAdapter extends BaseAdapter {
             viewHolder.text.setVisibility(View.GONE);
             viewHolder.imageView.setVisibility(View.VISIBLE);
             viewHolder.title.setText(R.string.main_head_portrait);
-            GlideManager.getInstance().setGlideRoundTransImage(viewHolder.imageView,R.drawable.user_head ,mContext ,userInfoBean.getAvatar() );
+            Picasso.with(mContext).load(userInfoBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(viewHolder.imageView);
+//            GlideManager.getInstance().setGlideRoundTransImage(viewHolder.imageView,R.drawable.user_head ,mContext ,userInfoBean.getAvatar() );
         }else {
             viewHolder.imageView.setVisibility(View.GONE);
             viewHolder.text.setVisibility(View.VISIBLE);

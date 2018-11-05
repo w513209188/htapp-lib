@@ -159,4 +159,13 @@ public class MyTaskFragment extends MvpFragment<MyTaskPresenter> implements MyTa
     public void loadMore(boolean isLoadMore) {
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).isLoadData(isLoadMore);
     }
+
+    @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        if(myTaskListBeans==null)
+            return;
+        page=1;
+        mPresenter.getMyTaskData(task_type+"", "", page);
+    }
 }

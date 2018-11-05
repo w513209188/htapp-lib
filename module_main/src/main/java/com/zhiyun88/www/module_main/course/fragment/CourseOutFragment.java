@@ -12,12 +12,15 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.baijiayun.download.DownloadManager;
+import com.baijiayun.download.DownloadTask;
 import com.jungan.www.common_down.BjyBackPlayDownManager;
 import com.jungan.www.common_down.BjyPlayDownManager;
 import com.jungan.www.common_down.bean.PlayDownConfig;
 import com.jungan.www.common_down.config.BjyPlayDownConfig;
 import com.jungan.www.model_liveplay.activity.LiveRoomActivity;
 import com.jungan.www.module_blackplay.activity.PBRoomActivity;
+import com.jungan.www.module_down.ui.DownHaveVideoActivity;
 import com.jungan.www.module_playvideo.ui.PlayVodActivity;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.app.AppUtils;
@@ -83,7 +86,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
         myExpandableListView=getViewById(R.id.course_exl);
         mAdapter=new OutLineAdapter(courseInfoChildData,getActivity(),isTaskInfo);
         myExpandableListView.setAdapter(mAdapter);
-        myExpandableListView.expandGroup(0);
+//        myExpandableListView.expandGroup(0);
         myExpandableListView.setIndicatorBounds(myExpandableListView.getWidth()-140, myExpandableListView.getWidth()-10);
         setListener();
     }
@@ -102,9 +105,73 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
                     ChapterBean chapterBean = courseInfoChildData.get(i);
                     CourseChildBean chapterBean1 = chapterBean.getChild().get(i1);
                     if (isBuy) {
-                        mPresenter.getBjyToken(chapterBean1.getVideo_id(), false, chapterBean1);
+                       boolean isDown=false;
+                        DownloadManager downloadManager= BjyBackPlayDownManager.Instance().getDownloadManager().getManager();
+                        List<DownloadTask> downloadTaskLists=downloadManager.getAllTasks();
+                        DownloadTask downloadTask=null;
+                        try {
+                            for(DownloadTask downloadTask1:downloadTaskLists){
+                                if(downloadTask1.getVideoDownloadInfo().roomId==Long.parseLong(chapterBean1.getVideo_id())){
+                                    isDown=true;
+                                    downloadTask=downloadTask1;
+                                    break;
+                                }
+                            }
+                            if(isDown){
+                                //已下载
+                                if(chapterBean1.getCourse_type().equals("1")){
+                                    //直播
+
+                                    if(chapterBean1.getPlay_type().equals("1")){
+                                        //未开始
+                                    }else if(chapterBean1.getPlay_type().equals("2")){
+                                        //进行中
+                                    }else if(chapterBean1.getPlay_type().equals("3")){
+                                        //回放
+                                        Log.e("点击了离线","------");
+                                        String sign= downloadTask.getVideoDownloadInfo().targetFolder+"/"+BjyBackPlayDownManager.Instance().getPlayBackSig(downloadTask.getDownloadInfo().roomId,downloadTask.getDownloadInfo().sessionId);
+                                        Intent intent=new Intent(getActivity(), PBRoomActivity.class);
+                                        intent.putExtra("pb_room_id",downloadTask.getDownloadInfo().roomId+"");
+                                        intent.putExtra("pb_room_video_file_path",downloadTask.getVideoDownloadInfo().targetFolder+"/"+downloadTask.getVideoDownloadInfo().targetName);
+                                        intent.putExtra("pb_room_signal_file_path",sign);
+                                        startActivity(intent);
+                                    }else if(chapterBean1.getPlay_type().equals("4")){
+                                        //回放未生成
+                                    }
+                                }else if(chapterBean1.getCourse_type().equals("2")){
+                                    //视频
+                                    Intent intent=new Intent(getActivity(), PlayVodActivity.class);
+                                    intent.putExtra("isOnLine","2");
+                                    intent.putExtra("Filepath",downloadTask.getVideoDownloadInfo().targetFolder+downloadTask.getDownloadInfo().targetName);
+                                    intent.putExtra("Token",downloadTask.getDownloadInfo().targetName);
+                                    intent.putExtra("bjyId","33197");
+                                    startActivity(intent);
+                                }else if(chapterBean1.getCourse_type().equals("3")){
+                                    //音频
+                                    Intent intent=new Intent(getActivity(), PlayVodActivity.class);
+                                    intent.putExtra("isOnLine","2");
+                                    intent.putExtra("Filepath",downloadTask.getVideoDownloadInfo().targetFolder+downloadTask.getDownloadInfo().targetName);
+                                    intent.putExtra("Token",downloadTask.getDownloadInfo().targetName);
+                                    intent.putExtra("bjyId","33197");
+                                    startActivity(intent);
+                                }else if(chapterBean1.getCourse_type().equals("4")){
+                                    //线下培训
+
+                                }
+
+
+                            }else {
+                                //未下载
+                                mPresenter.getBjyToken(chapterBean1.getVideo_id(), false, chapterBean1);
+                            }
+                        }catch (Exception e){
+                            mPresenter.getBjyToken(chapterBean1.getVideo_id(), false, chapterBean1);
+                        }
+
+
+
                     } else {
-                        showErrorMsg("请加入学习后观看！");
+                        showErrorMsg("请加入学习后观看");
                     }
                 }
                 return true;
@@ -119,7 +186,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
                     if(isBuy){
                         mPresenter.getBjyToken(courseInfoChildData.getVideo_id(),true,courseInfoChildData);
                     }else {
-                        showErrorMsg("请加入学习后观看！");
+                        showErrorMsg("请加入学习后观看");
                     }
                 }
             }
@@ -166,7 +233,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
     public void SuccessBjyToken(final BjyTokenBean bjyTokenData, boolean isDown, final CourseChildBean courseInfoChildData) {
         if(isDown){
             if(bjyTokenData.getType().equals("1")){
-                showErrorMsg("直播课程，不支持下载！");
+                showErrorMsg("直播课程，不支持下载");
             }else if(bjyTokenData.getType().equals("2")||bjyTokenData.getType().equals("3")){
             //视频
 

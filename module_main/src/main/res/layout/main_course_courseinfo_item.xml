@@ -9,8 +9,8 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/isbuy_tv"
             app:tabIndicatorBackBgColor="@color/white"
-            app:tabIndicatorColor="@color/main_courseinfo_bg"
-            app:tabSelectTextColor="@color/main_courseinfo_bg"
+            app:tabIndicatorColor="@color/main_text_blue_458"
+            app:tabSelectTextColor="@color/main_text_blue_458"
             app:tabTextColor="@color/black">
 
             <android.support.v4.view.ViewPager

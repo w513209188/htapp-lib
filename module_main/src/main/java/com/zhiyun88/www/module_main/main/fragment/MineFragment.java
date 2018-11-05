@@ -12,9 +12,13 @@ import android.widget.TextView;
 
 
 import com.jungan.www.module_down.ui.DownManagerActivity;
+import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.wb.baselib.appconfig.AppConfig;
+import com.wb.baselib.appconfig.AppConfigManager;
 import com.wb.baselib.base.fragment.LazyFragment;
 import com.wb.baselib.base.fragment.MvpFragment;
+import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.log.LogTools;
 import com.wb.baselib.user.AppLoginUserInfoUtils;
@@ -33,6 +37,7 @@ import com.zhiyun88.www.module_main.commonality.ui.MessageActivity;
 import com.zhiyun88.www.module_main.commonality.ui.UserInfoActivity;
 import com.zhiyun88.www.module_main.main.adapter.UserListAdapter;
 import com.zhiyun88.www.module_main.main.bean.UserMainBean;
+import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +131,7 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
             //已登录
             havelogin_rel.setVisibility(View.VISIBLE);
             nologin_rel.setVisibility(View.GONE);
-            mPresenter.getUserData("1");
+            mPresenter.getUserData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"));
         }
     }
     private List<UserMainBean> getUserMainBeanList(){
@@ -163,7 +168,8 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
     public void SuccessData(Object o) {
         userInfoBean = (UserInfoBean) o;
         userName_tv.setText(userInfoBean.getName());
-        GlideManager.getInstance().setGlideRoundTransImage(usertx_img,R.drawable.user_head,getActivity(), userInfoBean.getAvatar());
+//        GlideManager.getInstance().setGlideRoundTransImage(usertx_img,R.drawable.user_head,getActivity(), userInfoBean.getAvatar());
+        Picasso.with(getActivity()).load(userInfoBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(usertx_img);
     }
 
     @Override

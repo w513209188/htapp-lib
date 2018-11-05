@@ -30,8 +30,10 @@
         <ProgressBar
             android:layout_below="@+id/tvFileName"
             android:id="@+id/pbProgress"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@style/InitProgressBar"
             android:layout_width="fill_parent"
+            android:max="100"
+            android:progress="20"
             android:layout_height="5dp"
             android:layout_margin="2dp"/>
         <LinearLayout

@@ -16,7 +16,6 @@ import com.baijiahulian.common.networkv2.HttpException;
 import com.baijiayun.download.DownloadListener;
 import com.baijiayun.download.DownloadModel;
 import com.baijiayun.download.DownloadTask;
-import com.jungan.www.common_down.call.VideoDeleteCall;
 import com.jungan.www.module_down.R;
 import com.jungan.www.module_down.call.DoingDownCall;
 import com.jungan.www.module_down.call.DownHaveVideoCall;
