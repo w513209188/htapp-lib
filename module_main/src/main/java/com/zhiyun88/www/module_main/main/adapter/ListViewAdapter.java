@@ -57,7 +57,7 @@ public class ListViewAdapter extends BaseAdapter{
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , homeCourseBean.getCover(), 4);
+        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , homeCourseBean.getCover()==null||homeCourseBean.getCover().equals("")?"http://ww.baid.com":homeCourseBean.getCover(), 4);
         viewHolder.title.setText(homeCourseBean.getTitle());
         viewHolder.num.setText(homeCourseBean.getStudy_count()+"人在学");
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {

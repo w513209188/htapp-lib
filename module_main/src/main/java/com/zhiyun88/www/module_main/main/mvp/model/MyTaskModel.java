@@ -13,7 +13,7 @@ public class MyTaskModel implements MyTaskContranct.MyTaskModel {
     @Override
     public Observable getMyTaskData(String complete_type,String type,int page) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("user_id", 1+"");
+        map.put("user_id", HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"));
       //  map.put("type", type+"");
         map.put("is_complete", complete_type+"");
       //  map.put("page", page+"");

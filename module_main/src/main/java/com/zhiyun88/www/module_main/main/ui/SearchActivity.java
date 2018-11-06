@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -188,6 +189,7 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e("点击的",list.get(i)+"****"+list.size());
                 ss_et.requestFocus();
                 ss_et.setText(list.get(i));
                 ss_et.setSelection(list.get(i).length());
@@ -202,11 +204,13 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
         value = SharedPrefsUtil.getValue(AppUtils.getContext(), "history", "text", "");
         if (value == null || "".equals(value)) {
             search_clear.setVisibility(View.GONE);
+            list=new ArrayList<>();
         } else {
+            String[] split = value.trim().split(",");
+            list = Arrays.asList(split);
             search_clear.setVisibility(View.VISIBLE);
         }
-        String[] split = value.trim().split(",");
-        list = Arrays.asList(split);
+
         useringHistoryAdapter = new UseringHistoryAdapter(SearchActivity.this, list);
         mListView.setAdapter(useringHistoryAdapter);
     }

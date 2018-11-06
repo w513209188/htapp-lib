@@ -48,4 +48,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 //    implementation 'com.github.w513209188:htapp-lib:v1.2.1.2'
         implementation project(':module_main')
+//            implementation project(':module_playvideo')
+    implementation 'com.baijia.live:liveplayer-sdk-ui:1.4.6'
+//    compile 'com.github.w513209188:BaseLib:v1.6.4'
 }

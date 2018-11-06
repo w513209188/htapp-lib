@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static cn.jiguang.share.android.auth.ClientLoginActivity.REQUEST_CODE;
 
 public class HomeFragment extends MvpFragment<HomeFragmentPresenter> implements HomeFragmentContranct.HomeFragmentView {
 

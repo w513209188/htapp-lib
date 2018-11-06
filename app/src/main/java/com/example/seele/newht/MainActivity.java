@@ -36,24 +36,24 @@ public class MainActivity extends AppCompatActivity {
         toact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hApp.newInstance().toSchemme("htnx://course/1",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://course/1",MainActivity.this);
             }
         });
         toact2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hApp.newInstance().toSchemme("htnx://task/1",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://task/1",MainActivity.this);
             }
         });
         toact3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hApp.newInstance().toMainActivity(MainActivity.this, "1", "dfsfsfds", new LoginStatusCall() {
-                    @Override
-                    public void LoginError(String msg, int code) {
-                        Log.e("---->>",msg+code);
-                    }
-                });
+//                hApp.newInstance().toMainActivity(MainActivity.this, "1", "dfsfsfds", new LoginStatusCall() {
+//                    @Override
+//                    public void LoginError(String msg, int code) {
+//                        Log.e("---->>",msg+code);
+//                    }
+//                });
             }
         });
         toact4.setOnClickListener(new View.OnClickListener() {
@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("baotou",entry.getKey()+"---"+entry.getValue());
                 }
 
-//                hApp.newInstance().toMainActivity(MainActivity.this, "30860", "dfsfsfds", new LoginStatusCall() {
-//                    @Override
-//                    public void LoginError(String msg, int code) {
-//                        Log.e("---->>",msg+code);
-//                    }
-//                });
+                hApp.newInstance().toMainActivity(MainActivity.this, "31192", "dfsfsfds", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+                        Log.e("---->>",msg+code);
+                    }
+                });
             }
         });
     }

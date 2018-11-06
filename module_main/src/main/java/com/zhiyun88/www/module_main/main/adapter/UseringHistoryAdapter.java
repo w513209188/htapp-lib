@@ -48,6 +48,13 @@ public class UseringHistoryAdapter extends BaseAdapter {
     }
 
     public void setNewData(List<String> newData) {
+        if(newData==null)
+            return;
+        for(int i=0;i<newData.size();i++){
+            if(newData.get(i).equals("")){
+                newData.remove(i);
+            }
+        }
         this.list = newData;
         notifyDataSetChanged();
     }

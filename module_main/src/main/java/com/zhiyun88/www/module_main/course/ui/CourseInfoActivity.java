@@ -167,8 +167,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
 
         initFragments(courseInfoBean);
         initViewPager();
-
-        GlideManager.getInstance().setCommonPhoto(mCoordinatorTabLayout.getImageView(),R.drawable.course_image,CourseInfoActivity.this,courseInfoBean.getInfo().getCover(),false);
+        GlideManager.getInstance().setCommonPhoto(mCoordinatorTabLayout.getImageView(),R.drawable.course_image ,CourseInfoActivity.this , courseInfoBean.getInfo().getCover()==null||courseInfoBean.getInfo().getCover().equals("")?"http://ww.baid.com":courseInfoBean.getInfo().getCover(), false);
     }
 
     private void courseOrTrain(CourseInfoBean courseInfoBean) {
