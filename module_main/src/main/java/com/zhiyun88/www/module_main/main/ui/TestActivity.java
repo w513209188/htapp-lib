@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.jungan.www.model_liveplay.activity.LiveRoomActivity;
 import com.jungan.www.module_blackplay.activity.PBRoomActivity;
 import com.jungan.www.module_playvideo.ui.PlayVodActivity;
 import com.zhiyun88.www.module_main.R;
@@ -36,18 +35,11 @@ public class TestActivity extends AppCompatActivity {
         live_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(TestActivity.this, LiveRoomActivity.class);
-                Bundle bundle=new Bundle();
-                intent.putExtra("name","fsfs");
-                intent.putExtra("code","fsdf");
-                intent.putExtra("avatar","fsd");
-                startActivity(intent);
             }
         });
         vice_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(TestActivity.this, LiveRoomActivity.class);
             }
         });
         blackplay_bt.setOnClickListener(new View.OnClickListener() {

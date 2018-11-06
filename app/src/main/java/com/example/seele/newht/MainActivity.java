@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
+import com.baijiahulian.livecore.context.LPConstants;
 import com.wb.baselib.crash.CrashHandler;
 import com.wb.baselib.http.HttpConfig;
 import com.wb.baselib.permissions.PerMissionsManager;
@@ -57,22 +57,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                
+
             }
         });
         toact4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (Map.Entry<String, String> entry :  HttpConfig.newInstance().getmMapHeader().entrySet()) {
-                    Log.e("baotou",entry.getKey()+"---"+entry.getValue());
-                }
-
+//                for (Map.Entry<String, String> entry :  HttpConfig.newInstance().getmMapHeader().entrySet()) {
+//                    Log.e("baotou",entry.getKey()+"---"+entry.getValue());
+//                }
+//
                 hApp.newInstance().toMainActivity(MainActivity.this, "31192", "dfsfsfds", new LoginStatusCall() {
                     @Override
                     public void LoginError(String msg, int code) {
                         Log.e("---->>",msg+code);
                     }
                 });
+//                LiveSDKWithUI.LiveRoomUserModel liveRoomUserModel=new LiveSDKWithUI.LiveRoomUserModel("ffsfsf","http://www.baidu.com","88", LPConstants.LPUserType.Student);
+//               LiveSDKWithUI.LiveRoomUserModel liveRoomUserModel=new LiveSDKWithUI.LiveRoomUserModel("dfsfsd","dfssfsdf","888",1);
+//                LiveSDKWithUI.enterRoom(MainActivity.this, Long.parseLong("465456456456456"), "dsdaDAdADAdA", liveRoomUserModel, new LiveSDKWithUI.LiveSDKEnterRoomListener() {
+//                    @Override
+//                    public void onError(String s) {
+//
+//                    }
+//                });
             }
         });
     }

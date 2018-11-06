@@ -12,13 +12,15 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.baijiahulian.live.ui.LiveSDKWithUI;
+import com.baijiahulian.live.ui.activity.LiveRoomActivity;
+import com.baijiahulian.livecore.context.LPConstants;
 import com.baijiayun.download.DownloadManager;
 import com.baijiayun.download.DownloadTask;
 import com.jungan.www.common_down.BjyBackPlayDownManager;
 import com.jungan.www.common_down.BjyPlayDownManager;
 import com.jungan.www.common_down.bean.PlayDownConfig;
 import com.jungan.www.common_down.config.BjyPlayDownConfig;
-import com.jungan.www.model_liveplay.activity.LiveRoomActivity;
 import com.jungan.www.module_blackplay.activity.PBRoomActivity;
 import com.jungan.www.module_down.ui.DownHaveVideoActivity;
 import com.jungan.www.module_playvideo.ui.PlayVodActivity;
@@ -300,14 +302,21 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
         }else {
             if(bjyTokenData.getType().equals("1")){
                 //直播
-                Intent intent=new Intent(getActivity(), LiveRoomActivity.class);
-                intent.putExtra("name",bjyTokenData.getName());
-                intent.putExtra("code",bjyTokenData.getVideo_id());
-                intent.putExtra("avatar",bjyTokenData.getAvatar());
-                intent.putExtra("userNum", bjyTokenData.getUser_id());
-                intent.putExtra("roomId",Long.parseLong(bjyTokenData.getVideo_id()));
-                intent.putExtra("sign",bjyTokenData.getToken());
-                startActivity(intent);
+                LiveSDKWithUI.LiveRoomUserModel liveRoomUserModel=new LiveSDKWithUI.LiveRoomUserModel(bjyTokenData.getName(),bjyTokenData.getAvatar(),bjyTokenData.getUser_id(), LPConstants.LPUserType.Student);
+                LiveSDKWithUI.enterRoom(getActivity(), Long.parseLong(bjyTokenData.getVideo_id()), bjyTokenData.getToken(), liveRoomUserModel, new LiveSDKWithUI.LiveSDKEnterRoomListener() {
+                    @Override
+                    public void onError(String s) {
+
+                    }
+                });
+//                Intent intent=new Intent(getActivity(), LiveRoomActivity.class);
+//                intent.putExtra("name",bjyTokenData.getName());
+//                intent.putExtra("code",bjyTokenData.getVideo_id());
+//                intent.putExtra("avatar",bjyTokenData.getAvatar());
+//                intent.putExtra("userNum", bjyTokenData.getUser_id());
+//                intent.putExtra("roomId",Long.parseLong(bjyTokenData.getVideo_id()));
+//                intent.putExtra("sign",bjyTokenData.getToken());
+//                startActivity(intent);
             }else if(bjyTokenData.getType().equals("2")){
                 //点播
 //                ARouter.getInstance().build("/backplay/play").with(bundle).navigation();
