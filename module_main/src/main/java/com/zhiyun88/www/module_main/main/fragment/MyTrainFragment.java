@@ -40,7 +40,7 @@ public class MyTrainFragment extends MvpFragment<MyTrainPresenter> implements My
 
     @Override
     public boolean isLazyFragment() {
-        return false;
+        return true;
     }
     public static MyTrainFragment newInstance(int type) {
         MyTrainFragment taskProgressFragment = new MyTrainFragment();
@@ -53,23 +53,24 @@ public class MyTrainFragment extends MvpFragment<MyTrainPresenter> implements My
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
-        setContentView(R.layout.main_mu_resh_listview);
+        setContentView(R.layout.main_taskmain_layout);
         train_type = getArguments().getInt("train_type", -1);
         multipleStatusView = getViewById(R.id.multiplestatusview);
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).defaultRefreSh();
         listView = getViewById(R.id.p_lv);
 
-        if (train_type == -1) {
-            multipleStatusView.showError();
-        }else {
-            multipleStatusView.showLoading();
-            mPresenter.getMyTrainData(train_type, page);
-        }
+//        if (train_type == -1) {
+//            multipleStatusView.showError();
+//        }else {
+//            multipleStatusView.showLoading();
+//            mPresenter.getMyTrainData(train_type, page);
+//        }
         myTrainBeans = new ArrayList<>();
         myTrainAdapter = new MyTrainAdapter(getActivity(),myTrainBeans);
         listView.setAdapter(myTrainAdapter);
         setListener();
+        smartRefreshLayout.autoRefresh();
     }
 
     @Override
@@ -159,5 +160,15 @@ public class MyTrainFragment extends MvpFragment<MyTrainPresenter> implements My
     @Override
     public void loadMore(boolean isLoadMore) {
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).isLoadData(isLoadMore);
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            if(myTrainBeans==null){
+                return;
+            }
+            smartRefreshLayout.autoRefresh();
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.adapter.ViewPageTabAdapter;
 import com.wb.baselib.base.activity.MvpActivity;
+import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.IntegralBean;
@@ -47,7 +48,7 @@ public class IntegralActivity extends MvpActivity<IntegralPresenter> implements 
         scrollIndicatorView = getViewById(R.id.spring_indicator);
         line = getViewById(R.id.view_line_xi);
         mViewPager = getViewById(R.id.viewpager);
-        mPresenter.getIntegral("1");
+        mPresenter.getIntegral(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"));
     }
 
     @Override
@@ -71,8 +72,8 @@ public class IntegralActivity extends MvpActivity<IntegralPresenter> implements 
         ArrayList<Fragment> mFragments = new ArrayList<>();
         str.add(getString(R.string.main_Integral_record));
         str.add(getString(R.string.main_League_table));
-        mFragments.add(IntegralFragment.newInstance("1",0));
-        mFragments.add(IntegralFragment.newInstance("1",1));
+        mFragments.add(IntegralFragment.newInstance(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"),0));
+        mFragments.add(IntegralFragment.newInstance(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"),1));
         scrollIndicatorView.setSplitAuto(true);
         scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener() {
             @Override

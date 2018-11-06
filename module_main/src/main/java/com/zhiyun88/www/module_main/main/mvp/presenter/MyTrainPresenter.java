@@ -29,9 +29,10 @@ public class MyTrainPresenter extends MyTrainContranct.MyTrainPresenter {
                 if (myTrainBeanResult.getData() == null || myTrainBeanResult.getData().getList().size() == 0) {
                     if (page == 1) {
                         mView.NoData();
+                        mView.loadMore(false);
                     }else {
                         mView.showErrorMsg(AppUtils.getString(R.string.network_error));
-                        mView.loadMore(false);
+                        mView.loadMore(true);
                     }
                 }else {
                     int maxPage = AppConfigManager.newInstance().getAppConfig().getMaxPage();
@@ -51,8 +52,10 @@ public class MyTrainPresenter extends MyTrainContranct.MyTrainPresenter {
                 mView.ErrorData();
                 if (page == 1) {
                     mView.ErrorData();
+                    mView.loadMore(false);
                 } else {
                     mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                    mView.loadMore(true);
                 }
             }
 

@@ -2,6 +2,7 @@ package com.zhiyun88.www.module_main.main.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -60,15 +61,16 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).defaultRefreSh();
         listView = getViewById(R.id.p_lv);
-        if (course_type == -1) {
-            multipleStatusView.showError();
-        }else {
-            multipleStatusView.showLoading();
-            mPresenter.getMyCourseData(course_type,page);
-        }
+//        if (course_type == -1) {
+//            multipleStatusView.showError();
+//        }else {
+//            multipleStatusView.showLoading();
+//            mPresenter.getMyCourseData(course_type,page);
+//        }
         myCourseListBeans = new ArrayList<>();
         myCourseAdapter = new MyCourseAdapter(getActivity(),myCourseListBeans);
         listView.setAdapter(myCourseAdapter);
+        smartRefreshLayout.autoRefresh();
         setListener();
     }
 
@@ -159,5 +161,15 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
     @Override
     public void loadMore(boolean isLoadMore) {
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).isLoadData(isLoadMore);
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            if(myCourseListBeans==null){
+                return;
+            }
+            smartRefreshLayout.autoRefresh();
+        }
     }
 }

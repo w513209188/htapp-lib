@@ -15,6 +15,7 @@ import com.wangbo.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.MvpFragment;
+import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
@@ -78,7 +79,7 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
         }
         multipleStatusView.showLoading();
         messageDetailsBeans = new ArrayList<>();
-        mPresenter.getMessageData("30860", type, 1, page);
+        mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
         messageAdapter = new MessageAdapter(getActivity(), messageDetailsBeans);
         listView.setAdapter(messageAdapter);
         setListener();
@@ -87,7 +88,7 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
             public void accept(RxTaskBean rxTaskBean) throws Exception {
                 if (rxTaskBean.getTaskType() == 1) {
                     page = 1;
-                    mPresenter.getMessageData("30860", type, 1, page);
+                    mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
                 }
             }
         });
@@ -101,7 +102,7 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 messageDetailsBean = messageDetailsBeans.get(position);
                 if (messageDetailsBean.getIs_read() == 0 ) {
-                    mPresenter.setMessageState("30860", messageDetailsBean.getId());
+                    mPresenter.setMessageState(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), messageDetailsBean.getId());
                 }else {
                     Intent intent = new Intent(getActivity(), MessageDetailActivity.class);
                     intent.putExtra("MessageBean", messageDetailsBean);
@@ -114,20 +115,20 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
             public void onClick(View v) {
                 multipleStatusView.showLoading();
                 page = 1;
-                mPresenter.getMessageData("30860", type, 1, page);
+                mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
             }
         });
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 1;
-                mPresenter.getMessageData("30860", type, 1, page);
+                mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getMessageData("30860", type, 1, page);
+                mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
             }
         });
     }
@@ -200,7 +201,7 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MESSAGE_READ) {
             page = 1;
-            mPresenter.getMessageData("30860", type, 1, page);
+            mPresenter.getMessageData(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), type, 1, page);
         }
     }
 }

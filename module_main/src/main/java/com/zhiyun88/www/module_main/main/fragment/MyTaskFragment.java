@@ -2,6 +2,7 @@ package com.zhiyun88.www.module_main.main.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class MyTaskFragment extends MvpFragment<MyTaskPresenter> implements MyTa
 
     @Override
     public boolean isLazyFragment() {
-        return false;
+        return true;
     }
     public static MyTaskFragment newInstance(int type) {
         MyTaskFragment taskProgressFragment = new MyTaskFragment();
@@ -53,23 +54,24 @@ public class MyTaskFragment extends MvpFragment<MyTaskPresenter> implements MyTa
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
-        setContentView(R.layout.main_mu_resh_listview);
+        setContentView(R.layout.main_taskmain_layout);
         task_type = getArguments().getInt("task_type", -1);
         multipleStatusView = getViewById(R.id.multiplestatusview);
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).defaultRefreSh();
         listView = getViewById(R.id.p_lv);
 
-        if (task_type == -1) {
-            multipleStatusView.showError();
-        }else {
-            multipleStatusView.showLoading();
-            mPresenter.getMyTaskData(task_type+"", "", page);
-        }
+//        if (task_type == -1) {
+//            multipleStatusView.showError();
+//        }else {
+//            multipleStatusView.showLoading();
+//            mPresenter.getMyTaskData(task_type+"", "", page);
+//        }
         myTaskListBeans = new ArrayList<>();
         myTaskAdapter = new MyTaskAdapter(getActivity(),myTaskListBeans);
         listView.setAdapter(myTaskAdapter);
         setListener();
+        smartRefreshLayout.autoRefresh();
     }
     @Override
     protected void setListener() {
@@ -167,5 +169,15 @@ public class MyTaskFragment extends MvpFragment<MyTaskPresenter> implements MyTa
             return;
         page=1;
         mPresenter.getMyTaskData(task_type+"", "", page);
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            if(myTaskListBeans==null){
+                return;
+            }
+            smartRefreshLayout.autoRefresh();
+        }
     }
 }
