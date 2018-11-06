@@ -56,16 +56,15 @@ dependencies {
 //    api deps.support.constraintLayout
 //    testCompile 'junit:junit:4.12'
 //    api deps.baijia.commonpermission
-    implementation 'com.github.w513209188:BaseLib:v1.6.5'
+    implementation 'com.github.w513209188:BaseLib:v1.1.5'
 
     api deps.gson
 //    api deps.baijia.videoplayer
-    implementation 'com.baijia.player:videoplayer:1.7.2-snapshot'
+    compile 'com.baijia.player:videoplayer:1.7.2-snapshot'
     api deps.support.app_compat
     api deps.support.design
 //    api deps.support.constraintLayout
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0'
     testCompile 'junit:junit:4.12'
-//    api deps.baijia.commonpermission
-    implementation 'com.baijia.common:common-permission:1.1.0'
+    api deps.baijia.commonpermission
 }
