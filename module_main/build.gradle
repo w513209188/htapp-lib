@@ -72,7 +72,7 @@ dependencies {
     compile project(':module_down')
     compile project(':module_playvideo')
     compile 'com.github.xuexiangjys:XQRCode:1.0.1'
-    compile 'com.github.w513209188:BaseLib:v1.6.4'
+    compile 'com.github.w513209188:BaseLib:v1.6.5'
 //    implementation project(':common_dotest')
     //    api deps.baijia.videoplayer
     implementation 'com.baijia.player:videoplayer:1.7.2-snapshot'
