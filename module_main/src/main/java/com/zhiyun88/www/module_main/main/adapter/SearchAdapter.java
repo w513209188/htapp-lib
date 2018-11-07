@@ -58,7 +58,12 @@ public class SearchAdapter extends BaseAdapter{
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , searchListBean.getCover(), 4);
+        try {
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , searchListBean.getCover(), 4);
+        }catch (Exception e){
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://www.bai.com", 4);
+        }
+
         viewHolder.title.setText(searchListBean.getTitle());
         viewHolder.image_type.setVisibility(searchListBean.getType().equals("1")?View.VISIBLE:View.GONE);
         viewHolder.num.setText(searchListBean.getStudy_num()+"人在学");

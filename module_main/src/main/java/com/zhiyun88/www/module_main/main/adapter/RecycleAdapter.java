@@ -38,7 +38,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        GlideManager.getInstance().setRoundPhoto(holder.imageView, R.drawable.course_image ,mContext , transformerBeanList.get(position).getCover(), 4);
+        try {
+            GlideManager.getInstance().setRoundPhoto(holder.imageView, R.drawable.course_image ,mContext , transformerBeanList.get(position).getCover(), 4);
+        }catch (Exception e){
+            GlideManager.getInstance().setRoundPhoto(holder.imageView, R.drawable.course_image ,mContext , "http://www.baidu.com", 4);
+        }
+
         holder.title.setText(transformerBeanList.get(position).getTitle());
         holder.num.setText(transformerBeanList.get(position).getStudy_count()+"人报名");
         holder.cardview.setOnClickListener(new View.OnClickListener() {

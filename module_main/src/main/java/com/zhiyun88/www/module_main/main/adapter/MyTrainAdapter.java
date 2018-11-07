@@ -56,7 +56,12 @@ public class MyTrainAdapter extends BaseAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,myTrainListBean.getCover() , 4);
+        try {
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,myTrainListBean.getCover() , 4);
+        }catch (Exception e){
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,"http://www.baidu.com" , 4);
+        }
+
         viewHolder.title.setText(myTrainListBean.getTitle());
         String start = myTrainListBean.getStart_date().substring(0, 16);
         viewHolder.time.setVisibility(View.VISIBLE);

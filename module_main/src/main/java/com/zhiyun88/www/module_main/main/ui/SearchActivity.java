@@ -103,6 +103,13 @@ public class SearchActivity extends MvpActivity<SearchPresenter> implements Sear
             @Override
             public void onClick(View v) {
                 ss_et.setText("");
+                try {
+                    searchListBeans.clear();
+                    searchAdapter.notifyDataSetChanged();
+                    page=1;
+                    NoData();
+                }catch (Exception e){
+                }
             }
         });
         ss_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {

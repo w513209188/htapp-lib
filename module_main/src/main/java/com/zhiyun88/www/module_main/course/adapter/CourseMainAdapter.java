@@ -54,7 +54,12 @@ public class CourseMainAdapter extends ListBaseAdapter<CourseMainData> {
                 mContext.startActivity(intent);
             }
         });
-        GlideManager.getInstance().setCommonPhoto(holder.coursemain_image,R.drawable.course_image,mContext,courseMainData.getCover(),false);
+        try {
+            GlideManager.getInstance().setCommonPhoto(holder.coursemain_image,R.drawable.course_image,mContext,courseMainData.getCover()==null||courseMainData.getCover().equals("")?"http://www.baidu.com":courseMainData.getCover(),false);
+        }catch (Exception e){
+            GlideManager.getInstance().setCommonPhoto(holder.coursemain_image,R.drawable.course_image,mContext,"http://www.baidu.com",false);
+        }
+
         return convertView;
     }
     class CourseMainHolder{

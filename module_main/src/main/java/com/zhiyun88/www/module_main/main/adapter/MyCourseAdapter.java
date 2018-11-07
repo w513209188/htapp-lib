@@ -59,7 +59,12 @@ public class MyCourseAdapter extends BaseAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , myCourseListBean.getCover(), 4);
+        try {
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , myCourseListBean.getCover(), 4);
+        }catch (Exception e){
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://www.baidu.com", 4);
+        }
+
         viewHolder.title.setText(myCourseListBean.getTitle());
         viewHolder.teacher.setVisibility(View.VISIBLE);
         viewHolder.teacher.setText(mContext.getString(R.string.main_be_the_speaker)+myCourseListBean.getTeacher());
