@@ -24,19 +24,18 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
 
     @Override
     public void getRecord(String id, final int page) {
-        HttpManager.newInstance().commonRequest(mModel.getRecord(id,page), new BaseObserver<Result<RecordBean>>(AppUtils.getContext()) {
+        HttpManager.newInstance().commonRequest(mModel.getRecord(id, page), new BaseObserver<Result<RecordBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<RecordBean> recordBeanResult) {
                 if (recordBeanResult.getData() == null || recordBeanResult.getData().getList().size() == 0) {
                     if (page == 1) {
                         mView.NoData();
-                    }else {
+                    } else {
                         mView.showErrorMsg(AppUtils.getString(R.string.network_error));
-                        mView.loadMore(false);
+                        mView.loadMore(true);
                     }
-                }else {
-                    int maxPage = AppConfigManager.newInstance().getAppConfig().getMaxPage();
-                    if (recordBeanResult.getData().getTotal() - page* maxPage  <= 0) {
+                } else {
+                    if (recordBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
                         //已经没有下一页了
                         mView.loadMore(false);
                     } else {
@@ -49,11 +48,11 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
 
             @Override
             public void onFail(ApiException e) {
-                mView.ErrorData();
                 if (page == 1) {
                     mView.ErrorData();
                 } else {
                     mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                    mView.loadMore(true);
                 }
             }
 
@@ -74,12 +73,21 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
         HttpManager.newInstance().commonRequest(mModel.getRanking(id), new BaseObserver<Result<RankingBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<RankingBean> rankingBeanResult) {
-                mView.SuccessRankingData(rankingBeanResult.getData().getList());
+                if (rankingBeanResult.getData() == null) {
+                    mView.ErrorData();
+                } else {
+                    if (rankingBeanResult.getData().getList() == null || rankingBeanResult.getData().getList().size() == 0) {
+                        mView.NoData();
+                    } else {
+                        mView.SuccessRankingData(rankingBeanResult.getData().getList());
+                    }
+                }
+
             }
 
             @Override
             public void onFail(ApiException e) {
-                mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                mView.ErrorData();
             }
 
             @Override

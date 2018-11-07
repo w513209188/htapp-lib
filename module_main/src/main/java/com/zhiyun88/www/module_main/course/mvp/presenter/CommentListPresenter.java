@@ -28,7 +28,6 @@ public class CommentListPresenter extends CommentListContranct.CommentListPresen
         HttpManager.newInstance().commonRequest(mModel.getCommentListData(comment_shop_id, page), new BaseObserver<Result<CommentListBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<CommentListBean> o) {
-
                 CommentListBean commentListBean=o.getData();
                 if(commentListBean==null){
                     if(page==1){

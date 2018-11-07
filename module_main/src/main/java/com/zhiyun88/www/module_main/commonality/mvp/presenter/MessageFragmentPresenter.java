@@ -26,33 +26,42 @@ public class MessageFragmentPresenter extends MessageFragmentContranct.MessageFr
         HttpManager.newInstance().commonRequest(mModel.getMessageData(user_id,message_type,is_app,page), new BaseObserver<Result<MessageBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<MessageBean> messageBeanResult) {
-                if (messageBeanResult.getData() == null || messageBeanResult.getData().getList().size() == 0) {
+                if(messageBeanResult.getData()==null||messageBeanResult.getData().getList()==null){
                     if (page == 1) {
-                        mView.NoData();
-                    }else {
-                        mView.showErrorMsg(AppUtils.getString(R.string.network_error));
-                        mView.loadMore(false);
-                    }
-                }else {
-                    int maxPage = 15;
-                    if (messageBeanResult.getData().getTotal() - page* maxPage  <= 0) {
-                        //已经没有下一页了
-                        mView.loadMore(false);
+                        mView.ErrorData();
                     } else {
-                        //还有下一页
+                        mView.showErrorMsg(AppUtils.getString(R.string.network_error));
                         mView.loadMore(true);
                     }
-                    mView.SuccessData(messageBeanResult.getData().getList());
+                }else {
+                    if (messageBeanResult.getData() == null || messageBeanResult.getData().getList().size() == 0) {
+                        if (page == 1) {
+                            mView.NoData();
+                        }else {
+                            mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                            mView.loadMore(true);
+                        }
+                    }else {
+                        if (messageBeanResult.getData().getList().size()<AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                            //已经没有下一页了
+                            mView.loadMore(false);
+                        } else {
+                            //还有下一页
+                            mView.loadMore(true);
+                        }
+                        mView.SuccessData(messageBeanResult.getData().getList());
+                    }
                 }
+
             }
 
             @Override
             public void onFail(ApiException e) {
-                mView.ErrorData();
                 if (page == 1) {
                     mView.ErrorData();
                 } else {
                     mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                    mView.loadMore(true);
                 }
             }
 
@@ -73,7 +82,12 @@ public class MessageFragmentPresenter extends MessageFragmentContranct.MessageFr
         HttpManager.newInstance().commonRequest(mModel.setMessageState(user_id, message_id), new BaseObserver<Result>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result result) {
-                mView.setIsRead();
+                if(result.getData()==null){
+                    mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                }else {
+                    mView.setIsRead();
+                }
+
             }
 
             @Override

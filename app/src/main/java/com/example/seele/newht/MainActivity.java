@@ -1,16 +1,14 @@
 package com.example.seele.newht;
 
 import android.Manifest;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.baijiahulian.livecore.context.LPConstants;
-import com.wb.baselib.crash.CrashHandler;
-import com.wb.baselib.http.HttpConfig;
-import com.wb.baselib.permissions.PerMissionsManager;
-import com.wb.baselib.permissions.interfaces.PerMissionCall;
+import com.jungan.www.module_blackplay.activity.PBRoomActivity;
 import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.hApp;
 
@@ -23,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        CrashHandler.getInstance().CheckAppCarchLog();
-        PerMissionsManager.newInstance().getUserPerMissions(MainActivity.this, new PerMissionCall() {
-            @Override
-            public void userPerMissionStatus(boolean b) {
-
-            }
-        },new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE});
+//        PerMissionsManager.newInstance().getUserPerMissions(MainActivity.this, new PerMissionCall() {
+//            @Override
+//            public void userPerMissionStatus(boolean b) {
+//
+//            }
+//        },new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE});
         toact1=this.findViewById(R.id.toact1);
         toact2=this.findViewById(R.id.toact2);
         toact3=this.findViewById(R.id.toact3);
@@ -63,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
         toact4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Intent intent=new Intent(MainActivity.this,PBRoomActivity.class);
+//                intent.putExtra("pb_room_id","18103168755745");
+//                intent.putExtra("pb_room_token","PdNXy8ukfyR71zkgu7jxxR8R8F60dK4enJ6wEBmGL4z85rTfBbiskDTSEzZrILF4");
+//                intent.putExtra("pb_room_session_id","-1");
+//                intent.putExtra("pb_room_deploy",2);
+//                startActivity(intent);
 //                for (Map.Entry<String, String> entry :  HttpConfig.newInstance().getmMapHeader().entrySet()) {
 //                    Log.e("baotou",entry.getKey()+"---"+entry.getValue());
 //                }

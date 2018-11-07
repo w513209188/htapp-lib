@@ -130,7 +130,6 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
                                         //进行中
                                     }else if(chapterBean1.getPlay_type().equals("3")){
                                         //回放
-                                        Log.e("点击了离线","------");
                                         String sign= downloadTask.getVideoDownloadInfo().targetFolder+"/"+BjyBackPlayDownManager.Instance().getPlayBackSig(downloadTask.getDownloadInfo().roomId,downloadTask.getDownloadInfo().sessionId);
                                         Intent intent=new Intent(getActivity(), PBRoomActivity.class);
                                         intent.putExtra("pb_room_id",downloadTask.getDownloadInfo().roomId+"");
@@ -173,7 +172,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
 
 
                     } else {
-                        showErrorMsg("请加入学习后观看");
+                        showErrorMsg("请先加入学习");
                     }
                 }
                 return true;
@@ -188,7 +187,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
                     if(isBuy){
                         mPresenter.getBjyToken(courseInfoChildData.getVideo_id(),true,courseInfoChildData);
                     }else {
-                        showErrorMsg("请加入学习后观看");
+                        showErrorMsg("请先加入学习");
                     }
                 }
             }

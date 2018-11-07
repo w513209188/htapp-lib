@@ -90,7 +90,6 @@ public class CourseMainActivity extends MvpActivity<CourseMainPresenter> impleme
 
                     @Override
                     public void onSuccess(Result<CourseMainClassflyBean> courseSelectClassBeanResult) {
-                        Log.e("获取到了", "-----"+courseSelectClassBeanResult.getData().getList().size()+"");
                         if(courseSelectClassBeanResult.getData().getList()==null||courseSelectClassBeanResult.getData().getList().size()==0){
                         }else {
                             initFilterDropDownView(courseSelectClassBeanResult.getData());
@@ -178,7 +177,7 @@ public class CourseMainActivity extends MvpActivity<CourseMainPresenter> impleme
 
     @Override
     public LifecycleTransformer binLifecycle() {
-        return null;
+        return bindToLifecycle();
     }
 
     @Override
@@ -248,7 +247,7 @@ public class CourseMainActivity extends MvpActivity<CourseMainPresenter> impleme
 
     @Override
     public void showErrorMsg(String msg) {
-
+            showLongToast(msg);
     }
 
     @Override

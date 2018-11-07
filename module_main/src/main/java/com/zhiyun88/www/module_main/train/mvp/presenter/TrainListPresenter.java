@@ -30,6 +30,7 @@ public class TrainListPresenter extends TrainListContranct.TrainListPresenter {
                         mView.ErrorData();
                     }else {
                         mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                        mView.isLoadMore(true);
                     }
                 }else {
                     if(trainListBean.getList()==null||trainListBean.getList().size()==0){
@@ -38,6 +39,7 @@ public class TrainListPresenter extends TrainListContranct.TrainListPresenter {
                             mView.NoData();
                         }else {
                             mView.showErrorMsg("已经没有数据了！");
+                            mView.isLoadMore(false);
                         }
                     }else {
                         if(trainListBean.getList().size()< AppConfigManager.newInstance().getAppConfig().getMaxPage()){
@@ -57,6 +59,7 @@ public class TrainListPresenter extends TrainListContranct.TrainListPresenter {
                     mView.ErrorData();
                 }else {
                     mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                    mView.isLoadMore(true);
                 }
             }
 
@@ -69,6 +72,6 @@ public class TrainListPresenter extends TrainListContranct.TrainListPresenter {
             public void onComplete() {
 
             }
-        });
+        },mView.binLifecycle());
     }
 }

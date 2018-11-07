@@ -15,6 +15,7 @@ import com.baijiayun.download.DownloadTask;
 import com.jungan.www.common_down.call.DownVideoCall;
 import com.jungan.www.module_down.R;
 import com.jungan.www.module_down.call.DownHaveVideoCall;
+import com.jungan.www.module_down.utils.TextFormater;
 
 import java.util.HashSet;
 import java.util.List;
@@ -71,6 +72,8 @@ public class DownHaveAdapter extends BaseAdapter {
             holder.fileName_tv=convertView.findViewById(R.id.fileName_tv);
             holder.select_rb=convertView.findViewById(R.id.select_rb);
             holder.select_rel=convertView.findViewById(R.id.select_rel);
+            holder.video_sc_tv=convertView.findViewById(R.id.video_sc_tv);
+            holder.video_size_tv=convertView.findViewById(R.id.video_size_tv);
             convertView.setTag(holder);
         }else {
             holder= (DownHaveHolder) convertView.getTag();
@@ -80,8 +83,9 @@ public class DownHaveAdapter extends BaseAdapter {
         }else {
             holder.select_rb.setVisibility(View.GONE);
         }
-        holder.fileName_tv.setText(downloadTask.getFileName());
-
+        holder.fileName_tv.setText(downloadTask.getDownloadInfo().videoName);
+        holder.video_size_tv.setText("大小"+ TextFormater.getDataSize(downloadTask.getTotalLength()));
+        holder.video_sc_tv.setText("时长"+downloadTask.getVideoDuration()+"分钟");
         if(isVist){
             if(isAllSelect){
                 selectDown.addAll(downloadTasks);
@@ -131,7 +135,7 @@ public class DownHaveAdapter extends BaseAdapter {
         return convertView;
     }
     class DownHaveHolder{
-            TextView fileName_tv;
+            TextView fileName_tv,video_size_tv,video_sc_tv;
             CheckBox select_rb;
             RelativeLayout select_rel;
     }

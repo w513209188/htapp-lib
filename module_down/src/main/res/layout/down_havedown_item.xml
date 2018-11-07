@@ -25,6 +25,7 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:visibility="gone"
                     android:text="dsdsfs"
                     android:id="@+id/year_tv"
                     android:textSize="@dimen/title4"
@@ -41,7 +42,6 @@
                     android:text="fsdfsdfsdfsfsfsfsfsfsfs"
                     android:id="@+id/course_tv"
                     android:textColor="@color/black"
-                    android:layout_marginLeft="10dp"
                     android:textSize="@dimen/title3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -55,7 +55,7 @@
                 <TextView
                     android:id="@+id/seach_tv"
                     android:textSize="@dimen/title5"
-                    android:textColor="#e6e6e6"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <View
@@ -65,11 +65,11 @@
                     android:layout_marginBottom="5dp"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/linen"/>
+                    android:background="@color/black"/>
                 <TextView
                     android:id="@+id/count_tv"
                     android:textSize="@dimen/title5"
-                    android:textColor="#e6e6e6"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

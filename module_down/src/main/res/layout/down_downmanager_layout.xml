@@ -9,20 +9,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:bottomLineColor="@color/linen"
         app:titleBarHeight="50dp"
         app:fillStatusBar="false"
         app:showBottomLine="false"
         app:leftType="imageButton"
         app:leftImageResource="@drawable/public_back_hs"
         app:centerType="textView"
-        app:centerText="@string/down_managerName"
+        app:centerText="我的下载"
         app:titleBarColor="@color/white"
         app:centerTextColor="@color/black"
         />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/linen"/>
     <Button
         android:visibility="gone"
         android:id="@+id/down_bt"

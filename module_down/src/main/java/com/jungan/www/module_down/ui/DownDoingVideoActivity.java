@@ -183,7 +183,7 @@ multipleStatusView.showEmpty();
 
     @Override
     public LifecycleTransformer binLifecycle() {
-        return null;
+        return bindToLifecycle();
     }
 
     @Override

@@ -45,9 +45,14 @@ public class CommentListAdapter extends ListBaseAdapter<CommentListData> {
         holder.pfxx_rb.setClickable(false);
         holder.pfxx_rb.setStar(Float.parseFloat(commentListData.getGrade()));
         holder.comment_tv.setText(commentListData.getContent());
-        holder.time_tv.setText(commentListData.getCreated_at().substring(0,10));
+        holder.time_tv.setText(commentListData.getCreated_at());
         holder.user_nice_tv.setText(commentListData.getCreated_name());
-        Picasso.with(mContext).load(commentListData.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        try {
+            Picasso.with(mContext).load(commentListData.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        }catch (Exception e){
+            Picasso.with(mContext).load("http://www.baidu.com").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        }
+
 //        GlideManager.getInstance().setGlideRoundTransImage(holder.user_img,R.drawable.user_head,mContext,commentListData.getAvatar());
         return convertView;
     }

@@ -2,6 +2,7 @@ package com.zhiyun88.www.module_main.course.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,31 +32,37 @@ public class WebViewFragment extends LazyFragment {
         setContentView(R.layout.main_webview_fragment);
         url=getArguments().getString("url");
         course_wb=getViewById(R.id.course_wb);
-//        course_wb.loadUrl(url);//加载url
-//        LogTools.e("--->>"+url);
+        course_wb.loadUrl(url);//加载url
         Log.e("jia",url);
-        //声明WebSettings子类
         WebSettings webSettings = course_wb.getSettings();
-        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
+        if (webSettings == null) return;
+        // 支持 Js 使用
         webSettings.setJavaScriptEnabled(true);
-        //设置自适应屏幕，两者合用
-        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-        webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
-        //缩放操作
-        webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
-        webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
-        webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
-        //其他细节操作
-        webSettings.setAllowFileAccess(true); //设置可以访问文件
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
-        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
-        course_wb.loadUrl(url);
-        course_wb.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
+        // 开启DOM缓存
+        webSettings.setDomStorageEnabled(true);
+        // 开启数据库缓存
+        webSettings.setDatabaseEnabled(true);
+        // 设置 WebView 的缓存模式
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        // 支持启用缓存模式
+        webSettings.setAppCacheEnabled(true);
+        // Android 私有缓存存储，如果你不调用setAppCachePath方法，WebView将不会产生这个目录
+        webSettings.setAppCachePath(getActivity().getCacheDir().getAbsolutePath());
+        // 数据库路径
+        // 关闭密码保存提醒功能
+        webSettings.setSavePassword(false);
+        // 支持缩放
+        webSettings.setSupportZoom(true);
+        // 设置 UserAgent 属性
+        webSettings.setUserAgentString("");
+        // 允许加载本地 html 文件/false
+        webSettings.setAllowFileAccess(true);
+        // 允许通过 file url 加载的 Javascript 读取其他的本地文件,Android 4.1 之前默认是true，在 Android 4.1 及以后默认是false,也就是禁止
+        webSettings.setAllowFileAccessFromFileURLs(false);
+        // 允许通过 file url 加载的 Javascript 可以访问其他的源，包括其他的文件和 http，https 等其他的源，
+        // Android 4.1 之前默认是true，在 Android 4.1 及以后默认是false,也就是禁止
+        // 如果此设置是允许，则 setAllowFileAccessFromFileURLs 不起做用
+        webSettings.setAllowUniversalAccessFromFileURLs(false);
+
     }
 }

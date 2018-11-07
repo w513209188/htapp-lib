@@ -871,6 +871,7 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
 
     @Override
     public void selectDefinition(String type, int position) {
+        Log.e("点击了",type+"----"+position);
         this.selectPosition = position;
         definitionAdapter.notifyDataSetChanged();
         switch (type) {
@@ -893,6 +894,10 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
             case "1080p":
                 mPlayerView.setVideoDefinition(BJPlayerView.VIDEO_DEFINITION_1080p);
                 progressPresenter.setDefinition("1080P");
+                break;
+            case "audio":
+                mPlayerView.setVideoDefinition(BJPlayerView.VIDEO_DEFINITION_AUDIO);
+                progressPresenter.setDefinition("音频");
                 break;
         }
         flContainerProgress.setVisibility(View.VISIBLE);

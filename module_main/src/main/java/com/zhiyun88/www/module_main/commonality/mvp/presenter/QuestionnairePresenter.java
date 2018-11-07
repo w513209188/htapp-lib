@@ -55,7 +55,12 @@ public class QuestionnairePresenter extends QuestionnaireContranct.Questionnaire
         HttpManager.newInstance().commonRequest(mModel.setQuestionData(basis_id,chapter_id,grade,nice_comment,negative_comments), new BaseObserver<Result>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result result) {
-               mView.setSuccess(result);
+                if(result.getData()==null){
+                    mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                }else {
+                    mView.setSuccess(result);
+                }
+
             }
 
             @Override

@@ -26,33 +26,42 @@ public class MyTrainPresenter extends MyTrainContranct.MyTrainPresenter {
         HttpManager.newInstance().commonRequest(mModel.getMyTrainData(type,page), new BaseObserver<Result<MyTrainBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<MyTrainBean> myTrainBeanResult) {
-                if (myTrainBeanResult.getData() == null || myTrainBeanResult.getData().getList().size() == 0) {
+                if(myTrainBeanResult.getData()==null){
                     if (page == 1) {
-                        mView.NoData();
-                        mView.loadMore(false);
+                        mView.ErrorData();
+                        mView.loadMore(true);
                     }else {
                         mView.showErrorMsg(AppUtils.getString(R.string.network_error));
                         mView.loadMore(true);
                     }
                 }else {
-                    int maxPage = AppConfigManager.newInstance().getAppConfig().getMaxPage();
-                    if (myTrainBeanResult.getData().getTotal() - page* maxPage  <= 0) {
-                        //已经没有下一页了
-                        mView.loadMore(false);
-                    } else {
-                        //还有下一页
-                        mView.loadMore(true);
+                    if (myTrainBeanResult.getData() == null || myTrainBeanResult.getData().getList().size() == 0) {
+                        if (page == 1) {
+                            mView.NoData();
+                            mView.loadMore(false);
+                        }else {
+                            mView.showErrorMsg("已经没有数据了");
+                            mView.loadMore(false);
+                        }
+                    }else {
+                        if (myTrainBeanResult.getData().getList().size()<AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                            //已经没有下一页了
+                            mView.loadMore(false);
+                        } else {
+                            //还有下一页
+                            mView.loadMore(true);
+                        }
+                        mView.SuccessData(myTrainBeanResult.getData().getList());
                     }
-                    mView.SuccessData(myTrainBeanResult.getData().getList());
                 }
+
             }
 
             @Override
             public void onFail(ApiException e) {
-                mView.ErrorData();
                 if (page == 1) {
                     mView.ErrorData();
-                    mView.loadMore(false);
+                    mView.loadMore(true);
                 } else {
                     mView.showErrorMsg(AppUtils.getString(R.string.network_error));
                     mView.loadMore(true);

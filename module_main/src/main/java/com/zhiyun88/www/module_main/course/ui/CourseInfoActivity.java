@@ -186,7 +186,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         }else if(courseInfoBean.getInfo().getIs_buy().equals("2")){
             //已截止
 //            isbuy_state(abort,false,true,false);
-            isbuy_state("已截止",false,true,false);
+            isbuy_state("报名截止",false,true,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("3")){
             //已结束
 //            isbuy_state(finished,false,true,false);
@@ -194,11 +194,11 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         }else if(courseInfoBean.getInfo().getIs_buy().equals("4")){
             //已截止并报名
 //            isbuy_state(abort,false,true,true);
-            isbuy_state("已截止并报名",false,true,true);
+            isbuy_state("报名截止",false,true,true);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("5")){
             //已结束并报名
 //            isbuy_state(finished,false,true,true);
-            isbuy_state("已结束并报名",false,true,true);
+            isbuy_state("已结束",false,true,true);
         }
     }
 

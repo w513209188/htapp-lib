@@ -162,7 +162,7 @@ public class DownManagerActivity extends MvpActivity<DownManagerPresenter> imple
 
     @Override
     public LifecycleTransformer binLifecycle() {
-        return null;
+        return bindToLifecycle();
     }
 
     @Override

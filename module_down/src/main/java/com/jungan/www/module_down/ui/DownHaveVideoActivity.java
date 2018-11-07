@@ -121,7 +121,6 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
             public void onClicked(View view, int i, String s) {
                 if (i == TopBarView.ACTION_RIGHT_TEXT) {
                     TextView textView=mTopBarView.getRightTextView();
-                    Log.e("看看",textView.getText().toString()+"---"+DownHaveVideoActivity.this.getResources().getString(R.string.down_delect));
 
                     if(textView.getText().toString().equals(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect))){
                         mAdapter.setVist(true);
@@ -239,6 +238,6 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
 
     @Override
     public LifecycleTransformer binLifecycle() {
-        return null;
+        return bindToLifecycle();
     }
 }

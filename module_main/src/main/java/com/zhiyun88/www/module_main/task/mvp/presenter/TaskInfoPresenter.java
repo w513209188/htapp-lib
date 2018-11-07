@@ -44,6 +44,6 @@ public class TaskInfoPresenter extends TaskInfoContranct.TaskInfoPresenter {
             public void onComplete() {
 
             }
-        });
+        },mView.binLifecycle());
     }
 }

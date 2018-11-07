@@ -10,6 +10,7 @@
         app:fillStatusBar="false"
         app:titleBarColor="@color/white"
         app:titleBarHeight="50dp"
+        app:bottomLineColor="@color/linen"
         app:leftImageResource="@drawable/public_back_hs"
         app:leftType="imageButton"
         app:centerTextColor="@color/black"
@@ -18,10 +19,6 @@
         app:rightText="删除"
         app:rightType="textView"
         android:layout_height="wrap_content"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/linen"/>
     <com.wb.baselib.view.MultipleStatusView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/multiplestatusview"

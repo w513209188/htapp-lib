@@ -30,15 +30,19 @@ public class CourseMainPresenter extends CourseMainContranct.CourseMainPresenter
                         mView.ErrorData();
                     }else {
                         mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                        mView.isLoadData(true);
                     }
+
                 }else {
                     if(trainListBean.getList()==null||trainListBean.getList().size()==0){
                         //无数据
                         if(page==1){
                             mView.NoData();
                         }else {
-                            mView.showErrorMsg("已经没有数据了！");
+                            mView.showErrorMsg("已经没有数据了");
+                            mView.isLoadData(false);
                         }
+
                     }else {
                         if(trainListBean.getList().size()< AppConfigManager.newInstance().getAppConfig().getMaxPage()){
                             //没有分页
@@ -53,7 +57,12 @@ public class CourseMainPresenter extends CourseMainContranct.CourseMainPresenter
 
             @Override
             public void onFail(ApiException e) {
-
+                if(page==1){
+                    mView.ErrorData();
+                }else {
+                    mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                    mView.isLoadData(true);
+                }
             }
 
             @Override
@@ -65,6 +74,6 @@ public class CourseMainPresenter extends CourseMainContranct.CourseMainPresenter
             public void onComplete() {
 
             }
-        });
+        },mView.binLifecycle());
     }
 }

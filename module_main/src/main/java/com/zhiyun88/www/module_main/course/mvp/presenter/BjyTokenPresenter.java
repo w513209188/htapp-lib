@@ -29,10 +29,10 @@ public class BjyTokenPresenter extends BjyTokenContranct.BjyTokenPresenter {
             @Override
             public void onSuccess(Result<BjyTokenBean> o) {
                 mView.closeLoadV();
-                if (o.getStatus() == 200) {
-                    mView.SuccessBjyToken(o.getData(),isDown,courseChildBean);
-                } else {
+                if (o.getData()==null) {
                     mView.showErrorMsg(o.getMsg());
+                } else {
+                    mView.SuccessBjyToken(o.getData(),isDown,courseChildBean);
                 }
             }
 
@@ -51,6 +51,6 @@ public class BjyTokenPresenter extends BjyTokenContranct.BjyTokenPresenter {
             public void onComplete() {
 
             }
-        });
+        },mView.binLifecycle());
     }
 }

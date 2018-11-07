@@ -25,7 +25,12 @@ public class IntegralPresenter extends IntegralContranct.IntegralPresenter {
         HttpManager.newInstance().commonRequest(mModel.getIntegral(id), new BaseObserver<Result<IntegralBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<IntegralBean> integralBeanResult) {
-                mView.SuccessData(integralBeanResult.getData());
+                if(integralBeanResult.getData()==null){
+                    mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                }else {
+                    mView.SuccessData(integralBeanResult.getData());
+                }
+
             }
 
             @Override
