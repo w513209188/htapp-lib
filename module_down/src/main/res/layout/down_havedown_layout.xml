@@ -16,7 +16,7 @@
         app:centerTextColor="@color/black"
         app:centerText="我的下载"
         app:centerType="textView"
-        app:rightText="删除"
+        app:rightText="编辑"
         app:rightType="textView"
         android:layout_height="wrap_content"/>
     <com.wb.baselib.view.MultipleStatusView

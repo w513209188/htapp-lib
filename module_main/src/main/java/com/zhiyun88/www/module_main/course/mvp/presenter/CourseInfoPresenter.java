@@ -56,9 +56,9 @@ public class CourseInfoPresenter extends CourseInfoContranct.CourseInfoPresenter
             public void onSuccess(Result o) {
                 mView.closeLoadV();
                 if(o.getData()==null){
-                    mView.joinSuccess(o.getMsg());
-                }else {
                     mView.showErrorMsg(o.getMsg());
+                }else {
+                    mView.joinSuccess(o.getMsg());
                 }
             }
 

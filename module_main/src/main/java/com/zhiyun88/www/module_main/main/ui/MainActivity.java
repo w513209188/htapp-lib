@@ -24,8 +24,12 @@ import com.wb.baselib.jptabbar.OnTabSelectListener;
 import com.wb.baselib.user.AppLoginUserInfoUtils;
 import com.wb.baselib.utils.NotificationsUtils;
 import com.wb.baselib.view.BottomBarView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxTaskBean;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.main.api.MainServiceApi;
 import com.zhiyun88.www.module_main.main.bean.BannerBean;
+import com.zhiyun88.www.module_main.main.bean.UserMessageCount;
 import com.zhiyun88.www.module_main.main.fragment.CourseFragment;
 import com.zhiyun88.www.module_main.main.fragment.HomeFragment;
 import com.zhiyun88.www.module_main.main.fragment.MineFragment;
@@ -35,9 +39,13 @@ import com.zhiyun88.www.module_main.main.fragment.TrainFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity {
+    private BottomBarView bottomBarView;
+    private boolean isLoad=false;
+    private MineFragment mineFragment;
     public static void startForResult(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
@@ -59,7 +67,6 @@ public class MainActivity extends BaseActivity {
         AppLoginUserInfoUtils.getInstance().saveLoginInfo(userLoginBean);
         initView(savedInstanceState);
         boolean isopen= NotificationsUtils.isNotificationEnabled(MainActivity.this);
-        Log.e("这个是权限",isopen+"-----");
         if(!isopen){
             showMdDialog("权限提醒", "您当前手机没有允许通知提醒，请在通知管理中允许通知并在屏幕顶部显示，否则将无法正常收到推送消息", "不设置", "设置", new MyDialogListener() {
                 @Override
@@ -72,6 +79,8 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+        isLoad=true;
+        checkIsReadMessage();
     }
 
     /**
@@ -98,8 +107,9 @@ public class MainActivity extends BaseActivity {
         list.add(new TaskFragment());
         list.add(new CourseFragment());
         list.add(new TrainFragment());
-        list.add(new MineFragment());
-        BottomBarView bottomBarView = getViewById(R.id.main_main_btv);
+        mineFragment=new MineFragment();
+        list.add(mineFragment);
+         bottomBarView = getViewById(R.id.main_main_btv);
         bottomBarView.setBottomNoIcon(R.drawable.main_home_no, R.drawable.main_task_no, R.drawable.main_course_no, R.drawable.main_train_no, R.drawable.main_user_no)//未选择的图标 必传
                 .setBottomSelectIcon(R.drawable.main_home_sel, R.drawable.main_task_sel, R.drawable.main_course_sel, R.drawable.main_train_sel, R.drawable.main_user_sel)//选择的图标 必传
                 .setBottomTitles(getString(R.string.main_home), getString(R.string.main_task), getString(R.string.main_course), getString(R.string.main_train), getString(R.string.main_mine)) //显示文字 必传
@@ -137,5 +147,58 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean isAllImage() {
         return true;
+    }
+
+    private void checkIsReadMessage(){
+        Observable<Result<UserMessageCount>> observable=HttpManager.newInstance().getService(MainServiceApi.class).getNewMessage();
+        HttpManager.newInstance().commonRequest(observable, new BaseObserver<Result<UserMessageCount>>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result<UserMessageCount> o) {
+                    if(o.getStatus()==200){
+                        if(o.getData()==null){
+                            bottomBarView.hindBadge(4);
+                            RxBus.getIntanceBus().post(new RxTaskBean(902));
+                        }else {
+                            if(o.getData().getUser_message_count()==null||o.getData().getUser_message_count().equals("")){
+                                bottomBarView.hindBadge(4);
+                                RxBus.getIntanceBus().post(new RxTaskBean(902));
+                            }else {
+                                String jj=o.getData().getUser_message_count();
+                                if(Integer.parseInt(jj)>99){
+                                    bottomBarView.setBadge(4,"99+");
+                                }else {
+                                    bottomBarView.setBadge(4,jj);
+                                }
+                                RxBus.getIntanceBus().post(new RxTaskBean(901));
+                            }
+                        }
+                    }else {
+                        bottomBarView.hindBadge(4);
+                    }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                bottomBarView.hindBadge(4);
+                RxBus.getIntanceBus().post(new RxTaskBean(902));
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        },bindToLifecycle());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isLoad)
+            return;
+        checkIsReadMessage();
     }
 }

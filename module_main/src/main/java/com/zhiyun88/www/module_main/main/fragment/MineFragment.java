@@ -24,7 +24,9 @@ import com.wb.baselib.log.LogTools;
 import com.wb.baselib.user.AppLoginUserInfoUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MyListView;
+import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxLoginBean;
+import com.wb.rxbus.taskBean.RxTaskBean;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.UserDataBean;
 import com.zhiyun88.www.module_main.commonality.bean.UserInfoBean;
@@ -58,7 +60,7 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
 
     @Override
     public boolean isLazyFragment() {
-        return true;
+        return false;
     }
 
     @Override
@@ -90,6 +92,16 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
                 }
             }
         });*/
+        RxBus.getIntanceBus().registerRxBus(RxTaskBean.class, new Consumer<RxTaskBean>() {
+            @Override
+            public void accept(RxTaskBean rxTaskBean) throws Exception {
+                if(rxTaskBean.getTaskType()==901){
+                    mAdapter.updateItem(mlv,true);
+                }else if(rxTaskBean.getTaskType()==902){
+                    mAdapter.updateItem(mlv,false);
+                }
+            }
+        });
         setListener();
     }
 
@@ -176,5 +188,4 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
     public LifecycleTransformer binLifecycle() {
         return bindToLifecycle();
     }
-
 }

@@ -78,5 +78,41 @@ public class MyCoursePresenter extends MyCourseContranct.MyCoursePresenter {
             }
         }, mView.binLifecycle());
     }
+
+    @Override
+    public void postUserComment(String courseId, String context, String grade, final int postion) {
+        if(context==null||context.equals("")){
+            mView.showErrorMsg("评价内容不能为空！");
+            return;
+        }
+        mView.showLoadV("提交中....");
+        HttpManager.newInstance().commonRequest(mModel.postUserComment(courseId, context, grade), new BaseObserver<Result>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result o) {
+                mView.closeLoadV();
+                if(o.getStatus()==200){
+                    mView.successComment(o.getMsg(),true,postion);
+                }else {
+                    mView.successComment(o.getMsg(),false,postion);
+                }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                mView.closeLoadV();
+                mView.successComment(e.getMessage(),true,postion);
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                addSubscribe(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        },mView.binLifecycle());
+    }
 }
 

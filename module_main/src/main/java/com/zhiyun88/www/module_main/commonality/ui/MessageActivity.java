@@ -64,11 +64,11 @@ public class MessageActivity extends MvpActivity{
         str.add(getString(R.string.main_all_the_news));
         str.add(getString(R.string.main_Course_notice));
         str.add(getString(R.string.main_Task_to_inform));
-        str.add(getString(R.string.main_systematic_notification));
+//        str.add(getString(R.string.main_systematic_notification));
         mFragments.add(MessageFragment.newInstance(0));
         mFragments.add(MessageFragment.newInstance(2));
         mFragments.add(MessageFragment.newInstance(3));
-        mFragments.add(MessageFragment.newInstance(1));
+//        mFragments.add(MessageFragment.newInstance(1));
         scrollIndicatorView.setSplitAuto(true);
         scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener() {
             @Override

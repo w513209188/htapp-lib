@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wb.baselib.view.MyListView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.main.bean.UserMainBean;
 
@@ -49,6 +50,7 @@ public class UserListAdapter extends BaseAdapter{
              view = LayoutInflater.from(mContext).inflate(R.layout.main_usermain_item, null);
             viewHolder.imageView = view.findViewById(R.id.iv_attr_icon);
             viewHolder.textView = view.findViewById(R.id.tv_attr_text);
+            viewHolder.newmessgae_img=view.findViewById(R.id.newmessgae_img);
             view.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) view.getTag();
@@ -58,7 +60,19 @@ public class UserListAdapter extends BaseAdapter{
         return view;
     }
     class ViewHolder{
-        ImageView imageView;
+        ImageView imageView,newmessgae_img;
         TextView textView;
+    }
+    public void updateItem(MyListView myListView,boolean isNew){
+        int postion=myListView.getFirstVisiblePosition();
+        if(0-postion>=0){
+            View view=myListView.getChildAt(0-postion);
+            ViewHolder holder= (ViewHolder) view.getTag();
+            if(isNew){
+                holder.newmessgae_img.setVisibility(View.VISIBLE);
+            }else {
+                holder.newmessgae_img.setVisibility(View.GONE);
+            }
+        }
     }
 }

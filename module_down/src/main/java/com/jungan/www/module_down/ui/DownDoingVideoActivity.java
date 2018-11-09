@@ -6,8 +6,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baijia.player.playback.downloader.PlaybackDownloader;
+import com.baijiahulian.downloader.download.VideoDownloadManager;
+import com.baijiayun.download.DownloadManager;
 import com.baijiayun.download.DownloadTask;
 import com.hss01248.dialog.interfaces.MyDialogListener;
+import com.jungan.www.common_down.BjyBackPlayDownManager;
 import com.jungan.www.common_down.config.DownVideoMessageTypeConfig;
 import com.jungan.www.module_down.R;
 import com.jungan.www.module_down.adapter.DodingItemAdapter;
@@ -30,8 +34,8 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
     private List<DownloadTask> downloadTasks;
     private DodingItemAdapter mAdapter;
     private TopBarView mTopBarView;
-    private LinearLayout bottom_ll;
-    private TextView delect_select_tv,delect_num_tv;
+    private LinearLayout bottom_ll,status_ll;
+    private TextView delect_select_tv,delect_num_tv,all_pase_tv,all_start_tv;
     @Override
     protected void initView(Bundle bundle) {
         setContentView(R.layout.down_havedown_layout);
@@ -43,7 +47,11 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
         delect_select_tv=getViewById(R.id.delect_select_tv);
         delect_num_tv=getViewById(R.id.delect_num_tv);
         bottom_ll=getViewById(R.id.bottom_ll);
+        all_pase_tv=getViewById(R.id.all_pase_tv);
+        all_start_tv=getViewById(R.id.all_start_tv);
+        status_ll=getViewById(R.id.status_ll);
         downloadTasks=new ArrayList<>();
+        status_ll.setVisibility(View.VISIBLE);
         mAdapter=new DodingItemAdapter(downloadTasks,DownDoingVideoActivity.this);
         mListView.setAdapter(mAdapter);
         mPresenter.getDownDoingVideo();
@@ -92,14 +100,16 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
             public void onClicked(View view, int i, String s) {
                 if (i == TopBarView.ACTION_RIGHT_TEXT) {
                     TextView textView=mTopBarView.getRightTextView();
-                    if(textView.getText().toString().equals(getResources().getString(R.string.down_delect))){
+                    if(textView.getText().toString().equals("编辑")){
                         mAdapter.setVist(true);
                         textView.setText(getResources().getString(R.string.down_cancel));
                         bottom_ll.setVisibility(View.VISIBLE);
+                        status_ll.setVisibility(View.GONE);
                     }else {
                         mAdapter.setVist(false);
-                        textView.setText(getResources().getString(R.string.down_delect));
+                        textView.setText("编辑");
                         bottom_ll.setVisibility(View.GONE);
+                        status_ll.setVisibility(View.VISIBLE);
                     }
                     mAdapter.notifyDataSetChanged();
                 }else if(i==TopBarView.ACTION_LEFT_BUTTON){
@@ -110,7 +120,7 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
         mAdapter.setCall(new DownHaveVideoCall() {
             @Override
             public void selectVideo() {
-                delect_num_tv.setText(getResources().getString(R.string.down_delect)+mAdapter.getSelectDown().size());
+                delect_num_tv.setText(getResources().getString(R.string.down_delect)+" "+mAdapter.getSelectDown().size());
                 if(mAdapter.getSelectDown().size()==downloadTasks.size()){
                     delect_select_tv.setText(getResources().getString(R.string.down_all_cancel));
                 }else {
@@ -121,7 +131,7 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
         delect_num_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMdDialog(getResources().getString(R.string.down_message), getResources().getString(R.string.down_agin_delect), getResources().getString(R.string.down_ok), getResources().getString(R.string.down_cancel), new MyDialogListener() {
+                showMdDialog("提示", getResources().getString(R.string.down_agin_delect), getResources().getString(R.string.down_ok), getResources().getString(R.string.down_cancel), new MyDialogListener() {
                     @Override
                     public void onFirst() {
                         mPresenter.userDelectVideo(mAdapter.getSelectDown());
@@ -134,11 +144,29 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
                 });
             }
         });
+        all_start_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DownloadTask> tasks=BjyBackPlayDownManager.Instance().getDownloadManager().getManager().getAllTasks();
+                for(DownloadTask downloadTask:tasks){
+                    downloadTask.start();
+                }
+            }
+        });
+        all_pase_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DownloadTask> tasks=BjyBackPlayDownManager.Instance().getDownloadManager().getManager().getAllTasks();
+                for(DownloadTask downloadTask:tasks){
+                    downloadTask.pause();
+                }
+            }
+        });
     }
 
     @Override
     protected void processLogic(Bundle bundle) {
-        mTopBarView.getCenterTextView().setText(getResources().getString(R.string.down_doing_tx));
+        mTopBarView.getCenterTextView().setText("正在缓存");
     }
 
     @Override

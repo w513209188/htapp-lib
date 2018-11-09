@@ -15,4 +15,9 @@ public interface MainHttpConfig {
     String MYTRAIN_URL = "api/app/course/myOfflineTraining/type={type}";
     //搜索
     String SEARCH_URL = "api/app/courseBasis";
+
+    //评论
+    String USERPOSTCOMMENT = "api/app/comment";
+    //获取是否有新的消息
+    String GETNEWMESSAGE = "api/app/user_message_count";
 }

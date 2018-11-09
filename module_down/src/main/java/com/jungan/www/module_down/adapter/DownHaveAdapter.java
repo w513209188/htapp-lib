@@ -17,6 +17,7 @@ import com.jungan.www.module_down.R;
 import com.jungan.www.module_down.call.DownHaveVideoCall;
 import com.jungan.www.module_down.utils.TextFormater;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +86,8 @@ public class DownHaveAdapter extends BaseAdapter {
         }
         holder.fileName_tv.setText(downloadTask.getDownloadInfo().videoName);
         holder.video_size_tv.setText("大小"+ TextFormater.getDataSize(downloadTask.getTotalLength()));
-        holder.video_sc_tv.setText("时长"+downloadTask.getVideoDuration()+"分钟");
+
+        holder.video_sc_tv.setText("时长"+formatSecond(downloadTask.getVideoDuration())+"分钟");
         if(isVist){
             if(isAllSelect){
                 selectDown.addAll(downloadTasks);
@@ -138,5 +140,11 @@ public class DownHaveAdapter extends BaseAdapter {
             TextView fileName_tv,video_size_tv,video_sc_tv;
             CheckBox select_rb;
             RelativeLayout select_rel;
+    }
+    public  String formatSecond(long second){
+       double news=second/60;
+        DecimalFormat df   = new DecimalFormat("######0.00");
+        return df.format(news);
+
     }
 }

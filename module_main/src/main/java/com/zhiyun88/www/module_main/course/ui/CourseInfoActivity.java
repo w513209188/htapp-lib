@@ -51,7 +51,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     protected CourseInfoPresenter onCreatePresenter() {
         return new CourseInfoPresenter(this);
     }
-
+    private boolean isLoad=false;
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_course_courseinfo);
@@ -101,6 +101,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
             }
              mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
             mViewPager.setOffscreenPageLimit(3);
+        isLoad=true;
     }
     @Override
     protected void setListener() {
@@ -178,7 +179,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     private void courseOrTrain(CourseInfoBean courseInfoBean) {
         if(courseInfoBean.getInfo().getIs_buy().equals("0")){
             //未添加
-            isbuy_state(isCourseTaskInfo?"立即报名":"立即加入",true,false,false);
+            isbuy_state(isCourseTaskInfo?"立即报名":"加入学习",true,false,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
             //已加入
 //            isbuy_state(applied,false,true,true);
@@ -266,5 +267,13 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     public void SuccessData(Object o) {
         multipleStatusView.showContent();
         initCoorLayout((CourseInfoBean) o);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isLoad)
+            return;
+        mPresenter.getCourseInfoData(courseId);
     }
 }

@@ -56,7 +56,7 @@ dependencies {
 //    api deps.support.constraintLayout
 //    testCompile 'junit:junit:4.12'
 //    api deps.baijia.commonpermission
-    implementation 'com.github.w513209188:BaseLib:v1.1.5'
+    implementation 'com.github.w513209188:BaseLib:v1.7.0'
 
     api deps.gson
 //    api deps.baijia.videoplayer

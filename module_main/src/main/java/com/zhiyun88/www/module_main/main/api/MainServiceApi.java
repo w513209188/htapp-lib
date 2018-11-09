@@ -3,6 +3,7 @@ import com.wb.baselib.bean.Result;
 import com.zhiyun88.www.module_main.main.bean.MyCourseBean;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
 import com.zhiyun88.www.module_main.main.bean.SearchBean;
+import com.zhiyun88.www.module_main.main.bean.UserMessageCount;
 import com.zhiyun88.www.module_main.main.config.MainConfig;
 import com.zhiyun88.www.module_main.main.bean.MyTaskBean;
 import com.zhiyun88.www.module_main.main.bean.MyTrainBean;
@@ -38,4 +39,12 @@ public interface MainServiceApi {
     @FormUrlEncoded
     @POST(MainConfig.SEARCH_URL)
     Observable<Result<SearchBean>> getSearchData(@Field("keywords") String words,@Field("page") int page);
+
+    @FormUrlEncoded
+    @POST(MainConfig.USERPOSTCOMMENT)
+    Observable<Result> userPostComment(@FieldMap Map<String,String> map);
+
+    @GET(MainConfig.GETNEWMESSAGE)
+    Observable<Result<UserMessageCount>> getNewMessage();
+
 }

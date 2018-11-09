@@ -46,7 +46,7 @@ public class TrainListAdapter extends ListBaseAdapter<TrainListData> {
         }
         holder.train_address.setText("地点："+trainListData.getAddress());
         holder.train_num.setText(trainListData.getStudy_count()+"人报名");
-        holder.train_time.setText("时间："+trainListData.getStart_end_date().substring(5,16));
+        holder.train_time.setText("时间："+trainListData.getStart_end_date());
         holder.train_title.setText(trainListData.getTitle());
         try {
             GlideManager.getInstance().setCommonPhoto(holder.train_image,R.drawable.course_image ,mContext , trainListData.getCover()==null||trainListData.getCover().equals("")?"http://ww.baid.com":trainListData.getCover(), false);

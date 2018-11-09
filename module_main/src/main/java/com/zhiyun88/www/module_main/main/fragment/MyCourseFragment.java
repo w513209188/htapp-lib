@@ -1,12 +1,19 @@
 package com.zhiyun88.www.module_main.main.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.hss01248.dialog.StyledDialog;
 import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
 import com.wangbo.smartrefresh.layout.api.RefreshLayout;
 import com.wangbo.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -16,8 +23,10 @@ import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.course.view.MyRatingBar;
 import com.zhiyun88.www.module_main.main.adapter.MyCourseAdapter;
 import com.zhiyun88.www.module_main.main.bean.MyCourseListBean;
+import com.zhiyun88.www.module_main.main.call.MyCourseCommentCall;
 import com.zhiyun88.www.module_main.main.mvp.contranct.MyCourseContranct;
 import com.zhiyun88.www.module_main.main.mvp.presenter.MyCoursePresenter;
 
@@ -34,7 +43,7 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
     private int page = 1;
     private SmartRefreshLayout smartRefreshLayout;
     private int course_type;
-
+    private Dialog mDiaLog;
     @Override
     protected MyCoursePresenter onCreatePresenter() {
         return new MyCoursePresenter(this);
@@ -104,6 +113,12 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
                 mPresenter.getMyCourseData(course_type, page);
             }
         });
+        myCourseAdapter.setmCall(new MyCourseCommentCall() {
+            @Override
+            public void userCommentBy(String courseId,int postion) {
+                showCommentLayout(courseId,postion);
+            }
+        });
     }
 
     @Override
@@ -162,6 +177,20 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
     public void loadMore(boolean isLoadMore) {
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).isLoadData(isLoadMore);
     }
+
+    @Override
+    public void successComment(String msg, boolean isPost,int postion) {
+        if(mDiaLog==null)
+            return;
+        if(isPost){
+            if(mDiaLog.isShowing()){
+                mDiaLog.dismiss();
+            }
+            myCourseAdapter.updateItem(postion,listView);
+        }
+        showErrorMsg(msg);
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -171,5 +200,37 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
             }
             smartRefreshLayout.autoRefresh();
         }
+    }
+    String pj="5";
+    private void showCommentLayout(final String courseId, final int postion){
+        View view= LayoutInflater.from(getActivity()).inflate(R.layout.main_mycourse_comment_layout, null);
+        mDiaLog=StyledDialog.buildCustom(view,Gravity.CENTER).show();
+        final EditText pj_et=view.findViewById(R.id.pj_et);
+        TextView post_comment_tv=view.findViewById(R.id.post_comment_tv);
+        MyRatingBar myRatingBar=view.findViewById(R.id.pfxx_rb);
+        ImageView right_close_img=view.findViewById(R.id.right_close_img);
+        right_close_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mDiaLog==null)
+                    return;
+                if(mDiaLog.isShowing()){
+                    mDiaLog.dismiss();
+                }
+            }
+        });
+        myRatingBar.setOnRatingChangeListener(new MyRatingBar.OnRatingChangeListener() {
+            @Override
+            public void onRatingChange(float ratingCount) {
+                pj=ratingCount+"";
+            }
+        });
+        post_comment_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.postUserComment(courseId,pj_et.getText().toString(),pj+"",postion);
+            }
+        });
+
     }
 }

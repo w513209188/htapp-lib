@@ -122,13 +122,13 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
                 if (i == TopBarView.ACTION_RIGHT_TEXT) {
                     TextView textView=mTopBarView.getRightTextView();
 
-                    if(textView.getText().toString().equals(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect))){
+                    if(textView.getText().toString().equals("编辑")){
                         mAdapter.setVist(true);
                         textView.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_cancel));
                         bottom_ll.setVisibility(View.VISIBLE);
                     }else {
                         mAdapter.setVist(false);
-                        textView.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect));
+                        textView.setText("编辑");
                         bottom_ll.setVisibility(View.GONE);
                     }
                     mAdapter.notifyDataSetChanged();
@@ -140,7 +140,7 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
         delect_num_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMdDialog(DownHaveVideoActivity.this.getResources().getString(R.string.down_message), DownHaveVideoActivity.this.getResources().getString(R.string.down_agin_delect), getResources().getString(R.string.down_ok), getResources().getString(R.string.down_cancel), new MyDialogListener() {
+                showMdDialog("提示", DownHaveVideoActivity.this.getResources().getString(R.string.down_agin_delect), getResources().getString(R.string.down_ok), getResources().getString(R.string.down_cancel), new MyDialogListener() {
                     @Override
                     public void onFirst() {
                         mPresenter.userDelectVideo(mAdapter.getSelectDown());

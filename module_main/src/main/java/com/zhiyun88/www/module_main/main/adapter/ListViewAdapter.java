@@ -50,6 +50,7 @@ public class ListViewAdapter extends BaseAdapter{
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.main_item_home_listview, null);
             viewHolder.imageView = convertView.findViewById(R.id.home_image);
+            viewHolder.image_type=convertView.findViewById(R.id.image_type);
             viewHolder.title = convertView.findViewById(R.id.home_title);
             viewHolder.num = convertView.findViewById(R.id.home_num);
             viewHolder.cardview = convertView.findViewById(R.id.cardview);
@@ -57,6 +58,7 @@ public class ListViewAdapter extends BaseAdapter{
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        viewHolder.image_type.setVisibility(View.VISIBLE);
         try {
             GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , homeCourseBean.getCover()==null||homeCourseBean.getCover().equals("")?"http://ww.baid.com":homeCourseBean.getCover(), 4);
         }catch (Exception e){
@@ -78,7 +80,7 @@ public class ListViewAdapter extends BaseAdapter{
     }
     class ViewHolder{
         CardView cardview;
-        ImageView imageView;
+        ImageView imageView,image_type;
         TextView title,num;
     }
 }

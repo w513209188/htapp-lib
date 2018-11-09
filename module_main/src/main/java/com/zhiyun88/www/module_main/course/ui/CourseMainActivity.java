@@ -108,6 +108,7 @@ public class CourseMainActivity extends MvpActivity<CourseMainPresenter> impleme
         String[] titleList = new String[]{"分类", "排序", "筛选"};
         this.courseClassflyBean=courseClassflyBeans;
         dropMenuAdapter=new DropMenuAdapter(CourseMainActivity.this, titleList, this,courseClassflyBean);
+        dropMenuAdapter.setSelectOption(0);
         dropDownMenu.setMenuAdapter(dropMenuAdapter);
     }
 

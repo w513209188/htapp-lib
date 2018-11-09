@@ -30,6 +30,7 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
     private TextView end_time_tv,task_pross_tv,task_status_tv;
     private TopBarView task_tb;
     private String taskId;
+    private boolean isWc=false;
     @Override
     protected TaskInfoPresenter onCreatePresenter() {
         return new TaskInfoPresenter(this);
@@ -132,6 +133,7 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
 
     @Override
     public void SuccessData(Object o) {
+        isWc=true;
         TaskInfoListBean taskInfoListBean= (TaskInfoListBean) o;
         if(taskInfoListBean.getTask_info()==null){
 
@@ -148,6 +150,7 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
             }
             task_tb.getCenterTextView().setText(taskInfoListBean.getTask_info().getName());
         }
+        taskDataLists.clear();
         taskDataLists.addAll(taskInfoListBean.getTask_data());
         mAdapter.notifyDataSetChanged();
         multiplestatusview.showContent();
@@ -156,5 +159,16 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
     @Override
     public LifecycleTransformer binLifecycle() {
         return bindToLifecycle();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(taskDataLists==null)
+            return;
+        if(!isWc)
+            return;
+        ShowLoadView();
+        mPresenter.getTaskInfoList(taskId);
     }
 }
