@@ -82,16 +82,9 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
         btn_login=getViewById(R.id.btn_login);
         mlv.setDivider(null);
         userMainBeanList=getUserMainBeanList();
-        mlv.setAdapter(new UserListAdapter(getActivity(),userMainBeanList));
+        mAdapter= new UserListAdapter(getActivity(),userMainBeanList);
+        mlv.setAdapter(mAdapter);
         ReshData();
-       /* RxBus.getIntanceBus().registerRxBus(RxLoginBean.class, new Consumer<RxLoginBean>() {
-            @Override
-            public void accept(RxLoginBean rxLoginBean) throws Exception {
-                if(rxLoginBean.getLoginType()==99){
-                    ReshData();
-                }
-            }
-        });*/
         RxBus.getIntanceBus().registerRxBus(RxTaskBean.class, new Consumer<RxTaskBean>() {
             @Override
             public void accept(RxTaskBean rxTaskBean) throws Exception {
@@ -187,5 +180,22 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
     @Override
     public LifecycleTransformer binLifecycle() {
         return bindToLifecycle();
+    }
+
+    @Override
+    protected void onDestroyViewLazy() {
+        super.onDestroyViewLazy();
+        RxBus.getIntanceBus().unSubscribe(this);
+    }
+    public void uoda(boolean is){
+        if(userName_tv==null){
+            Log.e("----->>","yes");
+        }else {
+            userName_tv.setText("你大爷");
+            if(mAdapter==null)
+                return;
+            mAdapter.updateItem(mlv,is);
+        }
+
     }
 }

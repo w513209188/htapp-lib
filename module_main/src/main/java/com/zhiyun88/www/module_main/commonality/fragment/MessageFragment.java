@@ -101,6 +101,7 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 messageDetailsBean = messageDetailsBeans.get(position);
+                messageAdapter.updateItem(position,listView);
                 if (messageDetailsBean.getIs_read() == 0 ) {
                     mPresenter.setMessageState(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), messageDetailsBean.getId());
                 }else {

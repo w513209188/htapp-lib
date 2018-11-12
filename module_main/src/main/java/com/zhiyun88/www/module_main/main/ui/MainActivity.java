@@ -150,6 +150,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void checkIsReadMessage(){
+//        RxBus.getIntanceBus().post(new RxTaskBean(902));
+
         Observable<Result<UserMessageCount>> observable=HttpManager.newInstance().getService(MainServiceApi.class).getNewMessage();
         HttpManager.newInstance().commonRequest(observable, new BaseObserver<Result<UserMessageCount>>(AppUtils.getContext()) {
             @Override
@@ -158,22 +160,33 @@ public class MainActivity extends BaseActivity {
                         if(o.getData()==null){
                             bottomBarView.hindBadge(4);
                             RxBus.getIntanceBus().post(new RxTaskBean(902));
+                            mineFragment.uoda(false);
                         }else {
                             if(o.getData().getUser_message_count()==null||o.getData().getUser_message_count().equals("")){
                                 bottomBarView.hindBadge(4);
                                 RxBus.getIntanceBus().post(new RxTaskBean(902));
+                                mineFragment.uoda(false);
                             }else {
                                 String jj=o.getData().getUser_message_count();
-                                if(Integer.parseInt(jj)>99){
-                                    bottomBarView.setBadge(4,"99+");
+                                if(Integer.parseInt(jj)==0){
+                                    bottomBarView.hindBadge(4);
+                                    RxBus.getIntanceBus().post(new RxTaskBean(902));
+                                    mineFragment.uoda(false);
                                 }else {
-                                    bottomBarView.setBadge(4,jj);
+                                    if(Integer.parseInt(jj)>99){
+                                        bottomBarView.setBadge(4,"99+");
+                                    }else {
+                                        bottomBarView.setBadge(4,jj);
+                                    }
+                                    RxBus.getIntanceBus().post(new RxTaskBean(901));
+                                    mineFragment.uoda(true);
                                 }
-                                RxBus.getIntanceBus().post(new RxTaskBean(901));
+
                             }
                         }
                     }else {
                         bottomBarView.hindBadge(4);
+                        mineFragment.uoda(false);
                     }
             }
 

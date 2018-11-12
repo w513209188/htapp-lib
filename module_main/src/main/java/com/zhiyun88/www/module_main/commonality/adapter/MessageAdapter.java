@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zhiyun88.www.module_main.R;
@@ -89,5 +90,35 @@ public class MessageAdapter extends BaseAdapter {
         Date date = new Date(Long.parseLong(milSecond+"000"));
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         return format.format(date);
+    }
+    public void updateItem(int index, ListView mListView){
+        int postion=mListView.getFirstVisiblePosition();
+        messageDetailsBeans.get(index).setIs_read(1);
+        if(index-postion>=0){
+            View mView=mListView.getChildAt(index-postion);
+            ViewHolder viewHolder= (ViewHolder) mView.getTag();
+            if (messageDetailsBeans.get(index).getMessage_type() == 1) {
+                viewHolder.title.setText("系统通知");
+                if (messageDetailsBeans.get(index).getIs_read() == 0) {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_system_red);
+                }else {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_system);
+                }
+            }else if (messageDetailsBeans.get(index).getMessage_type() == 2) {
+                viewHolder.title.setText("课程通知");
+                if (messageDetailsBeans.get(index).getIs_read() == 0) {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_course_red);
+                }else {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_course);
+                }
+            }else {
+                viewHolder.title.setText("任务通知");
+                if (messageDetailsBeans.get(index).getIs_read() == 0) {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_task_red);
+                }else {
+                    viewHolder.imageView.setImageResource(R.drawable.user_notify_main_task);
+                }
+            }
+        }
     }
 }
