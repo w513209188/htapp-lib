@@ -199,6 +199,11 @@ public class DodingItemAdapter extends BaseAdapter {
             case Finish:
                 //下载完成
                 holder.tvPercent.setText(mContext.getResources().getString(R.string.down_video_finish));
+                if(mCall==null){
+
+                }else {
+                    mCall.doingFinsh();
+                }
                 break;
             case Downloading:
                 //正在下载
@@ -398,7 +403,11 @@ public class DodingItemAdapter extends BaseAdapter {
             VideoDoingHolder holder= (VideoDoingHolder) view.getTag();
             holder.tvPercent.setText(mContext.getResources().getString(R.string.down_video_finish));
         }
-        notifyDataSetChanged();
+        if(mCall==null){
+
+        }else {
+            mCall.doingFinsh();
+        }
     }
 
     /**

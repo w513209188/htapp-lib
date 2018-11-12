@@ -191,7 +191,6 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
         if(userName_tv==null){
             Log.e("----->>","yes");
         }else {
-            userName_tv.setText("你大爷");
             if(mAdapter==null)
                 return;
             mAdapter.updateItem(mlv,is);

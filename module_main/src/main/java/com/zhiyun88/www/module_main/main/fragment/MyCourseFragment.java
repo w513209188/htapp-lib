@@ -70,12 +70,6 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         RefreshUtils.getInstance(smartRefreshLayout,getActivity()).defaultRefreSh();
         listView = getViewById(R.id.p_lv);
-//        if (course_type == -1) {
-//            multipleStatusView.showError();
-//        }else {
-//            multipleStatusView.showLoading();
-//            mPresenter.getMyCourseData(course_type,page);
-//        }
         myCourseListBeans = new ArrayList<>();
         myCourseAdapter = new MyCourseAdapter(getActivity(),myCourseListBeans);
         listView.setAdapter(myCourseAdapter);
@@ -222,7 +216,7 @@ public class MyCourseFragment extends MvpFragment<MyCoursePresenter> implements 
         myRatingBar.setOnRatingChangeListener(new MyRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(float ratingCount) {
-                pj=ratingCount+"";
+                pj=(int)ratingCount+"";
             }
         });
         post_comment_tv.setOnClickListener(new View.OnClickListener() {

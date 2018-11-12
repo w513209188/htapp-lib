@@ -12,7 +12,7 @@
         app:bottomLineColor="@color/linen"
         app:titleBarHeight="50dp"
         app:fillStatusBar="false"
-        app:showBottomLine="false"
+        app:showBottomLine="true"
         app:leftType="imageButton"
         app:leftImageResource="@drawable/public_back_hs"
         app:centerType="textView"

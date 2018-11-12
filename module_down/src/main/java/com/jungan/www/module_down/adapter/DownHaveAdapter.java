@@ -2,6 +2,7 @@ package com.jungan.www.module_down.adapter;
 
 import android.content.Context;
 import android.util.ArraySet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class DownHaveAdapter extends BaseAdapter {
         holder.fileName_tv.setText(downloadTask.getDownloadInfo().videoName);
         holder.video_size_tv.setText("大小"+ TextFormater.getDataSize(downloadTask.getTotalLength()));
 
-        holder.video_sc_tv.setText("时长"+formatSecond(downloadTask.getVideoDuration())+"分钟");
+        holder.video_sc_tv.setText("时长"+formatSecond(downloadTask.getVideoDuration()));
         if(isVist){
             if(isAllSelect){
                 selectDown.addAll(downloadTasks);
@@ -142,9 +143,28 @@ public class DownHaveAdapter extends BaseAdapter {
             RelativeLayout select_rel;
     }
     public  String formatSecond(long second){
-       double news=second/60;
-        DecimalFormat df   = new DecimalFormat("######0.00");
-        return df.format(news);
+//        Log.e("second",second+"----");
+//       double news=second/60;
+//        DecimalFormat df   = new DecimalFormat("######0.00");
+//        return df.format(news);
+        StringBuffer des=new StringBuffer();
+        long h=second/3600;
+        if(h==0){
 
+        }else {
+            des.append(h+"小时");
+        }
+        long m=(second%3600)/60;
+        if(m==0){
+
+        }else {
+            des.append(m+"分钟");
+        }
+        long s=(second%3600)%60;
+        if(s==0){
+        }else {
+            des.append(s+"秒");
+        }
+        return des.toString();
     }
 }

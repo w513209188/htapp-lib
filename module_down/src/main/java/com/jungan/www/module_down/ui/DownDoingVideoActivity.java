@@ -216,6 +216,7 @@ multipleStatusView.showEmpty();
 
     @Override
     public void doingFinsh() {
+        mPresenter.getDownDoingVideo();
         RxBus.getIntanceBus().post(DownVideoMessageTypeConfig.RESHVIDEO);
     }
 }

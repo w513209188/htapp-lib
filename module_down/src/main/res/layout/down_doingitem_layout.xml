@@ -6,6 +6,7 @@
     android:orientation="horizontal">
     <CheckBox
         android:visibility="gone"
+        android:buttonTint="#458bfc"
         android:layout_centerVertical="true"
         android:id="@+id/select_cx"
         android:layout_width="wrap_content"

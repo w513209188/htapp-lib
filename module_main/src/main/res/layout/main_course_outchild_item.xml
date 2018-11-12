@@ -29,10 +29,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxWidth="200dp"
+                    android:maxWidth="180dp"
                     android:singleLine="true"
                     android:textSize="@dimen/title4" />
                 <TextView
+                    android:text="fsdfdsfsd"
                     android:id="@+id/course_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
                     android:paddingRight="8dp"
                     android:background="@drawable/main_courseinfo_live_bg"
                     android:textColor="@color/main_text_red_1"
-                    android:textSize="@dimen/title5" />
+                    android:textSize="10sp" />
             </LinearLayout>
             <TextView
                 android:layout_marginTop="3dp"

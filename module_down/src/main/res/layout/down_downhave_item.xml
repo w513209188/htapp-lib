@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <CheckBox
+            android:buttonTint="#458bfc"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"

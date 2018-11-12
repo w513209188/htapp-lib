@@ -28,7 +28,7 @@ public interface CommonalityServiceApi {
     Observable<Result<IntegralBean>> getIntegral(@Path("id") String id);
 
     @GET(CommonalityHttpConfig.INTEGRAL_RECORD)
-    Observable<Result<RecordBean>> getRecord(@Path("id") String id, @Path("page") int page);
+    Observable<Result<RecordBean>> getRecord(@Path("id") String id, @Query("page") int page);
 
     @GET(CommonalityHttpConfig.INTEGRAL_RANKING)
     Observable<Result<RankingBean>> getRanking(@Path("id") String id);

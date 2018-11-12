@@ -9,7 +9,7 @@ public interface CommonalityHttpConfig {
     //我的积分
     String INTEGRAL = "api/app/webuser/integral/id={id}";
     //积分记录
-    String INTEGRAL_RECORD = "api/app/webuser/integral_details/id={id}&page={page}";
+    String INTEGRAL_RECORD = "api/app/webuser/integral_details/id={id}";
     //积分排行
     String INTEGRAL_RANKING = "api/app/user/ranking/id={id}";
     //个人信息

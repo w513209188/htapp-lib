@@ -102,13 +102,13 @@ public class MessageFragment extends MvpFragment<MessageFragmentPresenter> imple
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 messageDetailsBean = messageDetailsBeans.get(position);
                 messageAdapter.updateItem(position,listView);
-                if (messageDetailsBean.getIs_read() == 0 ) {
+//                if (messageDetailsBean.getIs_read() == 0 ) {
                     mPresenter.setMessageState(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"), messageDetailsBean.getId());
-                }else {
-                    Intent intent = new Intent(getActivity(), MessageDetailActivity.class);
-                    intent.putExtra("MessageBean", messageDetailsBean);
-                    startActivity(intent);
-                }
+//                }else {
+//                    Intent intent = new Intent(getActivity(), MessageDetailActivity.class);
+//                    intent.putExtra("MessageBean", messageDetailsBean);
+//                    startActivity(intent);
+//                }
             }
         });
         multipleStatusView.setOnRetryClickListener(new View.OnClickListener() {

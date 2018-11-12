@@ -32,7 +32,13 @@ public class BjyTokenPresenter extends BjyTokenContranct.BjyTokenPresenter {
                 if (o.getData()==null) {
                     mView.showErrorMsg(o.getMsg());
                 } else {
-                    mView.SuccessBjyToken(o.getData(),isDown,courseChildBean);
+                    if (o.getStatus()==200){
+                        mView.SuccessBjyToken(o.getData(),isDown,courseChildBean);
+                    }else {
+                        mView.showErrorMsg(o.getMsg());
+
+                    }
+
                 }
             }
 

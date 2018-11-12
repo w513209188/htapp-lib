@@ -278,6 +278,6 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         super.onResume();
         if(!isLoad)
             return;
-        mPresenter.getCourseInfoData(courseId);
+//        mPresenter.getCourseInfoData(courseId);
     }
 }
