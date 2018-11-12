@@ -68,7 +68,7 @@ public class CourseOutFragment extends MvpFragment<BjyTokenPresenter> implements
     }
     @Override
     public boolean isLazyFragment() {
-        return true;
+        return false;
     }
 
     @Override
