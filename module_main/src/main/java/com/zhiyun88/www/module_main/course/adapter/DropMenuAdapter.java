@@ -136,7 +136,7 @@ public class DropMenuAdapter implements MenuAdapter {
 
     private View createDoubleListView() {
         DoubleListView<FilterType, FilterChilderType> comTypeDoubleListView = new DoubleListView<FilterType, FilterChilderType>(mContext)
-                .leftAdapter(new Simple1TextAdapter<FilterType>(null,mContext) {
+                .leftAdapter(new Simple1TextAdapter<FilterType>(null,mContext,0) {
                     @Override
                     public FilterType provideText(FilterType filterType) {
                         return filterType;
@@ -146,7 +146,7 @@ public class DropMenuAdapter implements MenuAdapter {
 //                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
                     }
                 })
-                .rightAdapter(new SimpleTextAdapter<FilterChilderType>(null, mContext) {
+                .rightAdapter(new SimpleTextAdapter<FilterChilderType>(null, mContext,0) {
                     @Override
                     public FilterChilderType provideText(FilterChilderType s) {
                         return s;

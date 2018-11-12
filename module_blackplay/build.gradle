@@ -63,7 +63,7 @@ dependencies {
 //    api deps.baijia.materialDialogs
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     api deps.baijia.picasso
-    implementation 'com.github.w513209188:BaseLib:v1.7.0'
+    implementation 'com.github.w513209188:BaseLib:v1.7.4'
 
 
 }
