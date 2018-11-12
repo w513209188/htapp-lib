@@ -38,7 +38,12 @@ public class TeacherListAdapter extends ListBaseAdapter<TeacherData> {
         }else {
             holder= (TeacherListHolder) view.getTag();
         }
-        Picasso.with(mContext).load(teacherData.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        try {
+            Picasso.with(mContext).load(teacherData.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        }catch (Exception e){
+            Picasso.with(mContext).load("http://www.baidu.com").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(holder.user_img);
+        }
+
         holder.context_tv.setText(teacherData.getTeacher_info());
         holder.title_tv.setText(teacherData.getName());
         return view;
