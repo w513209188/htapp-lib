@@ -24,6 +24,7 @@ import com.zhiyun88.www.module_main.course.adapter.CoordinatorPagerAdapter;
 import com.zhiyun88.www.module_main.course.bean.CourseInfoBean;
 import com.zhiyun88.www.module_main.course.fragment.CommentListFrament;
 import com.zhiyun88.www.module_main.course.fragment.CourseOutFragment;
+import com.zhiyun88.www.module_main.course.fragment.TeacherListFrament;
 import com.zhiyun88.www.module_main.course.fragment.WebViewFragment;
 import com.zhiyun88.www.module_main.course.mvp.contranct.CourseInfoContranct;
 import com.zhiyun88.www.module_main.course.mvp.presenter.CourseInfoPresenter;
@@ -86,6 +87,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         mFragments.add(WebViewFragment.newInstcace(courseInfoBean.getInfo().getDetails_url()));
         courseOutFragment=CourseOutFragment.newInstcace(courseInfoBean.getChapter(),isCourseTaskInfo,courseInfoBean.getInfo().getTitle(),isHaveBuy);
         mFragments.add(courseOutFragment);
+        mFragments.add(TeacherListFrament.newInstance(courseInfoBean.getTeacher()));
         mFragments.add(CommentListFrament.newInstance(courseInfoBean.getInfo().getId()));
 
     }
@@ -93,10 +95,12 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
             if(isCourseTaskInfo){
                 mTitles.add("培训详情");
                 mTitles.add("培训大纲");
+                mTitles.add("老师列表");
                 mTitles.add("培训评价");
             }else {
                 mTitles.add("课程详情");
                 mTitles.add("课程大纲");
+                mTitles.add("老师列表");
                 mTitles.add("课程评价");
             }
              mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
