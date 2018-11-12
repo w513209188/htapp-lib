@@ -95,12 +95,12 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
             if(isCourseTaskInfo){
                 mTitles.add("培训详情");
                 mTitles.add("培训大纲");
-                mTitles.add("老师列表");
+                mTitles.add("名师介绍");
                 mTitles.add("培训评价");
             }else {
                 mTitles.add("课程详情");
                 mTitles.add("课程大纲");
-                mTitles.add("老师列表");
+                mTitles.add("名师介绍");
                 mTitles.add("课程评价");
             }
              mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
