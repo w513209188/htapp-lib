@@ -2,13 +2,17 @@ package com.zhiyun88.www.module_main.course.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jungan.www.common_coorinator.CoordinatorTabLayout;
+import com.jungan.www.common_coorinator.listener.LoadHeaderImagesListener;
+import com.jungan.www.common_coorinator.listener.OnTabSelectedListener;
 import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
 import com.wangbo.smartrefresh.layout.api.RefreshLayout;
 import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
@@ -82,6 +86,22 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         }else {
             course_tb.getCenterTextView().setText("课程详情");
         }
+        mCoordinatorTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("onTabSelected","onTabSelected");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                Log.e("onTabUnselected","onTabUnselected");
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                Log.e("onTabReselected","onTabReselected");
+            }
+        });
     }
     private void initFragments(CourseInfoBean courseInfoBean) {
         mFragments.add(WebViewFragment.newInstcace(courseInfoBean.getInfo().getDetails_url()));

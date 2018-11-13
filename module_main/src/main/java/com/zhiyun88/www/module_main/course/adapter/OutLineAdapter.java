@@ -171,7 +171,7 @@ public class OutLineAdapter implements ExpandableListAdapter {
         boolean isDown=false;
         try {
             for(DownloadTask downloadTask:downloadTaskLists){
-                if(downloadTask.getVideoDownloadInfo().roomId==Long.parseLong(courseChildBean.getVideo_id())){
+                if(downloadTask.getVideoDownloadInfo().roomId==Long.parseLong(courseChildBean.getVideo_id())||downloadTask.getVideoDownloadInfo().videoId==Long.parseLong(courseChildBean.getVideo_id())){
                     isDown=true;
                     break;
                 }

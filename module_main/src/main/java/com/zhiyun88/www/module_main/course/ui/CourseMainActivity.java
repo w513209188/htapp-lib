@@ -90,11 +90,14 @@ public class CourseMainActivity extends MvpActivity<CourseMainPresenter> impleme
 
                     @Override
                     public void onSuccess(Result<CourseMainClassflyBean> courseSelectClassBeanResult) {
-                        if(courseSelectClassBeanResult.getData().getList()==null||courseSelectClassBeanResult.getData().getList().size()==0){
-                        }else {
-                            initFilterDropDownView(courseSelectClassBeanResult.getData());
-                        }
+                        if(courseSelectClassBeanResult.getData()==null){
 
+                        }else {
+                            if(courseSelectClassBeanResult.getData().getList()==null||courseSelectClassBeanResult.getData().getList().size()==0){
+                            }else {
+                                initFilterDropDownView(courseSelectClassBeanResult.getData());
+                            }
+                        }
                     }
 
                     @Override

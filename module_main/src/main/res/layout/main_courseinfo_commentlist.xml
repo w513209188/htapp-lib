@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.wangbo.smartrefresh.layout.SmartRefreshLayout
         android:visibility="gone"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/public_listview"/>
+        <com.zhiyun88.www.module_main.course.view.NestedScrollListView
+            android:layout_width="match_parent"
+            android:id="@+id/p_mlv"
+            android:layout_height="match_parent"/>
     </com.wangbo.smartrefresh.layout.SmartRefreshLayout>
     <TextView
         android:id="@+id/data_tv"
@@ -18,4 +26,5 @@
         android:text="暂无数据"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </LinearLayout>
 </LinearLayout>

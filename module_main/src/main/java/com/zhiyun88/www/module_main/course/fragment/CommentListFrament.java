@@ -17,19 +17,21 @@ import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.log.LogTools;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
+import com.wb.baselib.view.MyListView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.course.adapter.CommentListAdapter;
 import com.zhiyun88.www.module_main.course.bean.CommentListBean;
 import com.zhiyun88.www.module_main.course.bean.CommentListData;
 import com.zhiyun88.www.module_main.course.mvp.contranct.CommentListContranct;
 import com.zhiyun88.www.module_main.course.mvp.presenter.CommentListPresenter;
+import com.zhiyun88.www.module_main.course.view.NestedScrollListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentListFrament extends MvpFragment<CommentListPresenter> implements CommentListContranct.CommentListView {
     private SmartRefreshLayout refreshLayout;
-    private ListView mListView;
+    private NestedScrollListView mListView;
     private CommentListAdapter mAdapter;
     private List<CommentListData> commentListDataLists;
     private int currentPage=1;
@@ -59,8 +61,10 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
         refreshLayout=getViewById(R.id.refreshLayout);
         data_tv=getViewById(R.id.data_tv);
         RefreshUtils.getInstance(refreshLayout,getActivity()).defaultRefreSh();
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableLoadMore(false);
         commentListDataLists=new ArrayList<>();
-        mListView=getViewById(R.id.p_lv);
+        mListView=getViewById(R.id.p_mlv);
         mAdapter=new CommentListAdapter(commentListDataLists,getActivity());
         mListView.setAdapter(mAdapter);
         mPresenter.getCommentListData(id,currentPage);
@@ -123,7 +127,7 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
 
     @Override
     public void isLoadMore(boolean b) {
-        RefreshUtils.getInstance(refreshLayout,getActivity()).isLoadData(b);
+//        RefreshUtils.getInstance(refreshLayout,getActivity()).isLoadData(b);
     }
 
     @Override
