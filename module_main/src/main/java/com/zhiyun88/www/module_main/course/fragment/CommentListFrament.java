@@ -2,7 +2,9 @@ package com.zhiyun88.www.module_main.course.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,8 +37,8 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
     private CommentListAdapter mAdapter;
     private List<CommentListData> commentListDataLists;
     private int currentPage=1;
-    private TextView data_tv;
     private String id;
+    private NestedScrollView empty_view;
     @Override
     public boolean isLazyFragment() {
         return true;
@@ -59,12 +61,12 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
         setContentView(R.layout.main_courseinfo_commentlist);
         id=getArguments().getString("id");
         refreshLayout=getViewById(R.id.refreshLayout);
-        data_tv=getViewById(R.id.data_tv);
+        empty_view=getViewById(R.id.empty_view);
         RefreshUtils.getInstance(refreshLayout,getActivity()).defaultRefreSh();
-        refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableLoadMore(false);
         commentListDataLists=new ArrayList<>();
         mListView=getViewById(R.id.p_mlv);
+        mListView.setDivider(null);
+        refreshLayout.setEnableRefresh(false);
         mAdapter=new CommentListAdapter(commentListDataLists,getActivity());
         mListView.setAdapter(mAdapter);
         mPresenter.getCommentListData(id,currentPage);
@@ -73,22 +75,20 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
 
     @Override
     public void ShowLoadView() {
-        data_tv.setText("正在加载...");
     }
 
     @Override
     public void NoNetWork() {
-        data_tv.setText("当前没有网络");
     }
 
     @Override
     public void NoData() {
-        data_tv.setText("暂无数据");
+        empty_view.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void ErrorData() {
-        data_tv.setText("服务器繁忙！");
     }
 
     @Override
@@ -116,8 +116,8 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
         LogTools.e("commentListDataLists"+commentListDataLists.size()+"----");
         mAdapter.notifyDataSetChanged();
         currentPage++;
-        data_tv.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
+        empty_view.setVisibility(View.GONE);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class CommentListFrament extends MvpFragment<CommentListPresenter> implem
 
     @Override
     public void isLoadMore(boolean b) {
-//        RefreshUtils.getInstance(refreshLayout,getActivity()).isLoadData(b);
+        RefreshUtils.getInstance(refreshLayout,getActivity()).isLoadData(b);
     }
 
     @Override
