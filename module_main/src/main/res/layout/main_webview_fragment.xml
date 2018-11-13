@@ -6,9 +6,7 @@
     android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_height="match_parent">
-    <WebView
-     xmlns:android="http://schemas.android.com/apk/res/android"
-         xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.zhiyun88.www.module_main.course.view.NestedScrollWebView
         android:id="@+id/course_wb"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

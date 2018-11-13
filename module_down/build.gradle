@@ -57,7 +57,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.github.w513209188:BaseLib:v1.7.4'
+    implementation 'com.github.w513209188:BaseLib:v1.7.4.1'
 //    api deps.cornerlabelview
     compile 'com.github.czy1121:cornerlabelview:1.0.3'
     compile project(':module_blackplay')

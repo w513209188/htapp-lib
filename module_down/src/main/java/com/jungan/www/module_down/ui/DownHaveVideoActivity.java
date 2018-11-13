@@ -93,11 +93,11 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
                 if(mAdapter.getSelectDown().size()==0){
                     delect_num_tv.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect));
                 }else {
-                    delect_num_tv.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect)+mAdapter.getSelectDown().size());
+                    delect_num_tv.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_delect));
                 }
 
                 if(mAdapter.getSelectDown().size()==downloadTaskLists.size()){
-                    delect_select_tv.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_all_cancel));
+                    delect_select_tv.setText("取消全选");
                 }else {
                     delect_select_tv.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_all_select));
                 }
@@ -124,7 +124,7 @@ public class DownHaveVideoActivity extends MvpActivity<DownHaveVideoPresenter> i
 
                     if(textView.getText().toString().equals("编辑")){
                         mAdapter.setVist(true);
-                        textView.setText(DownHaveVideoActivity.this.getResources().getString(R.string.down_cancel));
+                        textView.setText("完成");
                         bottom_ll.setVisibility(View.VISIBLE);
                     }else {
                         mAdapter.setVist(false);

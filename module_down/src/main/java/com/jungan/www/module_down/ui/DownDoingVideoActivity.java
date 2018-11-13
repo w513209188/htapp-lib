@@ -102,7 +102,7 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
                     TextView textView=mTopBarView.getRightTextView();
                     if(textView.getText().toString().equals("编辑")){
                         mAdapter.setVist(true);
-                        textView.setText(getResources().getString(R.string.down_cancel));
+                        textView.setText("完成");
                         bottom_ll.setVisibility(View.VISIBLE);
                         status_ll.setVisibility(View.GONE);
                     }else {
@@ -120,9 +120,9 @@ public class DownDoingVideoActivity extends MvpActivity<DownDoingVideoPresenter>
         mAdapter.setCall(new DownHaveVideoCall() {
             @Override
             public void selectVideo() {
-                delect_num_tv.setText(getResources().getString(R.string.down_delect)+" "+mAdapter.getSelectDown().size());
+                delect_num_tv.setText(getResources().getString(R.string.down_delect));
                 if(mAdapter.getSelectDown().size()==downloadTasks.size()){
-                    delect_select_tv.setText(getResources().getString(R.string.down_all_cancel));
+                    delect_select_tv.setText("取消全选");
                 }else {
                     delect_select_tv.setText(getResources().getString(R.string.down_all_select));
                 }

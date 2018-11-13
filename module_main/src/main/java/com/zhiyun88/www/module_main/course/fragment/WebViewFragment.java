@@ -2,6 +2,8 @@ package com.zhiyun88.www.module_main.course.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -10,9 +12,10 @@ import android.webkit.WebViewClient;
 import com.wb.baselib.base.fragment.LazyFragment;
 import com.wb.baselib.log.LogTools;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.course.view.NestedScrollWebView;
 
 public class WebViewFragment extends LazyFragment {
-    private WebView course_wb;
+    private NestedScrollWebView course_wb;
     private String url;
     public static WebViewFragment newInstcace(String url){
         WebViewFragment courseWebViewFragment=new WebViewFragment();
@@ -52,7 +55,7 @@ public class WebViewFragment extends LazyFragment {
         // 关闭密码保存提醒功能
         webSettings.setSavePassword(false);
         // 支持缩放
-        webSettings.setSupportZoom(true);
+        webSettings.setSupportZoom(false);
         // 设置 UserAgent 属性
         webSettings.setUserAgentString("");
         // 允许加载本地 html 文件/false
@@ -63,6 +66,16 @@ public class WebViewFragment extends LazyFragment {
         // Android 4.1 之前默认是true，在 Android 4.1 及以后默认是false,也就是禁止
         // 如果此设置是允许，则 setAllowFileAccessFromFileURLs 不起做用
         webSettings.setAllowUniversalAccessFromFileURLs(false);
+//        course_wb.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent ev) {
+//
+//                ((WebView)v).requestDisallowInterceptTouchEvent(true);
+//
+//                return false;
+//            }
+//        });
 
     }
 }

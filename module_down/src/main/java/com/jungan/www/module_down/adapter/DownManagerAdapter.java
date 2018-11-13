@@ -114,6 +114,7 @@ public class DownManagerAdapter extends BaseAdapter {
             hoder= (HaveDownHoder) convertView.getTag();
         }
         hoder.down_have_lv.setAdapter(new DownHaveItemAdapter(downManagerBean.getDownHaveBeans(),mContext));
+        hoder.down_have_lv.setDivider(null);
         hoder.down_have_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
