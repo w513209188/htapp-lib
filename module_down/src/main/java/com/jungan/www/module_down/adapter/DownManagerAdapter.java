@@ -1,6 +1,7 @@
 package com.jungan.www.module_down.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,11 @@ import com.jungan.www.module_down.ui.DownDoingVideoActivity;
 import com.jungan.www.module_down.ui.DownHaveVideoActivity;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MyListView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DownManagerAdapter extends BaseAdapter {
     private Context mContext;
@@ -113,7 +119,7 @@ public class DownManagerAdapter extends BaseAdapter {
         }else {
             hoder= (HaveDownHoder) convertView.getTag();
         }
-        hoder.down_have_lv.setAdapter(new DownHaveItemAdapter(downManagerBean.getDownHaveBeans(),mContext));
+        hoder.down_have_lv.setAdapter(new DownHaveItemAdapter(distinctList(downManagerBean.getDownHaveBeans()),mContext));
         hoder.down_have_lv.setDivider(null);
         hoder.down_have_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -130,4 +136,15 @@ public class DownManagerAdapter extends BaseAdapter {
     class HaveDownHoder{
         MyListView down_have_lv;
     }
+    private List<DownHaveBean> distinctList(List<DownHaveBean> list){
+        List<DownHaveBean> newList = new ArrayList<DownHaveBean>();
+        Set<String> set = new HashSet<String>();
+        for (DownHaveBean item:list){
+            if (set.add(item.getCourseName())){
+                newList.add(item);
+            }
+        }
+        return newList;
+    }
+
 }

@@ -28,7 +28,8 @@ public  class DownHaveVideoPresenter extends DownHaveVideoContranct.DownHaveVide
 
             @Override
             public void onNext(List<DownloadTask> value) {
-                Log.e("获取到下载的大小",value.size()+"----");
+                if(mView==null)
+                    return;
                 mView.getHaveDownView(value);
             }
 
@@ -54,6 +55,8 @@ public  class DownHaveVideoPresenter extends DownHaveVideoContranct.DownHaveVide
 
             @Override
             public void onNext(Boolean value) {
+                if(mView==null)
+                    return;
                 mView.videoDelect(value);
             }
 

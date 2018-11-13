@@ -30,7 +30,12 @@ public class DownDoingVideoPresenter extends DownDoingVideoContranct.DownDoingVi
             @Override
             public void onNext(List<DownloadTask> value) {
                 Log.e("这个是获取到的正在下载的大小",value.size()+"----");
-                mView.getDoingDownVideList(value);
+                if(value==null){
+                }else {
+                    if(mView==null)
+                        return;
+                    mView.getDoingDownVideList(value);
+                }
             }
 
             @Override
@@ -55,6 +60,8 @@ public class DownDoingVideoPresenter extends DownDoingVideoContranct.DownDoingVi
 
             @Override
             public void onNext(Boolean value) {
+                if(mView==null)
+                    return;
                 mView.userDelectVideo(value);
             }
 

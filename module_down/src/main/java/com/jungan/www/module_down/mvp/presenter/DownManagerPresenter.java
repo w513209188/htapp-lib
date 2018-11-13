@@ -24,7 +24,6 @@ public class DownManagerPresenter extends DownManagerContranct.DownManagerPresen
 
     @Override
     public void getAllDownVideo() {
-        Log.e("进来了","-------");
         mModel.getAllDownVideo().subscribe(new io.reactivex.Observer<DownManagerBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -33,7 +32,6 @@ public class DownManagerPresenter extends DownManagerContranct.DownManagerPresen
 
             @Override
             public void onNext(DownManagerBean value) {
-                Log.e("-----","这个进来了");
                 if(mView==null){
                     return;
                 }
@@ -65,7 +63,8 @@ public class DownManagerPresenter extends DownManagerContranct.DownManagerPresen
 
             @Override
             public void onNext(Long value) {
-                Log.e("获取的",value+"***");
+                if(mView==null)
+                    return;
                 mView.reshData();
 //                BjyPlayDownManager.Instance().getDownVideoByUid("1", false, new DownVideoCall() {
 //                    @Override

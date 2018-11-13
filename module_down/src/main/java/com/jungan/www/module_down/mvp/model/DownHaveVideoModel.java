@@ -57,7 +57,6 @@ public class DownHaveVideoModel implements DownHaveVideoContranct.DownHaveVideoM
         BjyBackPlayDownManager.Instance().deleteAllVideo(result, new VideoDeleteCall() {
                 @Override
                 public void isAllDeleteVideo(boolean is) {
-                    Log.e("删除完毕","-----");
                     e.onNext(is);
                 }
             });
