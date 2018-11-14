@@ -34,6 +34,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
         <ImageView
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/op"
             android:id="@+id/newmessgae_img"
