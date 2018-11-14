@@ -29,14 +29,23 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="task"
+                    android:host="peixun"
                     android:scheme="htnx" />
             </intent-filter>
         </activity>
         <activity android:name=".commonality.ui.UserInfoActivity"/>
         <activity android:name=".train.ui.TrainListActivity"/>
         <activity android:name=".course.ui.CourseMainActivity"/>
-        <activity android:name=".task.ui.TaskInfoActivity"/>
+        <activity android:name=".task.ui.TaskInfoActivity">
+            <intent-filter>
+                <!--协议部分，随便设置-->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="task"
+                    android:scheme="htnx" />
+            </intent-filter>
+        </activity>
         <activity android:name=".main.ui.TestActivity"/>
         <activity android:name="com.jungan.www.module_playvideo.ui.PlayVodActivity"
             android:configChanges="orientation|screenSize|layoutDirection"

@@ -17,10 +17,12 @@ import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxMessageBean;
 import com.wb.rxbus.taskBean.RxTaskBean;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.commonality.bean.InfoBean;
 import com.zhiyun88.www.module_main.commonality.mvp.contranct.QuestionnaireContranct;
 import com.zhiyun88.www.module_main.commonality.mvp.presenter.QuestionnairePresenter;
 import com.zhiyun88.www.module_main.course.view.MyRatingBar;
+import com.zhiyun88.www.module_main.hApp;
 
 public class QuestionnaireActivity extends MvpActivity<QuestionnairePresenter> implements QuestionnaireContranct.QuestionnaireView,View.OnTouchListener{
 
@@ -33,7 +35,7 @@ public class QuestionnaireActivity extends MvpActivity<QuestionnairePresenter> i
     private EditText merit;
     private EditText insufficient;
     private int ratingNum = 5;
-
+    private int courseId=-1;
     @Override
     protected QuestionnairePresenter onCreatePresenter() {
         return new QuestionnairePresenter(this);
@@ -43,6 +45,8 @@ public class QuestionnaireActivity extends MvpActivity<QuestionnairePresenter> i
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_commonality_questiondes);
         multipleStatusView = getViewById(R.id.multiplestatusview);
+        multipleStatusView.showContent();
+        multipleStatusView.showLoading();
         topBarView = getViewById(R.id.topbarview);
         course_name = getViewById(R.id.questionnaire_course);
         myRatingBar = getViewById(R.id.ratingbar);
@@ -51,6 +55,26 @@ public class QuestionnaireActivity extends MvpActivity<QuestionnairePresenter> i
         commit = getViewById(R.id.questionnaire_commit);
         insufficient.setOnTouchListener(this);
         merit.setOnTouchListener(this);
+        try {
+            courseId=Integer.parseInt(getIntent().getData().getLastPathSegment());
+//            String uid = getIntent().getData().getQueryParameter("uid");
+//            String token=getIntent().getData().getQueryParameter("token");
+//            courseId =Integer.parseInt(getIntent().getData().getQueryParameter("id"));
+//            hApp.newInstance().toMainActivity(uid, token, new LoginStatusCall() {
+//                @Override
+//                public void LoginError(String msg, int code) {
+//                    if(code==1040){
+//                        mPresenter.getQuestionData(courseId);
+//                    }else {
+//                        ErrorData();
+//                    }
+//                }
+//            });
+            mPresenter.getQuestionData(courseId);
+        }catch (Exception e){
+            courseId= getIntent().getIntExtra("courseId", -1);
+            mPresenter.getQuestionData(courseId);
+        }
     }
     @Override
     protected void setListener() {
@@ -84,19 +108,6 @@ public class QuestionnaireActivity extends MvpActivity<QuestionnairePresenter> i
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         topBarView.getCenterTextView().setText("问卷调查");
-        int courseId=-1;
-        try {
-            courseId=Integer.parseInt(getIntent().getData().getLastPathSegment());
-        }catch (Exception e){
-            courseId= getIntent().getIntExtra("courseId", -1);
-        }
-        if (courseId == -1) {
-            multipleStatusView.showError();
-        }else {
-            mPresenter.getQuestionData(courseId);
-            multipleStatusView.showLoading();
-        }
-
     }
 
     @Override

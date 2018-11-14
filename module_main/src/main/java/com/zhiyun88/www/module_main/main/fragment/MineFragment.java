@@ -88,11 +88,11 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
         RxBus.getIntanceBus().registerRxBus(RxTaskBean.class, new Consumer<RxTaskBean>() {
             @Override
             public void accept(RxTaskBean rxTaskBean) throws Exception {
-//                if(rxTaskBean.getTaskType()==901){
-//                    mAdapter.updateItem(mlv,true);
-//                }else if(rxTaskBean.getTaskType()==902){
-//                    mAdapter.updateItem(mlv,false);
-//                }
+                if(rxTaskBean.getTaskType()==901){
+                    mAdapter.updateItem(mlv,true);
+                }else if(rxTaskBean.getTaskType()==902){
+                    mAdapter.updateItem(mlv,false);
+                }
             }
         });
         setListener();
@@ -188,13 +188,13 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
         RxBus.getIntanceBus().unSubscribe(this);
     }
     public void uoda(boolean is){
-//        if(userName_tv==null){
-//            Log.e("----->>","yes");
-//        }else {
-//            if(mAdapter==null)
-//                return;
-//            mAdapter.updateItem(mlv,is);
-//        }
+        if(userName_tv==null){
+            Log.e("----->>","yes");
+        }else {
+            if(mAdapter==null)
+                return;
+            mAdapter.updateItem(mlv,is);
+        }
 
     }
 }

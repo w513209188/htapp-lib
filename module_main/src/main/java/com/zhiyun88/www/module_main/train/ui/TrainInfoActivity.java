@@ -1,33 +1,48 @@
 package com.zhiyun88.www.module_main.train.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jungan.www.common_coorinator.CoordinatorTabLayout;
+import com.jungan.www.common_coorinator.listener.LoadHeaderImagesListener;
+import com.jungan.www.common_coorinator.listener.OnTabSelectedListener;
+import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
+import com.wangbo.smartrefresh.layout.api.RefreshLayout;
+import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.log.LogTools;
+import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.course.adapter.CoordinatorPagerAdapter;
 import com.zhiyun88.www.module_main.course.bean.CourseInfoBean;
 import com.zhiyun88.www.module_main.course.fragment.CommentListFrament;
 import com.zhiyun88.www.module_main.course.fragment.CourseOutFragment;
+import com.zhiyun88.www.module_main.course.fragment.TeacherListFrament;
 import com.zhiyun88.www.module_main.course.fragment.WebViewFragment;
 import com.zhiyun88.www.module_main.course.mvp.contranct.CourseInfoContranct;
 import com.zhiyun88.www.module_main.course.mvp.presenter.CourseInfoPresenter;
+import com.zhiyun88.www.module_main.hApp;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 任务详情
+ * 课程详情
  */
 public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implements CourseInfoContranct.CourseInfoView{
+
     private TopBarView course_tb;
     private CoordinatorTabLayout mCoordinatorTabLayout;
     private ArrayList<Fragment> mFragments;
@@ -44,22 +59,11 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
     protected CourseInfoPresenter onCreatePresenter() {
         return new CourseInfoPresenter(this);
     }
-
+    private boolean isLoad=false;
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_course_courseinfo);
-        try {
-            courseId = getIntent().getData().getLastPathSegment();
-            isCourseTaskInfo=true;
-        } catch (Exception e) {
-            courseId =getIntent().getStringExtra("courseId");
-            isCourseTaskInfo=getIntent().getBooleanExtra("isCourseTaskInfo",false);
-        }
         multipleStatusView = getViewById(R.id.multiplestatusview);
-        if (courseId == null || "".equals(courseId)) {
-            multipleStatusView.showError();
-            return;
-        }
         multipleStatusView.showContent();
         multipleStatusView.showLoading();
         course_tb=getViewById(R.id.course_tb);
@@ -68,7 +72,28 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
         mCoordinatorTabLayout = getViewById(R.id.coordinatortablayout);
         mFragments = new ArrayList<>();
         mViewPager = getViewById(R.id.vp);
-        mPresenter.getCourseInfoData(courseId);
+        try {
+//            String uid = getIntent().getData().getQueryParameter("uid");
+//            String token=getIntent().getData().getQueryParameter("token");
+//            courseId =getIntent().getData().getQueryParameter("id");
+            courseId=getIntent().getData().getLastPathSegment();
+            isCourseTaskInfo=true;
+//            hApp.newInstance().toMainActivity(uid, token, new LoginStatusCall() {
+//                @Override
+//                public void LoginError(String msg, int code) {
+//                    if(code==1040){
+//                        mPresenter.getCourseInfoData(courseId);
+//                    }else {
+//                        ErrorData();
+//                    }
+//                }
+//            });
+            mPresenter.getCourseInfoData(courseId);
+        } catch (Exception e) {
+            courseId =getIntent().getStringExtra("courseId");
+            isCourseTaskInfo=getIntent().getBooleanExtra("isCourseTaskInfo",false);
+            mPresenter.getCourseInfoData(courseId);
+        }
         if(isCourseTaskInfo){
             course_tb.getCenterTextView().setText("培训详情");
         }else {
@@ -76,26 +101,28 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
         }
     }
     private void initFragments(CourseInfoBean courseInfoBean) {
-        mFragments.add(WebViewFragment.newInstcace(courseInfoBean.getInfo().getDetails()));
+        mFragments.add(WebViewFragment.newInstcace(courseInfoBean.getInfo().getDetails_url()));
         courseOutFragment=CourseOutFragment.newInstcace(courseInfoBean.getChapter(),isCourseTaskInfo,courseInfoBean.getInfo().getTitle(),isHaveBuy);
         mFragments.add(courseOutFragment);
+        mFragments.add(TeacherListFrament.newInstance(courseInfoBean.getTeacher()));
         mFragments.add(CommentListFrament.newInstance(courseInfoBean.getInfo().getId()));
 
     }
     private void initViewPager() {
-            if(isCourseTaskInfo){
-                mTitles.add("培训详情");
-                mTitles.add("培训大纲");
-                mTitles.add("培训评价");
-             //   isbuy_tv.setText("立即报名");
-            }else {
-                mTitles.add("课程详情");
-                mTitles.add("课程大纲");
-                mTitles.add("课程评价");
-             //   isbuy_tv.setText("加入学习");
-            }
-             mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
-            mViewPager.setOffscreenPageLimit(3);
+        if(isCourseTaskInfo){
+            mTitles.add("培训详情");
+            mTitles.add("培训大纲");
+            mTitles.add("名师介绍");
+            mTitles.add("培训评价");
+        }else {
+            mTitles.add("课程详情");
+            mTitles.add("课程大纲");
+            mTitles.add("名师介绍");
+            mTitles.add("课程评价");
+        }
+        mViewPager.setAdapter(new CoordinatorPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
+        mViewPager.setOffscreenPageLimit(3);
+        isLoad=true;
     }
     @Override
     protected void setListener() {
@@ -128,8 +155,8 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
     public void initCoorLayout(CourseInfoBean courseInfoBean) {
         LogTools.e(courseInfoBean.toString()+"------>>>");
         this.courseInfoBean=courseInfoBean;
+        courseOrTrain(courseInfoBean);
         if(isCourseTaskInfo){
-            courseOrTrain(courseInfoBean,"立即报名","已报名","已截止","已结束");
             mCoordinatorTabLayout
                     .setBackEnable(true)
                     .setClassFly(true)
@@ -142,14 +169,6 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
                     .setsyl("（剩余"+courseInfoBean.getInfo().getSurplus_num()+"名额）")
                     .setupWithViewPager(mViewPager);
         }else {
-            if(courseInfoBean.getInfo().getIs_buy().equals("0")){
-                //未添加
-                isbuy_state("加入学习",true,false,false);
-            }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
-                //已加入
-                isbuy_state("已加入",false,false,true);
-//                isbuy_tv.setVisibility(View.GONE);
-            }
             mCoordinatorTabLayout
                     .setBackEnable(true)
                     .setClassFly(false)
@@ -170,25 +189,30 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
 
     }
 
-    private void courseOrTrain(CourseInfoBean courseInfoBean, String apply, String applied, String abort,String finished) {
+    private void courseOrTrain(CourseInfoBean courseInfoBean) {
         if(courseInfoBean.getInfo().getIs_buy().equals("0")){
             //未添加
-            isbuy_state(apply,true,false,false);
+            isbuy_state(isCourseTaskInfo?"立即报名":"加入学习",true,false,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("1")){
             //已加入
-            isbuy_state(applied,false,true,true);
+//            isbuy_state(applied,false,true,true);
+            isbuy_state(isCourseTaskInfo?"已报名":"已加入",false,false,true);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("2")){
             //已截止
-            isbuy_state(abort,false,true,false);
+//            isbuy_state(abort,false,true,false);
+            isbuy_state("报名截止",false,true,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("3")){
             //已结束
-            isbuy_state(finished,false,true,false);
+//            isbuy_state(finished,false,true,false);
+            isbuy_state("已结束",false,true,false);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("4")){
             //已截止并报名
-            isbuy_state(abort,false,true,true);
+//            isbuy_state(abort,false,true,true);
+            isbuy_state("报名截止",false,true,true);
         }else if(courseInfoBean.getInfo().getIs_buy().equals("5")){
             //已结束并报名
-            isbuy_state(finished,false,true,true);
+//            isbuy_state(finished,false,true,true);
+            isbuy_state("已结束",false,true,true);
         }
     }
 
@@ -202,18 +226,14 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
     @Override
     public void joinSuccess(String msg) {
         courseInfoBean.getInfo().setIs_buy("1");
-        if(isCourseTaskInfo){
-            courseOrTrain(courseInfoBean,"立即报名","已报名","已截止","已结束");
-        }else {
-            isbuy_state("已报名",false,true,true);
-        }
+        courseOrTrain(courseInfoBean);
         showErrorMsg(msg);
         courseOutFragment.setisBuy(true);
     }
 
     @Override
     public void ShowLoadView() {
-            multipleStatusView.showLoading();
+        multipleStatusView.showLoading();
     }
 
     @Override
@@ -255,5 +275,12 @@ public class TrainInfoActivity extends MvpActivity<CourseInfoPresenter> implemen
     public void SuccessData(Object o) {
         multipleStatusView.showContent();
         initCoorLayout((CourseInfoBean) o);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isLoad)
+            return;
     }
 }

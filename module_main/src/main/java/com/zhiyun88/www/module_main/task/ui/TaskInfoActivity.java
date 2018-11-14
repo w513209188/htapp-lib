@@ -12,7 +12,9 @@ import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
+import com.zhiyun88.www.module_main.hApp;
 import com.zhiyun88.www.module_main.task.adapter.TaskInfoListAdapter;
 import com.zhiyun88.www.module_main.task.bean.TaskData;
 import com.zhiyun88.www.module_main.task.bean.TaskInfoListBean;
@@ -40,11 +42,6 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_task_taskinfolist);
         multiplestatusview=getViewById(R.id.multiplestatusview);
-        taskId = getIntent().getStringExtra("taskId");
-        if (taskId == null || "".equals(taskId)) {
-            multiplestatusview.showError();
-            return;
-        }
         multiplestatusview.showContent();
         multiplestatusview.showLoading();
         mListView=getViewById(R.id.task_infolist_lv);
@@ -55,7 +52,26 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
         taskDataLists=new ArrayList<>();
         mAdapter=new TaskInfoListAdapter(taskDataLists,this);
         mListView.setAdapter(mAdapter);
-        mPresenter.getTaskInfoList(taskId);
+        try {
+            taskId=getIntent().getData().getLastPathSegment();
+//            String uid = getIntent().getData().getQueryParameter("uid");
+//            String token=getIntent().getData().getQueryParameter("token");
+//            taskId =getIntent().getData().getQueryParameter("id");
+//            hApp.newInstance().toMainActivity(uid, token, new LoginStatusCall() {
+//                @Override
+//                public void LoginError(String msg, int code) {
+//                    if(code==1040){
+//                        mPresenter.getTaskInfoList(taskId);
+//                    }else {
+//                        ErrorData();
+//                    }
+//                }
+//            });
+            mPresenter.getTaskInfoList(taskId);
+        } catch (Exception e) {
+            taskId = getIntent().getStringExtra("taskId");
+            mPresenter.getTaskInfoList(taskId);
+        }
     }
 
     @Override

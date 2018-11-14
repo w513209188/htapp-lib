@@ -19,6 +19,10 @@ public class TaskInfoPresenter extends TaskInfoContranct.TaskInfoPresenter {
 
     @Override
     public void getTaskInfoList(String id) {
+        if(id==null||id.equals("")){
+            mView.ErrorData();
+            return;
+        }
         HttpManager.newInstance().commonRequest(mModel.getTaskInfoList(id), new BaseObserver<Result<TaskInfoListBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<TaskInfoListBean> o) {

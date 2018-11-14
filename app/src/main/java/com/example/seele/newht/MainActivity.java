@@ -15,7 +15,7 @@ import com.zhiyun88.www.module_main.hApp;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private Button toact1,toact2,toact3,toact4;
+    private Button toact1,toact2,toact3,toact4,toact5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +31,42 @@ public class MainActivity extends AppCompatActivity {
         toact2=this.findViewById(R.id.toact2);
         toact3=this.findViewById(R.id.toact3);
         toact4=this.findViewById(R.id.toact4);
+        toact5=this.findViewById(R.id.toact5);
         toact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                hApp.newInstance().toSchemme("htnx://course/1",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://course/666",MainActivity.this);
+                hApp.newInstance().toMainActivity("31192", "fdsfs", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+
+                    }
+                },"htnx://course/186",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://course?uid=31192&id=186&token=fsafdsafsafsafas",MainActivity.this);
             }
         });
         toact2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                hApp.newInstance().toSchemme("htnx://task/1",MainActivity.this);
+                hApp.newInstance().toMainActivity("31192", "fdsfs", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+
+                    }
+                },"htnx://peixun/180",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://peixun?uid=31192&id=180&token=fsafdsafsafsafas",MainActivity.this);
             }
         });
         toact3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hApp.newInstance().toMainActivity("31192", "fdsfs", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+
+                    }
+                },"htnx://investigation/463",MainActivity.this);
+//                hApp.newInstance().toSchemme("htnx://investigation?uid=31192&id=463&token=fsafdsafsafsafas",MainActivity.this);
 //                hApp.newInstance().toMainActivity(MainActivity.this, "1", "dfsfsfds", new LoginStatusCall() {
 //                    @Override
 //                    public void LoginError(String msg, int code) {
@@ -56,6 +77,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+        toact5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                hApp.newInstance().toSchemme("htnx://task?uid=31192&id=60&token=fsafdsafsafsafas",MainActivity.this);
+                hApp.newInstance().toMainActivity("31192", "fdsfs", new LoginStatusCall() {
+                    @Override
+                    public void LoginError(String msg, int code) {
+
+                    }
+                },"htnx://task/60",MainActivity.this);
             }
         });
         toact4.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,7 @@ import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.course.adapter.CoordinatorPagerAdapter;
 import com.zhiyun88.www.module_main.course.bean.CourseInfoBean;
 import com.zhiyun88.www.module_main.course.fragment.CommentListFrament;
@@ -32,6 +33,8 @@ import com.zhiyun88.www.module_main.course.fragment.TeacherListFrament;
 import com.zhiyun88.www.module_main.course.fragment.WebViewFragment;
 import com.zhiyun88.www.module_main.course.mvp.contranct.CourseInfoContranct;
 import com.zhiyun88.www.module_main.course.mvp.presenter.CourseInfoPresenter;
+import com.zhiyun88.www.module_main.hApp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,18 +63,7 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_course_courseinfo);
-        try {
-            courseId = getIntent().getData().getLastPathSegment();
-            isCourseTaskInfo=false;
-        } catch (Exception e) {
-            courseId =getIntent().getStringExtra("courseId");
-            isCourseTaskInfo=getIntent().getBooleanExtra("isCourseTaskInfo",false);
-        }
         multipleStatusView = getViewById(R.id.multiplestatusview);
-        if (courseId == null || "".equals(courseId)) {
-            multipleStatusView.showError();
-            return;
-        }
         multipleStatusView.showContent();
         multipleStatusView.showLoading();
         course_tb=getViewById(R.id.course_tb);
@@ -80,28 +72,33 @@ public class CourseInfoActivity extends MvpActivity<CourseInfoPresenter> impleme
         mCoordinatorTabLayout = getViewById(R.id.coordinatortablayout);
         mFragments = new ArrayList<>();
         mViewPager = getViewById(R.id.vp);
-        mPresenter.getCourseInfoData(courseId);
+        try {
+//            String uid = getIntent().getData().getQueryParameter("uid");
+//            String token=getIntent().getData().getQueryParameter("token");
+//            courseId =getIntent().getData().getQueryParameter("id");
+            courseId=getIntent().getData().getLastPathSegment();
+            isCourseTaskInfo=false;
+//            hApp.newInstance().toMainActivity(uid, token, new LoginStatusCall() {
+//                @Override
+//                public void LoginError(String msg, int code) {
+//                    if(code==1040){
+//                        mPresenter.getCourseInfoData(courseId);
+//                    }else {
+//                        ErrorData();
+//                    }
+//                }
+//            });
+            mPresenter.getCourseInfoData(courseId);
+        } catch (Exception e) {
+            courseId =getIntent().getStringExtra("courseId");
+            isCourseTaskInfo=getIntent().getBooleanExtra("isCourseTaskInfo",false);
+            mPresenter.getCourseInfoData(courseId);
+        }
         if(isCourseTaskInfo){
             course_tb.getCenterTextView().setText("培训详情");
         }else {
             course_tb.getCenterTextView().setText("课程详情");
         }
-        mCoordinatorTabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                Log.e("onTabSelected","onTabSelected");
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                Log.e("onTabUnselected","onTabUnselected");
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                Log.e("onTabReselected","onTabReselected");
-            }
-        });
     }
     private void initFragments(CourseInfoBean courseInfoBean) {
         mFragments.add(WebViewFragment.newInstcace(courseInfoBean.getInfo().getDetails_url()));

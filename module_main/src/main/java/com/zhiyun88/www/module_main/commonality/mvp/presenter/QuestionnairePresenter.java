@@ -22,6 +22,10 @@ public class QuestionnairePresenter extends QuestionnaireContranct.Questionnaire
 
     @Override
     public void getQuestionData(int course_id) {
+        if(course_id==-1){
+            mView.ErrorData();
+            return;
+        }
         HttpManager.newInstance().commonRequest(mModel.getQuestionData(course_id), new BaseObserver<Result<QuestionNaireBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<QuestionNaireBean> questionNaireBeanResult) {

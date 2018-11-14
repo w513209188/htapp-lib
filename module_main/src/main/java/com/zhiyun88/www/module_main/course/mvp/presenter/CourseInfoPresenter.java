@@ -21,6 +21,10 @@ public class CourseInfoPresenter extends CourseInfoContranct.CourseInfoPresenter
 
     @Override
     public void getCourseInfoData(String basis_id) {
+        if(basis_id==null||basis_id.equals("")){
+            mView.ErrorData();
+            return;
+        }
         HttpManager.newInstance().commonRequest(mModel.getCourseInfoData(basis_id), new BaseObserver<Result<CourseInfoBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<CourseInfoBean> o) {
@@ -58,7 +62,12 @@ public class CourseInfoPresenter extends CourseInfoContranct.CourseInfoPresenter
                 if(o.getData()==null){
                     mView.showErrorMsg(o.getMsg());
                 }else {
-                    mView.joinSuccess(o.getMsg());
+                    if(o.getStatus()==200){
+                        mView.joinSuccess(o.getMsg());
+                    }else {
+                        mView.showErrorMsg(o.getMsg());
+                    }
+
                 }
             }
 

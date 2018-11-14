@@ -138,4 +138,69 @@ public class hApp {
         AppUtils.getContext().sendBroadcast(intent);
     }
 
+    /**
+     * 通过协议调起内训
+     * @param uid
+     * @param token
+     * @param loginStatusCall
+     */
+    public void toMainActivity(final String uid, final String token, final LoginStatusCall loginStatusCall, final String url, final Context mContext){
+        if(loginStatusCall==null){
+            throw new NullPointerException("loginStatusCall is not null");
+        }
+        if(uid==null||uid.equals("")){
+            loginStatusCall.LoginError("uid is null",1001);
+            return;
+        }
+        if(token==null||token.equals("")){
+            loginStatusCall.LoginError("token is null",1002);
+        }
+        Map<String,String> map=new HashMap<>();
+        map.put("uid",uid);
+        HttpManager.newInstance().commonRequest(HttpManager.newInstance().getService(AppServiceApi.class).getLoginInfo(map), new BaseObserver<Result<AppBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result<AppBean> o) {
+                if(o.getStatus()== AppConfigManager.newInstance().getAppConfig().getHttpCodeSuccess()){
+                    //校检成功
+                    Map<String,String> map1=new HashMap<>();
+                    map1.put("httoken",token);
+                    map1.put("Authorization","bearer "+o.getData().getRemember_token());
+                    map1.put("uid",uid);
+                    HttpConfig.HttpConfigBuilder httpConfig =
+                            new HttpConfig.HttpConfigBuilder()
+                                    .setmBaseUrl(HttpManager.newInstance().getHttpConfig().getmBaseUrl())
+                                    .setUseCustGson(HttpManager.newInstance().getHttpConfig().isUseCustGson())
+                                    .setmCacheFolder(HttpManager.newInstance().getHttpConfig().getmCacheFolder())
+                                    .setmCacheTimeWithNet(HttpManager.newInstance().getHttpConfig().getmCacheTimeWithoutNet())
+                                    .setmCacheSize(HttpManager.newInstance().getHttpConfig().getmCacheSize())
+                                    .setmConnectTimeout(HttpManager.newInstance().getHttpConfig().getmConnectTimeout())
+                                    .setmIsUseCache(HttpManager.newInstance().getHttpConfig().ismIsUseCache())
+                                    .setmMapHeader(map1)
+                                    .setIsReshConfig(true)
+                                    .setmIsUseLog(HttpManager.newInstance().getHttpConfig().ismIsUseLog());
+                    HttpConfig.newInstanceBuild(httpConfig);
+//                    loginStatusCall.LoginError(o.getMsg(),1040);
+                    toSchemme(url,mContext);
+                }else {
+                    loginStatusCall.LoginError(o.getMsg(),o.getStatus());
+                }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                loginStatusCall.LoginError(e.getMessage(),e.getErrorCode());
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
 }
