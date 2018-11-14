@@ -21,7 +21,7 @@ public class BjyTokenPresenter extends BjyTokenContranct.BjyTokenPresenter {
     @Override
     public void getBjyToken(String id, final boolean isDown, final CourseChildBean courseChildBean) {
         if(id==null||id.equals("")){
-            mView.showErrorMsg("无效的参数！");
+            mView.showErrorMsg("该课程出现异常，请联系管理员");
             return;
         }
         mView.showLoadV("请稍等....");
