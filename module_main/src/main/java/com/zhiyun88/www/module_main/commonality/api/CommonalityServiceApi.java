@@ -2,8 +2,10 @@ package com.zhiyun88.www.module_main.commonality.api;
 
 
 import com.wb.baselib.bean.Result;
+import com.zhiyun88.www.module_main.commonality.bean.CertificateBean;
 import com.zhiyun88.www.module_main.commonality.bean.IntegralBean;
 import com.zhiyun88.www.module_main.commonality.bean.MessageBean;
+import com.zhiyun88.www.module_main.commonality.bean.MyLibraryBean;
 import com.zhiyun88.www.module_main.commonality.bean.QuestionNaireBean;
 import com.zhiyun88.www.module_main.commonality.bean.RankingBean;
 import com.zhiyun88.www.module_main.commonality.bean.RecordBean;
@@ -49,4 +51,10 @@ public interface CommonalityServiceApi {
     @FormUrlEncoded
     @POST(CommonalityHttpConfig.QUESTIONNAIRE)
     Observable<Result> setQuestionData(@Field("basis_id") int basis_id, @Field("chapter_id") int chapter_id, @Field("grade") int grade, @Field("nice_comment") String nice_comment, @Field("negative_comments") String negative_comments);
+    @GET(CommonalityHttpConfig.MYCERTIFICATE)
+    Observable<Result<CertificateBean>> getCertificateData(@Query("page") int page);
+
+    @FormUrlEncoded
+    @POST(CommonalityHttpConfig.MYLIBRARY)
+    Observable<Result<MyLibraryBean>> getLibraryData(@Field("page") int page);
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.wb.baselib.view.TopBarView
+        android:id="@+id/topbarview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomLineColor="@color/main_line_ea"
+        app:centerTextColor="#333333"
+        app:centerTextSize="18sp"
+        app:centerType="textView"
+        app:fillStatusBar="false"
+        app:leftImageResource="@drawable/main_back"
+        app:leftType="imageButton"
+        app:showBottomLine="true"
+        app:titleBarHeight="45dp" />
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/information_wb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

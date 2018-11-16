@@ -80,4 +80,6 @@
 
     <string name="main_parameter_error">参数错误</string>
     <string name="main_default_num">\?</string>
+    <string name="main_my_certificate">我的证书</string>
+    <string name="main_my_library">我的文库</string>
 </resources>

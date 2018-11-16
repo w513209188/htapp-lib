@@ -22,4 +22,8 @@ public interface CommonalityHttpConfig {
     String GETQUESTIONNAIRE = "api/app/courseChapter/id={id}";
     //调查问卷
     String QUESTIONNAIRE = "api/app/questionnaire";
+    //我的证书
+    String MYCERTIFICATE = "api/app/MyCertificate";
+    //我的文库
+    String MYLIBRARY = "api/app/mylibrarylist";
 }

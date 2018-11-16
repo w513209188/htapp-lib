@@ -11,6 +11,7 @@ public class HomeBean implements Parcelable {
     private List<BannerBean> banner;
     private List<HomeCourseBean> course;
     private List<HomeTransformerBean> transformer;
+    private List<HomeInformationBean> information;
 
     public List<BannerBean> getBanner() {
         return banner;
@@ -36,6 +37,14 @@ public class HomeBean implements Parcelable {
         this.transformer = transformer;
     }
 
+    public List<HomeInformationBean> getInformation() {
+        return information;
+    }
+
+    public void setInformation(List<HomeInformationBean> information) {
+        this.information = information;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -43,24 +52,23 @@ public class HomeBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(this.banner);
-        dest.writeList(this.course);
-        dest.writeList(this.transformer);
+        dest.writeTypedList(this.banner);
+        dest.writeTypedList(this.course);
+        dest.writeTypedList(this.transformer);
+        dest.writeTypedList(this.information);
     }
 
     public HomeBean() {
     }
 
     protected HomeBean(Parcel in) {
-        this.banner = new ArrayList<BannerBean>();
-        in.readList(this.banner, BannerBean.class.getClassLoader());
-        this.course = new ArrayList<HomeCourseBean>();
-        in.readList(this.course, HomeCourseBean.class.getClassLoader());
-        this.transformer = new ArrayList<HomeTransformerBean>();
-        in.readList(this.transformer, HomeTransformerBean.class.getClassLoader());
+        this.banner = in.createTypedArrayList(BannerBean.CREATOR);
+        this.course = in.createTypedArrayList(HomeCourseBean.CREATOR);
+        this.transformer = in.createTypedArrayList(HomeTransformerBean.CREATOR);
+        this.information = in.createTypedArrayList(HomeInformationBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<HomeBean> CREATOR = new Parcelable.Creator<HomeBean>() {
+    public static final Creator<HomeBean> CREATOR = new Creator<HomeBean>() {
         @Override
         public HomeBean createFromParcel(Parcel source) {
             return new HomeBean(source);

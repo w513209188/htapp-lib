@@ -18,11 +18,11 @@ import com.wb.baselib.http.HttpConfig;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
+import com.wb.baselib.utils.ToActivityUtil;
 import com.zhiyun88.www.module_main.api.AppBean;
 import com.zhiyun88.www.module_main.api.AppServiceApi;
 import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.main.ui.MainActivity;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +87,7 @@ public class hApp {
                         HttpConfig.newInstanceBuild(httpConfig);
                         Log.e("刷新了",HttpManager.newInstance().getHttpConfig().getmBaseUrl());
                         MainActivity.startForResult((Activity) source);
+//                        ToActivityUtil.newInsance().toNextActivity((Activity) source, TestingActivity.class);
                     }
                 }else {
                     loginStatusCall.LoginError(o.getMsg(),o.getStatus());

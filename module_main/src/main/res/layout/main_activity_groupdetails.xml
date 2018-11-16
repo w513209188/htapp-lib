@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.wb.baselib.view.TopBarView
+        android:id="@+id/topbarview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomLineColor="@color/main_line_ea"
+        app:centerTextColor="#333333"
+        app:centerTextSize="18sp"
+        app:centerType="textView"
+        app:centerText="小组详情"
+        app:fillStatusBar="false"
+        app:leftImageResource="@drawable/main_back"
+        app:leftType="imageButton"
+        app:showBottomLine="true"
+        app:rightType="textView"
+        app:rightText="发帖"
+        app:rightTextSize="15sp"
+        app:rightTextColor="@color/main_text_blue_458"
+        app:titleBarHeight="45dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/main_bg_grey_f8"/>
+
+    <RelativeLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/group_image"
+            android:layout_width="100dp"
+            android:layout_height="68dp" />
+
+
+        <TextView
+            android:id="@+id/group_title"
+            android:layout_toRightOf="@+id/group_image"
+            android:text="625562"
+            android:textSize="15sp"
+            android:textColor="@color/main_text_black_11"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@+id/group_join"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/group_num"
+            android:layout_below="@+id/group_title"
+            android:layout_toRightOf="@+id/group_image"
+            android:layout_marginLeft="10dp"
+            android:text="625562"
+            android:textSize="12sp"
+            android:textColor="@color/main_bg_grey_87"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/group_join"
+            android:layout_alignParentRight="true"
+            android:text="625562"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:background="@drawable/main_button_select"
+            android:textColor="@color/main_button_text_select"
+            android:layout_width="60dp"
+            android:layout_height="25dp" />
+
+        <TextView
+            android:id="@+id/group_content"
+            android:layout_below="@+id/group_image"
+            android:text="625562"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:textColor="@color/main_text_black_33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/main_bg_grey_f8"/>
+
+
+    <include layout="@layout/main_commom_indicator"/>
+
+</LinearLayout>

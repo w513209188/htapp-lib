@@ -39,7 +39,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="10dp"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:text="fdsfsdfs"
                 android:textColor="@color/main_text_black_33"
                 android:textSize="@dimen/title3" />

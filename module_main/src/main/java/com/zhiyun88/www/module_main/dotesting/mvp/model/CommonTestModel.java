@@ -1,0 +1,202 @@
+package com.zhiyun88.www.module_main.dotesting.mvp.model;
+
+import android.util.Log;
+
+import com.jungan.www.common_dotest.bean.QuestionBankBean;
+import com.jungan.www.common_dotest.bean.UserOptionBean;
+import com.wb.baselib.app.AppUtils;
+import com.wb.baselib.bean.Result;
+import com.wb.baselib.http.HttpManager;
+import com.wb.baselib.http.exception.ApiException;
+import com.wb.baselib.http.observer.BaseObserver;
+import com.zhiyun88.www.module_main.dotesting.api.DoTestApiService;
+import com.zhiyun88.www.module_main.dotesting.bean.PaperListBean;
+import com.zhiyun88.www.module_main.dotesting.bean.PaperModuleBean;
+import com.zhiyun88.www.module_main.dotesting.bean.PaperModuleQuesBean;
+import com.zhiyun88.www.module_main.dotesting.bean.PaperQuesOptionBean;
+import com.zhiyun88.www.module_main.dotesting.bean.PaperTestBean;
+import com.zhiyun88.www.module_main.dotesting.bean.QestionTestBean;
+import com.zhiyun88.www.module_main.dotesting.bean.QuesOptionBean;
+import com.zhiyun88.www.module_main.dotesting.bean.QuestionBean;
+import com.zhiyun88.www.module_main.dotesting.bean.QuestionNaireBean;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
+import com.zhiyun88.www.module_main.dotesting.config.TestTypeConfig;
+import com.zhiyun88.www.module_main.dotesting.mvp.contranct.CommonTestContranct;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
+public class CommonTestModel implements CommonTestContranct.CommonTestModel {
+
+    @Override
+    public Observable<List<QuestionBankBean>> getCommonTest(final String id, final String taskId, final int testType) {
+        Observable<List<QuestionBankBean>> observable = Observable.create(new ObservableOnSubscribe<List<QuestionBankBean>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<QuestionBankBean>> e) throws Exception {
+                if (testType == TestTypeConfig.WJST) {
+                    getQuestionData(id, taskId, e);
+                } else if (testType == TestTypeConfig.SJST) {
+                    getPaperData(id, taskId, e);
+                }
+            }
+        });
+        return observable;
+    }
+
+    @Override
+    public Observable<Result> submitTest(String report_id, String type, String answer_time, String answer_data) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("report_id", report_id);
+        map.put("type", type);
+        map.put("answer_time", answer_time);
+        map.put("answer_data", answer_data);
+        return HttpManager.newInstance().getService(DoTestApiService.class).submitTest(map);
+    }
+
+    private void getPaperData(String id, String taskId, final ObservableEmitter<List<QuestionBankBean>> e) {
+        Observable<Result<PaperTestBean>> paperQuestion = HttpManager.newInstance().getService(DoTestApiService.class).getPaperQuestion(id, taskId);
+        HttpManager.newInstance().commonRequest(paperQuestion, new BaseObserver<Result<PaperTestBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onSuccess(Result<PaperTestBean> paperTestBeanResult) {
+                if (paperTestBeanResult.getData() == null ) {
+
+                }else {
+                    forPaperData(paperTestBeanResult.getData(), e);
+                }
+
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                Log.e("onFail: ", e.getMessage());
+            }
+        });
+    }
+
+    private void forPaperData(PaperTestBean paperTestBean, ObservableEmitter<List<QuestionBankBean>> e) {
+        List<PaperModuleBean> paperModuleBeans = paperTestBean.getModule();
+        PaperListBean paperListBean = paperTestBean.getPaper_list();
+        List<QuestionBankBean> mkdatas = new ArrayList<>();
+        for (PaperModuleBean paperModuleBean : paperModuleBeans) {//2
+            for (PaperModuleQuesBean paperModuleQuesBean : paperModuleBean.getModule_question()) {
+                QuestionBankBean questionBankBean = new QuestionBankBean();
+                questionBankBean.setCorrect_rate(null);
+                questionBankBean.setFallibility(null);
+                questionBankBean.setIsCollect(0);
+                questionBankBean.setKnows_name(null);
+                questionBankBean.setNumber_ques(null);
+                questionBankBean.setOption(null);
+                questionBankBean.setQues_analysis("");
+                questionBankBean.setQuestionModel(0);
+                questionBankBean.setQuestionNum(Long.parseLong(paperModuleBean.getSerial_number()));
+                questionBankBean.setUser_answer(null);
+                questionBankBean.setUser_dotime(paperListBean.getQuestion_time());
+                questionBankBean.setQuestId(paperModuleQuesBean.getId());
+                questionBankBean.setQuestionIssue(null);
+                questionBankBean.setQuestionStem(paperModuleQuesBean.getQues_stem());
+                questionBankBean.setQuestionType(Integer.parseInt(paperModuleQuesBean.getQues_type()));
+                questionBankBean.setReport_id(paperModuleQuesBean.getReport_id());
+                questionBankBean.setRight_answer(paperModuleQuesBean.getRight_answer());
+                questionBankBean.setAnswer_difficulty(paperModuleQuesBean.getQues_difficulty());
+                List<UserOptionBean> userOptionBeans = new ArrayList<>();
+                if (paperModuleQuesBean.getQues_option() == null || paperModuleQuesBean.getQues_option().size() == 0) {
+                } else {
+                    for (PaperQuesOptionBean paperQuesOptionBean : paperModuleQuesBean.getQues_option()) {
+                        UserOptionBean userOptionBean = new UserOptionBean();
+                        userOptionBean.setOptionName(paperQuesOptionBean.getAnswer());
+                        userOptionBean.setOptionContext(paperQuesOptionBean.getContent());
+                        userOptionBeans.add(userOptionBean);
+                    }
+                    questionBankBean.setUserOption(userOptionBeans);
+                }
+                mkdatas.add(questionBankBean);
+            }
+        }
+        e.onNext(mkdatas);
+    }
+
+    private void getQuestionData(String id, String taskId, final ObservableEmitter<List<QuestionBankBean>> e) {
+        Observable<Result<QestionTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getQuestionNaire(id, taskId);
+        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<QestionTestBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onSuccess(Result<QestionTestBean> qestionTestBeanResult) {
+                if (qestionTestBeanResult.getData() == null) {
+                }else {
+                    forQuestionData(qestionTestBeanResult.getData(), e);
+                }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                Log.e("onFail: ", e.getMessage());
+            }
+        });
+    }
+
+    private void forQuestionData(QestionTestBean qestionTestBean, ObservableEmitter<List<QuestionBankBean>> e) {
+        List<QuestionBean> question = qestionTestBean.getQuestion();
+        QuestionNaireBean questionNaireBean = qestionTestBean.getQuestion_naire();
+        List<QuestionBankBean> questionBankBeans = new ArrayList<>();
+        for (QuestionBean questionBean : question) {
+            QuestionBankBean questionBankBean = new QuestionBankBean();
+            questionBankBean.setAnswer_difficulty(null);
+            questionBankBean.setCorrect_rate(null);
+            questionBankBean.setFallibility(null);
+            questionBankBean.setIsCollect(0);
+            questionBankBean.setKnows_name(null);
+            questionBankBean.setNumber_ques(null);
+            questionBankBean.setOption(null);
+            questionBankBean.setQues_analysis("");
+            questionBankBean.setQuestId(questionBean.getId());
+            questionBankBean.setQuestionIssue(null);
+            questionBankBean.setQuestionModel(0);
+            questionBankBean.setQuestionNum(Long.parseLong(questionBean.getQues_number()));
+            questionBankBean.setQuestionStem(questionBean.getQues_stem());
+            questionBankBean.setQuestionType(Integer.parseInt(questionBean.getQues_type()));
+            questionBankBean.setReport_id(questionBean.getReport_id());
+            questionBankBean.setRight_answer(questionBean.getRight_answer());
+            questionBankBean.setUser_answer(null);
+            questionBankBean.setUser_dotime(questionNaireBean.getQuestion_time());
+            List<UserOptionBean> userOptionBeans = new ArrayList<>();
+            if (questionBean.getQues_option() == null || questionBean.getQues_option().size() == 0) {
+            } else {
+                for (QuesOptionBean quesOptionBean : questionBean.getQues_option()) {
+                    UserOptionBean userOptionBean = new UserOptionBean();
+                    userOptionBean.setOptionName(quesOptionBean.getAnswer());
+                    userOptionBean.setOptionContext(quesOptionBean.getContent());
+                    userOptionBeans.add(userOptionBean);
+                }
+            }
+            questionBankBean.setUserOption(userOptionBeans);
+            questionBankBeans.add(questionBankBean);
+        }
+        e.onNext(questionBankBeans);
+    }
+}

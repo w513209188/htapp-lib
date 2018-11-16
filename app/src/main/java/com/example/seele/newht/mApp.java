@@ -29,10 +29,9 @@ public class mApp extends BaseApplication {
                 .bulider();
         AppConfigManager.newInstance().setAppConfig(appConfig);
         LogTools.setDebug(true);
-
         HttpConfig.HttpConfigBuilder httpConfig =
                 new HttpConfig.HttpConfigBuilder()
-                .setmBaseUrl("http://test-px.huatu.com")
+                .setmBaseUrl("http://ht.zhouhaiyang.com/")
                 .setmIsUseLog(true);
         HttpConfig.newInstanceBuild(httpConfig);
         hApp.newInstance().initVideoPlay(this);

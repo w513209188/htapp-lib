@@ -32,10 +32,12 @@ import com.zhiyun88.www.module_main.commonality.bean.UserDataBean;
 import com.zhiyun88.www.module_main.commonality.bean.UserInfoBean;
 import com.zhiyun88.www.module_main.commonality.mvp.contranct.UserInfoContranct;
 import com.zhiyun88.www.module_main.commonality.mvp.presenter.UserInfoPresenter;
+import com.zhiyun88.www.module_main.commonality.ui.CertificateActivity;
 import com.zhiyun88.www.module_main.commonality.ui.DownloadManagerActivity;
 import com.zhiyun88.www.module_main.commonality.ui.FeedBackActivity;
 import com.zhiyun88.www.module_main.commonality.ui.IntegralActivity;
 import com.zhiyun88.www.module_main.commonality.ui.MessageActivity;
+import com.zhiyun88.www.module_main.commonality.ui.MyLibraryActivity;
 import com.zhiyun88.www.module_main.commonality.ui.UserInfoActivity;
 import com.zhiyun88.www.module_main.main.adapter.UserListAdapter;
 import com.zhiyun88.www.module_main.main.bean.UserMainBean;
@@ -111,6 +113,10 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
                 }else if (position == 2) {
                     startActivity(new Intent(getActivity(),IntegralActivity.class));
                 }else if (position == 3) {
+                    startActivity(new Intent(getActivity(),CertificateActivity.class));
+                }else if (position == 4) {
+                    startActivity(new Intent(getActivity(),MyLibraryActivity.class));
+                }else if (position == 5) {
                     startActivity(new Intent(getActivity(),FeedBackActivity.class));
                 }
             }
@@ -144,11 +150,15 @@ public class MineFragment extends MvpFragment<UserInfoPresenter> implements User
         UserMainBean userMainBean1=new UserMainBean(R.drawable.user_main_notify,R.string.main_my_message,null,"");
         UserMainBean userMainBean2=new UserMainBean(R.drawable.user_main_download,R.string.main_my_download,null,"");
         UserMainBean userMainBean3=new UserMainBean(R.drawable.user_main_integral,R.string.main_my_integral,null, "");
-        UserMainBean userMainBean4=new UserMainBean(R.drawable.user_feedback,R.string.main_problem_feedback,null,"");
+        UserMainBean userMainBean4=new UserMainBean(R.drawable.user_main_credential,R.string.main_my_certificate,null,"");
+        UserMainBean userMainBean5=new UserMainBean(R.drawable.user_main_library,R.string.main_my_library,null,"");
+        UserMainBean userMainBean6=new UserMainBean(R.drawable.user_feedback,R.string.main_problem_feedback,null,"");
         userMainBeans.add(userMainBean1);
         userMainBeans.add(userMainBean2);
         userMainBeans.add(userMainBean3);
         userMainBeans.add(userMainBean4);
+        userMainBeans.add(userMainBean5);
+        userMainBeans.add(userMainBean6);
         return userMainBeans;
     }
 

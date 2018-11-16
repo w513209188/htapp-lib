@@ -1,12 +1,14 @@
 package com.zhiyun88.www.module_main.main.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,10 +22,14 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerClickListener;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.community.ui.CommunityActivity;
 import com.zhiyun88.www.module_main.course.ui.CourseMainActivity;
-import com.zhiyun88.www.module_main.main.bean.BannerBean;
+import com.zhiyun88.www.module_main.information.ui.InformationActivity;
+import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
+import com.zhiyun88.www.module_main.library.ui.LibraryActivity;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
 import com.zhiyun88.www.module_main.main.bean.HomeCourseBean;
+import com.zhiyun88.www.module_main.main.bean.HomeInformationBean;
 import com.zhiyun88.www.module_main.main.bean.HomeTransformerBean;
 import com.zhiyun88.www.module_main.main.GlideImageLoader;
 import com.zhiyun88.www.module_main.train.ui.TrainListActivity;
@@ -32,10 +38,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends BaseAdapter {
-    private static final int TYPE_RECYCLE = 1;
     private static final int TYPE_BANNER = 0;
-    private static final int TYPE_LISTVIEW = 2;
-    private static final int BEAN_COUNT = 3;
+    private static final int TYPE_OFFLINE = 1;
+    private static final int TYPE_ONLINE = 2;
+    private static final int TYPE_TRADE = 3;
+    private static final int BEAN_COUNT = 4;
     private List<HomeBean> homeBeanList;
     private Context mContext;
 
@@ -65,15 +72,16 @@ public class HomeAdapter extends BaseAdapter {
         if (position == 0) {
             return TYPE_BANNER;
         }else if (position == 1) {
-            return TYPE_RECYCLE;
+            return TYPE_OFFLINE;
+        }else if (position == 2) {
+            return TYPE_ONLINE;
         }
-        return TYPE_LISTVIEW;
-
+        return TYPE_TRADE;
     }
 
     @Override
     public int getViewTypeCount() {
-        return 3;
+        return BEAN_COUNT;
     }
 
     @Override
@@ -81,35 +89,64 @@ public class HomeAdapter extends BaseAdapter {
         int type = getItemViewType(position);
         HomeBean homeBean = homeBeanList.get(0);
         if (type == TYPE_BANNER) {
-
             return showBanner(convertView,homeBean);
-        }else if (type == TYPE_RECYCLE) {
+        }else if (type == TYPE_OFFLINE) {
             return showOffLine(convertView,homeBean.getTransformer());
-        }else if (type == TYPE_LISTVIEW) {
-            return showOnLine(convertView,homeBean.getCourse());
+        }else if (type == TYPE_ONLINE) {
+            return showOnLine(convertView,homeBean,TYPE_ONLINE);
+        }else if (type == TYPE_TRADE) {
+            return showOnLine(convertView,homeBean,TYPE_TRADE);
         }
         return null;
     }
 
-    private View showOnLine(View convertView, List<HomeCourseBean> homeCourseBeanList) {
+    private View showOnLine(View convertView, HomeBean homeBean, int type) {
         OnLineHolder onLineHolder;
         if (convertView == null) {
             onLineHolder = new OnLineHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.main_fragment_home_online, null);
             onLineHolder.mylistView = convertView.findViewById(R.id.online_listview);
             onLineHolder.online_more = convertView.findViewById(R.id.online_more);
+            onLineHolder.online_head = convertView.findViewById(R.id.online_head);
+            onLineHolder.online_line = convertView.findViewById(R.id.online_line);
             convertView.setTag(onLineHolder);
         } else {
             onLineHolder = (OnLineHolder) convertView.getTag();
         }
-        onLineHolder.online_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToActivityUtil.newInsance().toNextActivity(mContext, CourseMainActivity.class);
-            }
-        });
-        ListViewAdapter listViewAdapter = new ListViewAdapter(mContext,homeCourseBeanList);
-        onLineHolder.mylistView.setAdapter(listViewAdapter);
+        if (type == TYPE_ONLINE) {
+            List<HomeCourseBean> homeCourseBeanList = homeBean.getCourse();
+            onLineHolder.online_line.setVisibility(View.VISIBLE);
+            onLineHolder.online_head.setText("在线好课");
+            onLineHolder.online_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToActivityUtil.newInsance().toNextActivity(mContext, CourseMainActivity.class);
+                }
+            });
+            ListViewAdapter listViewAdapter = new ListViewAdapter(mContext,homeCourseBeanList);
+            onLineHolder.mylistView.setAdapter(listViewAdapter);
+        }else {
+            final List<HomeInformationBean> homeInformationBeanList = homeBean.getInformation();
+            onLineHolder.online_line.setVisibility(View.GONE);
+            onLineHolder.online_head.setText("行业动态");
+            onLineHolder.online_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToActivityUtil.newInsance().toNextActivity(mContext, InformationActivity.class);
+                }
+            });
+            ListViewsAdapter listViewsAdapter = new ListViewsAdapter(mContext,homeInformationBeanList);
+            onLineHolder.mylistView.setAdapter(listViewsAdapter);
+            onLineHolder.mylistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(mContext, InformationDetailsActivity.class);
+                    intent.putExtra("id", homeInformationBeanList.get(position).getId());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
         return convertView;
     }
 
@@ -142,6 +179,10 @@ public class HomeAdapter extends BaseAdapter {
             bannerHolder = new BannerHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.main_fragment_home_banner, null);
             bannerHolder.banner = convertView.findViewById(R.id.home_banner);
+            bannerHolder.course = convertView.findViewById(R.id.home_course);
+            bannerHolder.community = convertView.findViewById(R.id.home_community);
+            bannerHolder.library = convertView.findViewById(R.id.home_library);
+            bannerHolder.shop = convertView.findViewById(R.id.home_shop);
             convertView.setTag(bannerHolder);
         } else {
             bannerHolder = (BannerHolder) convertView.getTag();
@@ -191,14 +232,39 @@ public class HomeAdapter extends BaseAdapter {
                             .show(bean.getBanner().get(position-1).getLink());
                 }
             });
+            bannerHolder.course.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(new Intent(mContext,CourseMainActivity.class));
+                }
+            });
+            bannerHolder.community.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(new Intent(mContext,CommunityActivity.class));
+                }
+            });
+            bannerHolder.library.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(new Intent(mContext,LibraryActivity.class));
+                }
+            });
+            bannerHolder.shop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    mContext.startActivity(new Intent(mContext,ShoppingActivity.class));
+                }
+            });
         }
 
         return convertView;
     }
 
     class OnLineHolder {
-        TextView online_more;
+        TextView online_more,online_head;
         MyListView mylistView;
+        View online_line;
     }
 
     class OffLineHolder {
@@ -208,5 +274,6 @@ public class HomeAdapter extends BaseAdapter {
 
     class BannerHolder {
         Banner banner;
+        TextView course,community,library,shop;
     }
 }

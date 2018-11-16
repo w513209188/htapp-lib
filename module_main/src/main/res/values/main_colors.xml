@@ -26,4 +26,10 @@
     <color name="main_train_03">#03c8fc</color>
     <color name="main_test_29">#29cf9e</color>
     <color name="main_live_3c">#3c87f2</color>
+    <color name="main_bg_grey_b8">#b8b8b8</color>
+    <color name="main_bg_grey_87">#878787</color>
+
+    <color name="fgx">#e5e5e5</color>
+    <color name="main_bg">#236bb8</color>
+
 </resources>
