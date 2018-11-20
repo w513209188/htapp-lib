@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
+import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
+import com.zhiyun88.www.module_main.dotesting.ui.CommonTestActivity;
+import com.zhiyun88.www.module_main.dotesting.ui.CuntActivity;
 import com.zhiyun88.www.module_main.hApp;
 import com.zhiyun88.www.module_main.task.adapter.TaskInfoListAdapter;
 import com.zhiyun88.www.module_main.task.bean.TaskData;
@@ -92,7 +95,8 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
                     intent.putExtra("isCourseTaskInfo",false);
                     startActivity(intent);
                 }else if(taskData.getType().equals("2")){
-                    showErrorMsg("期待中...");
+//                        ToActivityUtil.newInsance().toNextActivity(TaskInfoActivity.this, CuntActivity.class);
+                    ToActivityUtil.newInsance().toNextActivity(TaskInfoActivity.this, CommonTestActivity.class,new String[][]{{"testId","111"},{"taskId","184"},{"testType",taskData.getType()},{"testName",taskData.getName()}});
                 }else if(taskData.getType().equals("3")){
                     showErrorMsg("期待中...");
                 }

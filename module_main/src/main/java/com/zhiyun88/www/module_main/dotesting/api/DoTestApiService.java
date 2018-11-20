@@ -1,6 +1,7 @@
 package com.zhiyun88.www.module_main.dotesting.api;
 
 import com.wb.baselib.bean.Result;
+import com.zhiyun88.www.module_main.dotesting.bean.CountBean;
 import com.zhiyun88.www.module_main.dotesting.bean.PaperTestBean;
 import com.zhiyun88.www.module_main.dotesting.bean.QestionTestBean;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
@@ -14,6 +15,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface DoTestApiService {
@@ -28,4 +30,14 @@ public interface DoTestApiService {
     @FormUrlEncoded
     @POST(DoTestHttpUrlConfig.SUBMIT)
     Observable<Result> submitTest(@FieldMap() Map<String, String> map);
+
+    @GET(DoTestHttpUrlConfig.GETCUNTDATA)
+    Observable<Result<CountBean>> getCuntData(@Path("id")String id);
+
+
+    @GET(DoTestHttpUrlConfig.ALLJXDATA)
+    Observable<Result<QestionTestBean>> getAllJxQuestionNaire(@Path("id") String id);
+
+    @GET(DoTestHttpUrlConfig.ERRORJXDATA)
+    Observable<Result<QestionTestBean>> getErrorJxData(@Path("id") String id);
 }

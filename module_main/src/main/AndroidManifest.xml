@@ -97,5 +97,8 @@
         <activity android:name=".commonality.ui.MyLibraryActivity"/>
         <activity android:name=".information.ui.InformationActivity"/>
         <activity android:name=".information.ui.InformationDetailsActivity"/>
+        <activity android:name=".dotesting.ui.CommonTestActivity"/>
+        <activity android:name=".dotesting.ui.AnswerSheetActivity"/>
+        <activity android:name=".dotesting.ui.CuntActivity"/>
     </application>
 </manifest>

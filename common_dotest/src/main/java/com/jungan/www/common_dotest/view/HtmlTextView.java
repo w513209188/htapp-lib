@@ -111,12 +111,12 @@ public class HtmlTextView extends RelativeLayout {
         mRichTv.callback(new XRichText.Callback() {
             @Override
             public void onImageClick(List<String> urlList, int position) {
+                if(urlList==null){
+                    return;
+                }
+                if(htmlTextViewCall==null)
+                    return;
                 htmlTextViewCall.imageClicked(urlList, position);
-//                Intent intent=new Intent();
-//                intent.setClass(getContext(), LookPhotoActivity.class);
-//                intent.putExtra(LookPhotoActivity.PAGE_TAG,0);
-//                intent.putExtra(LookPhotoActivity.IMAGES_TAG,(Serializable) urlList);
-//                getContext().startActivity(intent);
             }
             @Override
             public boolean onLinkClick(String url) {
@@ -129,13 +129,17 @@ public class HtmlTextView extends RelativeLayout {
             @Override
             public void onFix(XRichText.ImageHolder holder) {
                 holder.setStyle(XRichText.Style.LEFT);
-//                if (a > 0){
-//                    WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-//                    int width = wm.getDefaultDisplay().getWidth();
-//                    int height = wm.getDefaultDisplay().getHeight();
-//                    holder.setWidth(width);
-//                    holder.setHeight(width/a*b*4/3);
-//                }
+                if (a > 0){
+
+                    WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+
+
+                    int width = wm.getDefaultDisplay().getWidth();
+                    int height =  wm.getDefaultDisplay().getHeight();
+                    Log.e("试题的尺寸",width+"*"+height);
+                    holder.setWidth(width);
+                    holder.setHeight( width/a*b*4/3);
+                }
             }
         }).text(txt);
 

@@ -22,16 +22,16 @@
             android:layout_centerVertical="true"
             android:id="@+id/answer_sheet"
             android:src="@drawable/dotest_answer_sheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
         <ImageView
             android:id="@+id/test_pause"
             android:layout_marginRight="30dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/answer_sheet"
             android:src="@drawable/dotest_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
         <Chronometer
             android:id="@+id/chronmer_ctr"
             android:layout_marginRight="30dp"
@@ -61,6 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
+                android:visibility="gone"
+                android:text="2"
                 android:id="@+id/current_count"
                 android:textSize="16sp"
                 android:layout_alignBaseline="@+id/current_count_tv"
@@ -69,6 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:text="1"
                 android:id="@+id/current_count_tv"
                 android:layout_alignParentRight="true"
                 android:textSize="13sp"

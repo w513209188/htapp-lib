@@ -47,7 +47,12 @@ public class RadioChoiceAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        if(analisys){
+            return 3;
+        }else {
+            return 2;
+        }
+
     }
 
     @Override

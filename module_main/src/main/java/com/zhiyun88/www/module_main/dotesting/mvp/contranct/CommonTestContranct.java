@@ -5,6 +5,7 @@ import com.wb.baselib.base.mvp.BaseModel;
 import com.wb.baselib.base.mvp.BasePreaenter;
 import com.wb.baselib.base.mvp.BaseView;
 import com.wb.baselib.bean.Result;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ public interface CommonTestContranct {
 
     interface CommonTestModel extends BaseModel {
         Observable<List<QuestionBankBean>> getCommonTest(String id, String taskId, int testType);
-        Observable<Result> submitTest(String report_id, String type, String answer_time, String answer_data);
+        Observable<Result> submitTest(SubmitTestBean submitTestBean);
     }
 
     abstract class CommonTestPresenter extends BasePreaenter<CommonTestView, CommonTestModel> {
         public abstract void getCommonTest(String id, String taskId,int testType);
-        public abstract void submitTest(String report_id, String type,String answer_time,String answer_data);
+        public abstract void submitTest(SubmitTestBean submitTestBean);
     }
 }

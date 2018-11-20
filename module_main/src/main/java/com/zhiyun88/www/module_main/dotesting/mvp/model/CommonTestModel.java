@@ -9,6 +9,7 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
+import com.wb.baselib.prase.GsonUtils;
 import com.zhiyun88.www.module_main.dotesting.api.DoTestApiService;
 import com.zhiyun88.www.module_main.dotesting.bean.PaperListBean;
 import com.zhiyun88.www.module_main.dotesting.bean.PaperModuleBean;
@@ -44,6 +45,10 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
                     getQuestionData(id, taskId, e);
                 } else if (testType == TestTypeConfig.SJST) {
                     getPaperData(id, taskId, e);
+                }else if(testType == TestTypeConfig.ALLJX){
+                    getAllJxQuestionData(id,e);
+                }else if(testType == TestTypeConfig.ERRJX){
+                    getErrorJxQuestionData(id,e);
                 }
             }
         });
@@ -51,12 +56,12 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
     }
 
     @Override
-    public Observable<Result> submitTest(String report_id, String type, String answer_time, String answer_data) {
+    public Observable<Result> submitTest(SubmitTestBean submitTestBean) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("report_id", report_id);
-        map.put("type", type);
-        map.put("answer_time", answer_time);
-        map.put("answer_data", answer_data);
+        map.put("report_id", submitTestBean.getReport_id());
+        map.put("type", submitTestBean.getType());
+        map.put("answer_time", submitTestBean.getAnswer_time());
+        map.put("answer_data", GsonUtils.newInstance().listToJson(submitTestBean.getAnswer_data()));
         return HttpManager.newInstance().getService(DoTestApiService.class).submitTest(map);
     }
 
@@ -105,7 +110,7 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
                 questionBankBean.setOption(null);
                 questionBankBean.setQues_analysis("");
                 questionBankBean.setQuestionModel(0);
-                questionBankBean.setQuestionNum(Long.parseLong(paperModuleBean.getSerial_number()));
+                questionBankBean.setQuestionNum(Long.parseLong(paperModuleQuesBean.getQues_number()));
                 questionBankBean.setUser_answer(null);
                 questionBankBean.setUser_dotime(paperListBean.getQuestion_time());
                 questionBankBean.setQuestId(paperModuleQuesBean.getId());
@@ -160,6 +165,62 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
         });
     }
 
+
+    private void getAllJxQuestionData(String id, final ObservableEmitter<List<QuestionBankBean>> e) {
+        Observable<Result<QestionTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getAllJxQuestionNaire(id);
+        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<QestionTestBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onSuccess(Result<QestionTestBean> qestionTestBeanResult) {
+                if (qestionTestBeanResult.getData() == null) {
+                }else {
+                    forQuestionData(qestionTestBeanResult.getData(), e);
+                }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                Log.e("onFail: ", e.getMessage());
+            }
+        });
+    }
+
+    private void getErrorJxQuestionData(String id, final ObservableEmitter<List<QuestionBankBean>> e) {
+        Observable<Result<QestionTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getErrorJxData(id);
+        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<QestionTestBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onSuccess(Result<QestionTestBean> qestionTestBeanResult) {
+                if (qestionTestBeanResult.getData() == null) {
+                }else {
+                    forQuestionData(qestionTestBeanResult.getData(), e);
+                }
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                Log.e("onFail: ", e.getMessage());
+            }
+        });
+    }
     private void forQuestionData(QestionTestBean qestionTestBean, ObservableEmitter<List<QuestionBankBean>> e) {
         List<QuestionBean> question = qestionTestBean.getQuestion();
         QuestionNaireBean questionNaireBean = qestionTestBean.getQuestion_naire();

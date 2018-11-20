@@ -51,8 +51,8 @@ public class CommonTestPresenter extends CommonTestContranct.CommonTestPresenter
     }
 
     @Override
-    public void submitTest(String report_id, String type, String answer_time, String answer_data) {
-        HttpManager.newInstance().commonRequest(mModel.submitTest(report_id, type, answer_time, answer_data), new BaseObserver<Result>(AppUtils.getContext()) {
+    public void submitTest(SubmitTestBean submitTestBean) {
+        HttpManager.newInstance().commonRequest(mModel.submitTest(submitTestBean), new BaseObserver<Result>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result result) {
                     mView.submitSuccess(result.getMsg());

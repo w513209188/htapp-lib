@@ -22,6 +22,7 @@ import com.jungan.www.common_dotest.config.QuestTestConfig;
 import com.jungan.www.common_dotest.config.QuestionTypeConfig;
 import com.jungan.www.common_dotest.view.MyViewPager;
 import com.jungan.www.common_dotest.view.NormalViewPager;
+import com.wb.baselib.http.HttpManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class CommonQuestionBankView extends LinearLayout{
                 userPostData.add(v);
             }
             userPostBean.setAnswer_data(userPostData);
-            userPostBean.setUid("1");
+            userPostBean.setUid(HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"));
         }catch (Exception e){
             return null;
         }

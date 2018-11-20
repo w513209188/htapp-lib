@@ -41,7 +41,7 @@ import java.util.List;
 public class CommonTestActivity extends MvpActivity<CommonTestPresenter> implements CommonTestContranct.CommonTestView, ViewPageCall, AnswerSheetCall, TestViewpageCall, UserLookAnalisysCall {
     private CommonQuestionBankView commonQuestionBankView;
     private ImageView left_img;
-    private TextView current_count_tv, test_type_tv, current_count;
+    private TextView current_count_tv, test_type_tv;
     private ProgressBar progressBar;
     private int testsSize;
     private Chronometer mChronometer;
@@ -52,7 +52,7 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     private int testType;
     private boolean looksys = false;
     private String testName;
-
+    //current_count
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -60,13 +60,13 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         commonQuestionBankView = getViewById(R.id.dotest_lv);
         testId = getIntent().getStringExtra("testId");
         taskId = getIntent().getStringExtra("taskId");
-        testType = getIntent().getIntExtra("testType", 0);
+        testType = Integer.parseInt(getIntent().getStringExtra("testType"));
         testName = getIntent().getStringExtra("testName");
 
         left_img = getViewById(R.id.left_img);
         mChronometer = getViewById(R.id.chronmer_ctr);
         current_count_tv = getViewById(R.id.current_count_tv);
-        current_count = getViewById(R.id.current_count);
+//        current_count = getViewById(R.id.current_count);
         answer_sheet = getViewById(R.id.answer_sheet);
         test_type_tv = getViewById(R.id.test_type_tv);
         test_pause = getViewById(R.id.test_pause);
@@ -79,11 +79,11 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     public void SuccessData(Object o) {
         List<QuestionBankBean> questionBankBeans = (List<QuestionBankBean>) o;
         testsSize = questionBankBeans.size();
-        current_count.setText("1");
-        current_count_tv.setText("/" + testsSize);
+//        current_count_tv.setText("1");
+        current_count_tv.setText("1/" + testsSize);
         progressBar.setMax(testsSize);
         progressBar.setProgress(1);
-        commonQuestionBankView.initData(questionBankBeans, getSupportFragmentManager(), false,false);
+        commonQuestionBankView.initData(questionBankBeans, getSupportFragmentManager(), testType==3||testType==4?true:false,false);
         isStartJs();
     }
 
@@ -119,9 +119,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
             public void currentPage(int c) {
                 Log.e("查看这个调用次数", "--------");
                 if (c + 1 <= testsSize) {
-                    current_count.setText((c + 1) + "");
+                    current_count_tv.setText((c + 1) + "/"+testsSize);
                     progressBar.setProgress(c + 1);
-                    //         save_img.setImageResource(commonQuestionBankView.getQuestionBankBeanList().get(c).getIsCollect()==0?R.drawable.public_collection:R.drawable.public_collection_y);
                 }
                 if (looksys) {
                     if (mRecordTime != 0) {
@@ -252,30 +251,42 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     }
 
     private void commitTest() {
-        List<QuestionBankBean> questionBankBeanList = commonQuestionBankView.getQuestionBankBeanList();
+        UserPostBean u =commonQuestionBankView.getUserPostBean();
+        Log.e("用户提交了数据", "-----" + GsonUtils.newInstance().GsonToString(u));
+//        List<QuestionBankBean> questionBankBeanList = commonQuestionBankView.getQuestionBankBeanList();
         SubmitTestBean submitTestBean = new SubmitTestBean();
-        for (QuestionBankBean questionBankBean : questionBankBeanList) {
-            submitTestBean.setReport_id(questionBankBean.getReport_id());
-            submitTestBean.setAnswer_time(getChronometerSeconds(mChronometer));
-            if (testType == 1) {
+        submitTestBean.setAnswer_data(u.getAnswer_data());
+        submitTestBean.setAnswer_time(mRecordTime+"");
+        submitTestBean.setReport_id(u.getReport_id());
+        if (testType == 1) {
                 submitTestBean.setType("2");
             }else if (testType == 2){
                 submitTestBean.setType("1");
             }
-            ArrayList<AnswerDataBean> list = new ArrayList<>();
+        mPresenter.submitTest(submitTestBean);
 
-            for (UserPostData userPostData :commonQuestionBankView.getUserPostBean().getAnswer_data()) {
-                AnswerDataBean answerDataBean = new AnswerDataBean();
-                answerDataBean.setQues_id(userPostData.getQues_id());
-                answerDataBean.setQues_time(userPostData.getUser_time());
-                answerDataBean.setUser_answer(userPostData.getUser_answer());
-                list.add(answerDataBean);
-            }
-            submitTestBean.setAnswer_data(list);
-        }
-        String json = GsonUtils.newInstance().GsonToString(questionBankBeanList);
-        Log.e("用户提交了数据", "-----" + GsonUtils.newInstance().GsonToString(json));
-        mPresenter.submitTest(submitTestBean.getReport_id(), submitTestBean.getType(),submitTestBean.getAnswer_time(),json );
+//        for (QuestionBankBean questionBankBean : questionBankBeanList) {
+//            submitTestBean.setReport_id(questionBankBean.getReport_id());
+//            submitTestBean.setAnswer_time(getChronometerSeconds(mChronometer));
+//            if (testType == 1) {
+//                submitTestBean.setType("2");
+//            }else if (testType == 2){
+//                submitTestBean.setType("1");
+//            }
+//            ArrayList<AnswerDataBean> list = new ArrayList<>();
+//
+//            for (UserPostData userPostData :commonQuestionBankView.getUserPostBean().getAnswer_data()) {
+//                AnswerDataBean answerDataBean = new AnswerDataBean();
+//                answerDataBean.setQues_id(userPostData.getQues_id());
+//                answerDataBean.setQues_time(userPostData.getUser_time());
+//                answerDataBean.setUser_answer(userPostData.getUser_answer());
+//                list.add(answerDataBean);
+//            }
+//            submitTestBean.setAnswer_data(list);
+//        }
+//        String json = GsonUtils.newInstance().GsonToString(questionBankBeanList);
+//        Log.e("用户提交了数据", "-----" + GsonUtils.newInstance().GsonToString(json));
+//        mPresenter.submitTest(submitTestBean.getReport_id(), submitTestBean.getType(),submitTestBean.getAnswer_time(),json );
     }
 
     /**
