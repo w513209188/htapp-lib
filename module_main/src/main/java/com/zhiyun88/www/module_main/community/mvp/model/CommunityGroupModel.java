@@ -4,6 +4,7 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.zhiyun88.www.module_main.community.api.CommunityServiceApi;
 import com.zhiyun88.www.module_main.community.bean.CommunityGroupBean;
+import com.zhiyun88.www.module_main.community.bean.MyItemBean;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityGroupContranct;
 
 import io.reactivex.Observable;
@@ -18,7 +19,7 @@ public class CommunityGroupModel implements CommunityGroupContranct.CommunityGro
     }
 
     @Override
-    public Observable<Result> setGroup(String groupId, String states) {
+    public Observable<Result> setGroup(String groupId,String states) {
         return HttpManager.newInstance().getService(CommunityServiceApi.class).setGroup(groupId,states );
     }
 }

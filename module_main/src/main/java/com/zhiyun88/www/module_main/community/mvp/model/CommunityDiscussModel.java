@@ -17,7 +17,7 @@ public class CommunityDiscussModel implements CommunityDiscussContranct.Communit
     }
 
     @Override
-    public Observable<Result<CommunityDiscussBean>> getGroupTypeData(String type, String group_id, int page) {
+    public Observable<Result<CommunityDiscussBean>> getGroupTypeData(String type,String group_id, int page) {
         return HttpManager.newInstance().getService(CommunityServiceApi.class).getGroupTypeData(type, group_id, page);
     }
 }

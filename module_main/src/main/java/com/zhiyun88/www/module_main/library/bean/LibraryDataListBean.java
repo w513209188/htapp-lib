@@ -12,7 +12,6 @@ public class LibraryDataListBean implements Parcelable {
     @SerializedName("abstract")
     private String abstractX;
     private String img;
-    private String ext;
     private String browse_num;
     private String created_at;
     private String file_type;
@@ -21,14 +20,6 @@ public class LibraryDataListBean implements Parcelable {
     private String app_created_at;
     private String app_created_time;
     private String h5_detail;
-
-    public String getExt() {
-        return ext;
-    }
-
-    public void setExt(String ext) {
-        this.ext = ext;
-    }
 
     public String getId() {
         return id;
@@ -149,7 +140,6 @@ public class LibraryDataListBean implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.abstractX);
         dest.writeString(this.img);
-        dest.writeString(this.ext);
         dest.writeString(this.browse_num);
         dest.writeString(this.created_at);
         dest.writeString(this.file_type);
@@ -166,7 +156,6 @@ public class LibraryDataListBean implements Parcelable {
         this.name = in.readString();
         this.abstractX = in.readString();
         this.img = in.readString();
-        this.ext = in.readString();
         this.browse_num = in.readString();
         this.created_at = in.readString();
         this.file_type = in.readString();

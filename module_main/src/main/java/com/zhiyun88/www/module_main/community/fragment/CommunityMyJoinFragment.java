@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
 import com.wangbo.smartrefresh.layout.api.RefreshLayout;
 import com.wangbo.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
@@ -90,7 +90,7 @@ public class CommunityMyJoinFragment extends MvpFragment<CommunityMyJoinPresente
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //参与详情
                 Intent intent = new Intent(getActivity(), TopicDetailsActivity.class);
-                intent.putExtra("question_id",myPartListBeans.get(position).getId());
+                intent.putExtra("h5",myPartListBeans.get(position).getH5_detail());
                 startActivity(intent);
             }
         });

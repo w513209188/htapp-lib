@@ -22,7 +22,7 @@ import com.zhiyun88.www.module_main.community.fragment.CommunityGroupFragment;
 
 import java.util.ArrayList;
 
-public class CommunityActivity extends BaseActivity {
+public class CommunityActivity extends BaseActivity{
 
     private TopBarView topBarView;
     private View view;

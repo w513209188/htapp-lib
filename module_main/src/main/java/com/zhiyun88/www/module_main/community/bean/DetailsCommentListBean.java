@@ -3,6 +3,9 @@ package com.zhiyun88.www.module_main.community.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DetailsCommentListBean implements Parcelable {
 
     private String id;
@@ -16,7 +19,7 @@ public class DetailsCommentListBean implements Parcelable {
     private String user_id;
     private String user_name;
     private String avatar;
-    private ParentCommentBean parent;
+    private List<ParentCommentBean> parent;
 
     public String getId() {
         return id;
@@ -106,11 +109,11 @@ public class DetailsCommentListBean implements Parcelable {
         this.avatar = avatar;
     }
 
-    public ParentCommentBean getParent() {
+    public List<ParentCommentBean> getParent() {
         return parent;
     }
 
-    public void setParent(ParentCommentBean parent) {
+    public void setParent(List<ParentCommentBean> parent) {
         this.parent = parent;
     }
 
@@ -132,7 +135,7 @@ public class DetailsCommentListBean implements Parcelable {
         dest.writeString(this.user_id);
         dest.writeString(this.user_name);
         dest.writeString(this.avatar);
-        dest.writeParcelable(this.parent, flags);
+        dest.writeList(this.parent);
     }
 
     public DetailsCommentListBean() {
@@ -150,7 +153,8 @@ public class DetailsCommentListBean implements Parcelable {
         this.user_id = in.readString();
         this.user_name = in.readString();
         this.avatar = in.readString();
-        this.parent = in.readParcelable(ParentCommentBean.class.getClassLoader());
+        this.parent = new ArrayList<ParentCommentBean>();
+        in.readList(this.parent, ParentCommentBean.class.getClassLoader());
     }
 
     public static final Creator<DetailsCommentListBean> CREATOR = new Creator<DetailsCommentListBean>() {

@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+
 import com.wb.baselib.image.GlideManager;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.config.ISListConfig;
 import com.zhiyun88.www.module_main.R;
-import com.zhiyun88.www.module_main.community.ui.ReleaseTopicActivity;
 
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     public ImageShowAdapter(Context context, List<String> pathList) {
         this.mContext = context;
         this.pathList= pathList;
+        Log.e("ImageShowAdapter: ", pathList.size()+"");
     }
 
     @Override
@@ -34,10 +34,11 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Log.e("onBindViewHolder: ", position+"||||||"+pathList.size());
         if (position == pathList.size()) {
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {
-            Picasso.with(mContext).load(pathList.get(position)).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(holder.imageView);
+            GlideManager.getInstance().setCommonPhoto(holder.imageView, R.drawable.course_image, mContext, pathList.get(position), false);
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

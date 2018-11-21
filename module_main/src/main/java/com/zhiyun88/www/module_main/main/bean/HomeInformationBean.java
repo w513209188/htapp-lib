@@ -11,7 +11,6 @@ public class HomeInformationBean implements Parcelable {
     private String created_at;
     private String click_rate;
     private String comment_count;
-    private String url;
 
     public String getId() {
         return id;
@@ -61,17 +60,6 @@ public class HomeInformationBean implements Parcelable {
         this.comment_count = comment_count;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public HomeInformationBean() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -85,7 +73,9 @@ public class HomeInformationBean implements Parcelable {
         dest.writeString(this.created_at);
         dest.writeString(this.click_rate);
         dest.writeString(this.comment_count);
-        dest.writeString(this.url);
+    }
+
+    public HomeInformationBean() {
     }
 
     protected HomeInformationBean(Parcel in) {
@@ -95,7 +85,6 @@ public class HomeInformationBean implements Parcelable {
         this.created_at = in.readString();
         this.click_rate = in.readString();
         this.comment_count = in.readString();
-        this.url = in.readString();
     }
 
     public static final Creator<HomeInformationBean> CREATOR = new Creator<HomeInformationBean>() {

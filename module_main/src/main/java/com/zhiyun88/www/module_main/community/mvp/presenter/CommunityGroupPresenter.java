@@ -2,11 +2,13 @@ package com.zhiyun88.www.module_main.community.mvp.presenter;
 
 
 import com.wb.baselib.app.AppUtils;
+import com.wb.baselib.appconfig.AppConfigManager;
 import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
 import com.zhiyun88.www.module_main.community.bean.CommunityGroupBean;
+import com.zhiyun88.www.module_main.community.bean.GroupListBean;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityGroupContranct;
 import com.zhiyun88.www.module_main.community.mvp.model.CommunityGroupModel;
 
@@ -40,7 +42,7 @@ public class CommunityGroupPresenter extends CommunityGroupContranct.CommunityGr
                             mView.isLoadMore(false);
                         }
                     } else {
-                        if (communityGroupBeanResult.getData().getGroup_list().getList().size() < 6) {
+                        if (communityGroupBeanResult.getData().getGroup_list().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
                             //已经没有下一页了
                             mView.isLoadMore(false);
                         } else {

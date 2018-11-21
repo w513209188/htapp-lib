@@ -17,7 +17,7 @@ public class GroupDetailsModel implements GroupDetailsContranct.GroupDetailsMode
     }
 
     @Override
-    public Observable<Result> setGroup(String groupId, String states) {
+    public Observable<Result> setGroup(String groupId,String states) {
         return HttpManager.newInstance().getService(CommunityServiceApi.class).setGroup(groupId,states );
     }
 }

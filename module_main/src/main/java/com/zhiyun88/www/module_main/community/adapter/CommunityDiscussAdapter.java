@@ -1,24 +1,45 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.IconMarginSpan;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.wb.baselib.adapter.ListBaseAdapter;
 import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.utils.SpanUtil;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.bean.DiscussListBean;
-import com.zhiyun88.www.module_main.main.config.MainConfig;
-import com.zhiyun88.www.module_main.utils.CircleTransform;
+import com.zhiyun88.www.module_main.main.adapter.ListViewsAdapter;
+import com.zhiyun88.www.module_main.main.bean.HomeInformationBean;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class CommunityDiscussAdapter extends ListBaseAdapter {
+import static com.thefinestartist.utils.service.ClipboardManagerUtil.getText;
+import static com.thefinestartist.utils.service.ClipboardManagerUtil.setText;
+
+public class CommunityDiscussAdapter extends ListBaseAdapter{
 
     public CommunityDiscussAdapter(Context context, List<DiscussListBean> discussListBeans) {
         super(discussListBeans,context);
@@ -59,10 +80,10 @@ public class CommunityDiscussAdapter extends ListBaseAdapter {
             viewHolder.image.setImageResource(R.drawable.name_no);
         }else {
             viewHolder.name.setText(discussListBean.getUser_name());
-            if (discussListBean.getAvatar() == null || discussListBean.getAvatar().equals("")) {
-                Picasso.with(context).load("www").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(viewHolder.image);
-            }else {
-                Picasso.with(context).load(discussListBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(viewHolder.image);
+            try {
+                GlideManager.getInstance().setGlideRoundTransImage(viewHolder.image,R.drawable.user_head ,context , discussListBean.getAvatar());
+            }catch (Exception e){
+                GlideManager.getInstance().setGlideRoundTransImage(viewHolder.image,R.drawable.user_head ,context , "http://www.baiu.com");
             }
 
         }

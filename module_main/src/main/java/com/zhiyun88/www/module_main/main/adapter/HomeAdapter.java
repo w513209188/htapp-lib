@@ -141,7 +141,7 @@ public class HomeAdapter extends BaseAdapter {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(mContext, InformationDetailsActivity.class);
-                    intent.putExtra("h5", homeInformationBeanList.get(position).getUrl());
+                    intent.putExtra("id", homeInformationBeanList.get(position).getId());
                     mContext.startActivity(intent);
                 }
             });

@@ -27,7 +27,8 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
         HttpManager.newInstance().commonRequest(mModel.getLibraryData(page), new BaseObserver<Result<MyLibraryBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<MyLibraryBean> libraryBeanResult) {
-                if (libraryBeanResult.getData() == null) {
+                MyLibraryBean data = libraryBeanResult.getData();
+                if (data == null) {
                     if (page == 1) {
                         mView.ErrorData();
                     } else {
@@ -35,7 +36,7 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
                         mView.isLoadMore(true);
                     }
                 } else {
-                    if (libraryBeanResult.getData().getList() == null || libraryBeanResult.getData().getList().size() == 0) {
+                    if (data.getList() == null || data.getList().size() == 0) {
                         if (page == 1) {
                             mView.NoData();
                         } else {
@@ -43,13 +44,13 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
                             mView.isLoadMore(false);
                         }
                     } else {
-                        if (libraryBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                        if (data.getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
                             //没有下一页了
                             mView.isLoadMore(false);
                         } else {
                             mView.isLoadMore(true);
                         }
-                        mView.SuccessData(libraryBeanResult.getData().getList());
+                        mView.SuccessData(data.getList());
                     }
 
                 }
