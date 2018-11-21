@@ -3,6 +3,7 @@ package com.zhiyun88.www.module_main.community.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImageListBean implements Parcelable {

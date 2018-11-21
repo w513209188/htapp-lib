@@ -185,9 +185,4 @@ public class IntegralFragment extends MvpFragment<IntegralFragmentPresenter> imp
         multipleStatusView.showContent();
         rankingAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public void isLoadMore(boolean isLoadMore) {
-        RefreshUtils.getInstance(smartRefreshLayout,getActivity()).isLoadData(isLoadMore);
-    }
 }

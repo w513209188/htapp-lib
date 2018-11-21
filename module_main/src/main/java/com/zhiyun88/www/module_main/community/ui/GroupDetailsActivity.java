@@ -21,6 +21,7 @@ import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.view.TopBarView;
 import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxMessageBean;
+import com.wb.rxbus.taskBean.RxTaskBean;
 import com.zhiyun88.www.module_main.DialogUtils;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.bean.GroupInfoBean;
@@ -39,6 +40,7 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
     private TextView join;
     private TextView content;
     private ScrollIndicatorView scrollIndicatorView;
+    private View line;
     private ViewPager mViewPager;
     private GroupInfoBean groupInfoBean;
     private String groupId;
@@ -62,7 +64,9 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
         join = getViewById(R.id.group_join);
         content = getViewById(R.id.group_content);
         scrollIndicatorView = getViewById(R.id.spring_indicator);
+        line = getViewById(R.id.view_line_xi);
         mViewPager = getViewById(R.id.viewpager);
+        line.setVisibility(View.GONE);
         mPresenter.getGroupDetails(groupId,"1" );
         initFragment();
     }
@@ -134,7 +138,7 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
     @Override
     public void SuccessData(Object o) {
         groupInfoBean = (GroupInfoBean) o;
-        GlideManager.getInstance().setRoundPhoto(imageView, R.drawable.course_image ,this , groupInfoBean.getImg() ,4 );
+        GlideManager.getInstance().setRoundPhoto(imageView,R.drawable.course_image ,this , groupInfoBean.getImg() ,4 );
         title.setText(groupInfoBean.getName());
         num.setText("成员: "+ groupInfoBean.getUser_count()+"人");
         content.setText(groupInfoBean.getIntroduce());

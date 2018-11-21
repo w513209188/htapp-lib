@@ -38,7 +38,7 @@ public class MessageFragmentPresenter extends MessageFragmentContranct.MessageFr
                         if (page == 1) {
                             mView.NoData();
                         }else {
-                            mView.showErrorMsg("已经没有数据了!");
+                            mView.showErrorMsg(AppUtils.getString(R.string.network_error));
                             mView.loadMore(true);
                         }
                     }else {

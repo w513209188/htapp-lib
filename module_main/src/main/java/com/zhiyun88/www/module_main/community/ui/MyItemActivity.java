@@ -14,14 +14,17 @@ import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 import com.wb.baselib.adapter.ViewPageTabAdapter;
 import com.wb.baselib.base.activity.BaseActivity;
+import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.community.fragment.CommunityDiscussFragment;
+import com.zhiyun88.www.module_main.community.fragment.CommunityGroupFragment;
 import com.zhiyun88.www.module_main.community.fragment.CommunityMyGroupFragment;
 import com.zhiyun88.www.module_main.community.fragment.CommunityMyJoinFragment;
 
 import java.util.ArrayList;
 
-public class MyItemActivity extends BaseActivity {
+public class MyItemActivity extends BaseActivity{
 
     private TopBarView topBarView;
     private View view;

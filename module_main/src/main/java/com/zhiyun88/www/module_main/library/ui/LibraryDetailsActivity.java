@@ -34,7 +34,8 @@ public class LibraryDetailsActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        webView.loadUrl(url);
+        String replace = url.replace("http://ht.zhouhaiyang.com/", "http://test-px.huatu.com/");
+        webView.loadUrl(replace);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);//允许使用js
         webSettings.setJavaScriptEnabled(true);//支持javascript

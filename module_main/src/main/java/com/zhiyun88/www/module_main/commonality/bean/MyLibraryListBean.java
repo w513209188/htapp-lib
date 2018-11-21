@@ -17,7 +17,6 @@ public class MyLibraryListBean implements Parcelable {
     private String created_at;
     private String file_type;
     private String is_collection;
-    private String h5_detail;
 
     public String getId() {
         return id;
@@ -91,17 +90,6 @@ public class MyLibraryListBean implements Parcelable {
         this.is_collection = is_collection;
     }
 
-    public String getH5_detail() {
-        return h5_detail;
-    }
-
-    public void setH5_detail(String h5_detail) {
-        this.h5_detail = h5_detail;
-    }
-
-    public MyLibraryListBean() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -118,7 +106,9 @@ public class MyLibraryListBean implements Parcelable {
         dest.writeString(this.created_at);
         dest.writeString(this.file_type);
         dest.writeString(this.is_collection);
-        dest.writeString(this.h5_detail);
+    }
+
+    public MyLibraryListBean() {
     }
 
     protected MyLibraryListBean(Parcel in) {
@@ -131,7 +121,6 @@ public class MyLibraryListBean implements Parcelable {
         this.created_at = in.readString();
         this.file_type = in.readString();
         this.is_collection = in.readString();
-        this.h5_detail = in.readString();
     }
 
     public static final Creator<MyLibraryListBean> CREATOR = new Creator<MyLibraryListBean>() {
