@@ -1,4 +1,4 @@
-package com.zhiyun88.www.module_main.community.adapter;
+package com.zhiyun88.www.module_main.community.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,21 +8,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.view.MyListView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.bean.DetailsCommentListBean;
-import com.zhiyun88.www.module_main.community.config.CommunityConfig;
-import com.zhiyun88.www.module_main.community.ui.TopicDetailsActivity;
-import com.zhiyun88.www.module_main.utils.CircleTransform;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 public class CommentAdapater extends BaseAdapter{
     private Context mContext;
     private List<DetailsCommentListBean> listBeans;
-    private CommunityConfig.OnReplyListener onReplyListener;
 
     public CommentAdapater(Context context, List<DetailsCommentListBean> listBeans) {
         this.mContext = context;
@@ -45,7 +42,7 @@ public class CommentAdapater extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         DetailsCommentListBean listBean = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -62,41 +59,18 @@ public class CommentAdapater extends BaseAdapter{
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (listBean.getIs_anonymity().equals("1")) {
-            viewHolder.comment_image.setImageResource(R.drawable.name_no);
-            viewHolder.comment_name.setText("匿名");
-        }else {
-            if (listBean.getAvatar() == null || listBean.getAvatar().equals("")) {
-                Picasso.with(mContext).load("www").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(viewHolder.comment_image);
-            }else {
-                Picasso.with(mContext).load(listBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(viewHolder.comment_image);
-            }
-            viewHolder.comment_name.setText(listBean.getUser_name());
-        }
         viewHolder.comment_title.setText(listBean.getContent());
         viewHolder.comment_time.setText("发表于: "+listBean.getCreated_at());
-       // viewHolder.comment_num.setText();
-        if (listBean.getParent() == null){
-
-        }else {
-            viewHolder.comment_listview.setAdapter(new ReplyAdapter(listBean.getParent(),mContext));
-        }
-        viewHolder.comment_reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onReplyListener == null) return;
-                onReplyListener.setReplyClick(position);
-            }
-        });
+        viewHolder.comment_num.setText(listBean.getContent());
+        viewHolder.comment_name.setText(listBean.getUser_name());
+        GlideManager.getInstance().setGlideRoundTransImage(viewHolder.comment_image, R.drawable.user_head, mContext, listBean.getAvatar());
+        //viewHolder.comment_listview
+      //  viewHolder.comment_reply.setOnClickListener();
         return convertView;
     }
     class ViewHolder {
         TextView comment_title,comment_time,comment_num,comment_name,comment_reply;
         ImageView comment_image;
         MyListView comment_listview;
-    }
-
-    public void setOnReplyListener(CommunityConfig.OnReplyListener onReplyListener) {
-        this.onReplyListener = onReplyListener;
     }
 }
