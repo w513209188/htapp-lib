@@ -55,26 +55,26 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
 
                 }
             }
-                @Override
-                public void onFail (ApiException e){
-                    if (page == 1) {
-                        mView.ErrorData();
-                    } else {
-                        mView.showErrorMsg("服务器繁忙，请稍后尝试！");
-                        mView.isLoadMore(true);
-                    }
+            @Override
+            public void onFail (ApiException e){
+                if (page == 1) {
+                    mView.ErrorData();
+                } else {
+                    mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                    mView.isLoadMore(true);
                 }
+            }
 
-                @Override
-                public void onSubscribe (Disposable d){
-                    addSubscribe(d);
-                }
+            @Override
+            public void onSubscribe (Disposable d){
+                addSubscribe(d);
+            }
 
-                @Override
-                public void onComplete () {
+            @Override
+            public void onComplete () {
 
-                }
-            },mView.binLifecycle());
-        }
+            }
+        },mView.binLifecycle());
     }
+}
 

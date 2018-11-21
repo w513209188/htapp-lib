@@ -3,5 +3,6 @@
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/main_listview"/>
+
+   <include layout="@layout/main_resh_scroll_listview"/>
 </com.wangbo.smartrefresh.layout.SmartRefreshLayout>

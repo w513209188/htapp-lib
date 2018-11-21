@@ -55,7 +55,7 @@ public class CommunityDiscussAdapter extends ListBaseAdapter{
             convertView = LayoutInflater.from(context).inflate(R.layout.main_item_community_discuss, null);
             viewHolder.title = convertView.findViewById(R.id.discuss_title);
             viewHolder.read = convertView.findViewById(R.id.discuss_read);
-          //  viewHolder.content = convertView.findViewById(R.id.discuss_content);
+            //  viewHolder.content = convertView.findViewById(R.id.discuss_content);
             viewHolder.time = convertView.findViewById(R.id.discuss_time);
             viewHolder.group = convertView.findViewById(R.id.discuss_group);
             viewHolder.image = convertView.findViewById(R.id.discuss_image);
@@ -88,7 +88,7 @@ public class CommunityDiscussAdapter extends ListBaseAdapter{
 
         }
         viewHolder.read.setText(discussListBean.getRead_count());
-      //  viewHolder.content.setText(discussListBean.getContent());
+        //  viewHolder.content.setText(discussListBean.getContent());
 
         viewHolder.like.setText(discussListBean.getLike_count());
         viewHolder.comment.setText(discussListBean.getComment_count());

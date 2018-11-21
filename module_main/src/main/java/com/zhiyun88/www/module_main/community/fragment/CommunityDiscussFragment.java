@@ -171,9 +171,9 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
 
     @Override
     public void SuccessData(Object o) {
-       if (page == 1) {
-           discussListBeans.clear();
-       }
+        if (page == 1) {
+            discussListBeans.clear();
+        }
         discussListBeans.addAll((Collection<? extends DiscussListBean>) o);
         discussAdapter.notifyDataSetChanged();
         multipleStatusView.showContent();

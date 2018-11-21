@@ -34,7 +34,7 @@ public class GroupDetailsPresenter extends GroupDetailsContranct.GroupDetailsPre
 
             @Override
             public void onFail(ApiException e) {
-                    mView.showErrorMsg(e.getMessage());
+                mView.showErrorMsg(e.getMessage());
             }
 
             @Override
