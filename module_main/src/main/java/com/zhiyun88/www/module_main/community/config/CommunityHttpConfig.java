@@ -31,5 +31,7 @@ public interface CommunityHttpConfig {
     String PUBLICIMAGE= "api/app/public/images";
     //获取评论
     String COMMENT= "api/app/discuss/comment/question_id={question_id}";
+    //发表评论
+    String SENDCOMMENT= "api/app/discuss/createComment";
 
 }

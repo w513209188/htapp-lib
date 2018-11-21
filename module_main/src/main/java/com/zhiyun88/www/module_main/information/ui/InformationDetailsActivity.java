@@ -35,8 +35,7 @@ public class InformationDetailsActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        String replace = url.replace("http://ht.zhouhaiyang.com/", "http://test-px.huatu.com/");
-        webView.loadUrl(replace);
+        webView.loadUrl(url);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);//允许使用js
         webSettings.setJavaScriptEnabled(true);//支持javascript

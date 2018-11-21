@@ -3,7 +3,7 @@ package com.zhiyun88.www.module_main.community.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class ParentCommentBean implements Parcelable {
+public class ParentCommentBean implements Parcelable {
 
     private String id;
     private String question_id;

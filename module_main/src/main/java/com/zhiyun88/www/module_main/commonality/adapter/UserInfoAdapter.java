@@ -81,7 +81,8 @@ public class UserInfoAdapter extends BaseAdapter {
         }
         if (position == 4) {
             viewHolder.title.setText(R.string.main_cell_phone_number);
-            viewHolder.text.setText(userInfoBean.getMobile());
+            String substring = userInfoBean.getMobile().substring(3, 7);
+            viewHolder.text.setText(userInfoBean.getMobile().replaceFirst(substring,"****"));
         }
         return convertView;
     }

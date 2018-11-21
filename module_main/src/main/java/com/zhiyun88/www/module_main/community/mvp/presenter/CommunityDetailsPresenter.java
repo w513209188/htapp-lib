@@ -1,7 +1,6 @@
 package com.zhiyun88.www.module_main.community.mvp.presenter;
 
 import com.wb.baselib.app.AppUtils;
-import com.wb.baselib.appconfig.AppConfigManager;
 import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
@@ -68,12 +67,13 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
                     if (detailsCommentBeanResult.getData().getList() == null || detailsCommentBeanResult.getData().getList().size() == 0) {
                         if (page == 1) {
                            // mView.NoData();
+                            mView.isLoadMore(false);
                         } else {
-                           // mView.showErrorMsg("已经没有数据了!");
+                            mView.showErrorMsg("已经没有数据了!");
                             mView.isLoadMore(false);
                         }
                     } else {
-                        if (detailsCommentBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                        if (detailsCommentBeanResult.getData().getList().size() < 6) {
                             //已经没有下一页了
                             mView.isLoadMore(false);
                         } else {
@@ -94,6 +94,56 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
                     mView.showErrorMsg(e.getMessage());
                   //  mView.isLoadMore(true);
                 }
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                addSubscribe(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }, mView.binLifecycle());
+    }
+
+    @Override
+    public void sendComment(String question_id, String content, String is_anonymity, String comment_id) {
+        HttpManager.newInstance().commonRequest(mModel.sendComment(question_id, content, is_anonymity, comment_id), new BaseObserver<Result>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result result) {
+                mView.sendSuccess(result.getMsg());
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                mView.showErrorMsg(e.getMessage());
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                addSubscribe(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }, mView.binLifecycle());
+    }
+
+    @Override
+    public void setLike(String question_id) {
+        HttpManager.newInstance().commonRequest(mModel.setLike(question_id), new BaseObserver<Result>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result result) {
+                mView.setLikeSuccess(result.getMsg());
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                mView.showErrorMsg(e.getMessage());
             }
 
             @Override

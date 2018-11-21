@@ -18,4 +18,7 @@ public interface CommunityConfig extends CommunityHttpConfig {
    interface OnTypeClickListener {
         void setTypeClick(TaskData taskData);
     }
+    interface OnReplyListener {
+        void setReplyClick(int position);
+    }
 }

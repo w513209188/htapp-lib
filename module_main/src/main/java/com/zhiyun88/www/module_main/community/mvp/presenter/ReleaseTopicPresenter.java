@@ -5,16 +5,13 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
-import com.zhiyun88.www.module_main.community.bean.ImageBean;
 import com.zhiyun88.www.module_main.community.bean.ImageListBean;
 import com.zhiyun88.www.module_main.community.mvp.contranct.ReleaseTopicContranct;
 import com.zhiyun88.www.module_main.community.mvp.model.ReleaseTopicModel;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 

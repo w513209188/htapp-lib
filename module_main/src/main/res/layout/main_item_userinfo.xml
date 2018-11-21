@@ -27,7 +27,6 @@
             android:layout_height="38dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
             android:src="@drawable/user_head"
             android:visibility="gone" />
 
@@ -37,17 +36,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
             android:textColor="@color/main_text_grey_7c"
             android:textSize="@dimen/title5"
             android:visibility="gone" />
 
-        <ImageView
+       <!-- <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/main_more" />
+            android:src="@drawable/main_more" />-->
 
         <View
             android:layout_width="match_parent"
