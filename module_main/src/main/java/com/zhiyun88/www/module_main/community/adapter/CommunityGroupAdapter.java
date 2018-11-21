@@ -58,7 +58,7 @@ public class CommunityGroupAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,listBean.getImg() ,4 );
+        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView, R.drawable.course_image ,mContext ,listBean.getImg() ,4 );
         viewHolder.title.setText(listBean.getName());
         viewHolder.subtitle.setText("成员: "+listBean.getUser_count()+"人");
         viewHolder.context.setText(listBean.getIntroduce());

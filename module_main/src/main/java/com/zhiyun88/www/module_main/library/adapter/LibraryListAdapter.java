@@ -66,15 +66,18 @@ public class LibraryListAdapter extends BaseAdapter {
         } else {
             viewHolder.collect.setSelected(false);
         }
-        if (dataListBean.getFile_type().equals("1")) {
+        if (dataListBean.getExt().equals("pdf")) {
             viewHolder.type.setText("[PDF]");
             viewHolder.type.setTextColor(Color.parseColor("#e60303"));
-        } else if (dataListBean.getFile_type().equals("2")) {
+        } else if (dataListBean.getExt().equals("doc")|| dataListBean.getExt().equals("docx")) {
             viewHolder.type.setText("[WORD]");
             viewHolder.type.setTextColor(Color.parseColor("#005aff"));
-        } else {
+        } else if (dataListBean.getExt().equals("xlsx")){
             viewHolder.type.setText("[EXEL]");
             viewHolder.type.setTextColor(Color.parseColor("#00cb21"));
+        }else if (dataListBean.getExt().equals("ppt")){
+            viewHolder.type.setText("[PPT]");
+            viewHolder.type.setTextColor(Color.parseColor("#ff7800"));
         }
         viewHolder.collect.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,11 +7,8 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
-import com.zhiyun88.www.module_main.community.bean.MyItemBean;
 import com.zhiyun88.www.module_main.community.bean.MyPartBean;
-import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityMyGroupContranct;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityMyJoinContranct;
-import com.zhiyun88.www.module_main.community.mvp.model.CommunityMyGroupModel;
 import com.zhiyun88.www.module_main.community.mvp.model.CommunityMyJoinModel;
 
 import io.reactivex.disposables.Disposable;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -19,7 +19,6 @@
         <TextView
             android:id="@+id/comment_time"
             android:textSize="12sp"
-            android:text="fadsfafasfsdfas"
             android:textColor="@color/main_title_grey_99"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -27,9 +26,9 @@
         <TextView
             android:layout_alignParentRight="true"
             android:textSize="12sp"
-            android:text="fadsfafasfsdfas"
             android:textColor="@color/main_title_grey_99"
             android:id="@+id/comment_num"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -40,11 +39,16 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:layout_centerVertical="true"
             android:id="@+id/comment_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/user_head"/>
 
         <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/comment_image"
             android:layout_marginLeft="10dp"
             android:textSize="16sp"
             android:textColor="@color/main_text_black_33"
@@ -54,8 +58,10 @@
 
         <TextView
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:textSize="14sp"
             android:text="回复"
+            android:padding="10dp"
             android:textColor="@color/main_title_grey_99"
             android:id="@+id/comment_reply"
             android:layout_width="wrap_content"

@@ -54,60 +54,60 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
                     }
                 }
             }
-                @Override
-                public void onFail (ApiException e){
-                    if (page == 1) {
-                        mView.ErrorData();
-                    } else {
-                        mView.showErrorMsg(AppUtils.getString(R.string.network_error));
-                        mView.loadMore(true);
-                    }
-                }
-
-                @Override
-                public void onSubscribe (Disposable d){
-                    addSubscribe(d);
-                }
-
-                @Override
-                public void onComplete () {
-
-                }
-            },mView.binLifecycle());
-        }
-
-        @Override
-        public void getRanking (String id){
-            HttpManager.newInstance().commonRequest(mModel.getRanking(id), new BaseObserver<Result<RankingBean>>(AppUtils.getContext()) {
-                @Override
-                public void onSuccess(Result<RankingBean> rankingBeanResult) {
-                    if (rankingBeanResult.getData() == null) {
-                        mView.ErrorData();
-                    } else {
-                        if (rankingBeanResult.getData().getList() == null || rankingBeanResult.getData().getList().size() == 0) {
-                            mView.NoData();
-                        } else {
-                            mView.SuccessRankingData(rankingBeanResult.getData().getList());
-                        }
-                    }
-
-                }
-
-                @Override
-                public void onFail(ApiException e) {
+            @Override
+            public void onFail (ApiException e){
+                if (page == 1) {
                     mView.ErrorData();
+                } else {
+                    mView.showErrorMsg(AppUtils.getString(R.string.network_error));
+                    mView.loadMore(true);
                 }
+            }
 
-                @Override
-                public void onSubscribe(Disposable d) {
-                    addSubscribe(d);
-                }
+            @Override
+            public void onSubscribe (Disposable d){
+                addSubscribe(d);
+            }
 
-                @Override
-                public void onComplete() {
+            @Override
+            public void onComplete () {
 
-                }
-            }, mView.binLifecycle());
-        }
+            }
+        },mView.binLifecycle());
     }
+
+    @Override
+    public void getRanking (String id){
+        HttpManager.newInstance().commonRequest(mModel.getRanking(id), new BaseObserver<Result<RankingBean>>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result<RankingBean> rankingBeanResult) {
+                if (rankingBeanResult.getData() == null) {
+                    mView.ErrorData();
+                } else {
+                    if (rankingBeanResult.getData().getList() == null || rankingBeanResult.getData().getList().size() == 0) {
+                        mView.NoData();
+                    } else {
+                        mView.SuccessRankingData(rankingBeanResult.getData().getList());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                mView.ErrorData();
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                addSubscribe(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }, mView.binLifecycle());
+    }
+}
 

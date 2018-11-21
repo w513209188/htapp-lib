@@ -26,8 +26,7 @@ public class CertificatePresenter extends CertificateContranct.CertificatePresen
         HttpManager.newInstance().commonRequest(mModel.getCertificateData(page), new BaseObserver<Result<CertificateBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<CertificateBean> certificateBeanResult) {
-                CertificateBean data = certificateBeanResult.getData();
-                if (data == null) {
+                if (certificateBeanResult.getData() == null) {
                     if (page == 1) {
                         mView.ErrorData();
                     }else {
@@ -35,7 +34,7 @@ public class CertificatePresenter extends CertificateContranct.CertificatePresen
                         mView.isLoadMore(true);
                     }
                 }else {
-                    if (data.getList() == null || data.getList().size() == 0) {
+                    if (certificateBeanResult.getData().getList() == null || certificateBeanResult.getData().getList().size() == 0) {
                         if (page == 1) {
                             mView.NoData();
                         }else {
@@ -43,14 +42,14 @@ public class CertificatePresenter extends CertificateContranct.CertificatePresen
                             mView.isLoadMore(false);
                         }
                     }else {
-                        if (data.getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                        if (certificateBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
                             //已经没有下一页了
                             mView.isLoadMore(false);
                         } else {
                             //还有下一页
                             mView.isLoadMore(true);
                         }
-                        mView.SuccessData(data.getList());
+                        mView.SuccessData(certificateBeanResult.getData().getList());
                     }
                 }
             }

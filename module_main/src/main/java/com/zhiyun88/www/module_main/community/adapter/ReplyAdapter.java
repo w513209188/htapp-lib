@@ -16,8 +16,8 @@ public class ReplyAdapter extends BaseAdapter {
     private ParentCommentBean parentCommentBean;
 
     public ReplyAdapter(ParentCommentBean parentCommentBean, Context context) {
-       this.mContext = context;
-       this.parentCommentBean = parentCommentBean;
+        this.mContext = context;
+        this.parentCommentBean = parentCommentBean;
     }
 
     @Override

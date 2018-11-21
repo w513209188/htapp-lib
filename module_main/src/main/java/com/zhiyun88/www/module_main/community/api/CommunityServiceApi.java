@@ -49,7 +49,7 @@ public interface CommunityServiceApi {
     @GET(CommunityHttpConfig.GROUPDETAILSTYPE)
     Observable<Result<CommunityDiscussBean>> getGroupTypeData(@Path("type") String type, @Query("group_id") String group_id, @Query("page") int page);
 
-   @GET(CommunityHttpConfig.DETAILS_LIKE)
+    @GET(CommunityHttpConfig.DETAILS_LIKE)
     Observable<Result> setDetailsLike(@Path("question_id") String question_id);
  /*
     @FormUrlEncoded

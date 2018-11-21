@@ -75,7 +75,7 @@ public class CommentAdapater extends BaseAdapter{
         }
         viewHolder.comment_title.setText(listBean.getContent());
         viewHolder.comment_time.setText("发表于: "+listBean.getCreated_at());
-       // viewHolder.comment_num.setText();
+        // viewHolder.comment_num.setText();
         if (listBean.getParent() == null){
 
         }else {

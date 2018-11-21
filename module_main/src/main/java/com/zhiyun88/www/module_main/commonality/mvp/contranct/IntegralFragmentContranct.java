@@ -18,6 +18,8 @@ public interface IntegralFragmentContranct {
         void loadMore(boolean isLoadMore);
         void SuccessRecordData(List<RecordListBean> recordListBeans);
         void SuccessRankingData(List<RankingListBean> rankingListBeans);
+
+        void isLoadMore(boolean b);
     }
     interface IntegralFragmentModel extends BaseModel {
         Observable<Result<RecordBean>> getRecord(String id, int page);

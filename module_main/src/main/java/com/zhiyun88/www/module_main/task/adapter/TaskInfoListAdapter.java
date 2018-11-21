@@ -41,7 +41,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
         }
         holder.title_tv.setText(taskData.getName());
         if(taskData.getType().equals("1")){
-        //直播
+            //直播
             holder.type_t_img.setImageResource(R.drawable.kc_t_img);
             holder.type_img.setImageResource(R.drawable.zb_p_img);
             if(taskData.getVideo_states().equals("1")){
@@ -60,7 +60,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             holder.type_t_img.setImageResource(R.drawable.ks_t_img);
             holder.type_img.setImageResource(R.drawable.ks_p_img);
             holder.wc_t_img.setVisibility(View.GONE);
-           // holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+            // holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
         }else  if(taskData.getType().equals("3")){
 //问卷
             holder.type_t_img.setImageResource(R.drawable.wj_t_img);

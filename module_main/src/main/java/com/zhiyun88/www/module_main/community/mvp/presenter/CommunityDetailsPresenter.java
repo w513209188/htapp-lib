@@ -25,7 +25,7 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
             @Override
             public void onSuccess(Result<CommunityDetailsBean> communityDetailsBeanResult) {
                 if (communityDetailsBeanResult.getData() == null) {
-                        mView.NoData();
+                    mView.NoData();
                 } else if (communityDetailsBeanResult.getData().getQuestion_info() == null){
                     mView.NoData();
                 }else {
@@ -36,7 +36,7 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
 
             @Override
             public void onFail(ApiException e) {
-              mView.showErrorMsg(e.getMessage());
+                mView.showErrorMsg(e.getMessage());
             }
 
             @Override
@@ -66,7 +66,7 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
                 } else {
                     if (detailsCommentBeanResult.getData().getList() == null || detailsCommentBeanResult.getData().getList().size() == 0) {
                         if (page == 1) {
-                           // mView.NoData();
+                            // mView.NoData();
                             mView.isLoadMore(false);
                         } else {
                             mView.showErrorMsg("已经没有数据了!");
@@ -88,11 +88,11 @@ public class CommunityDetailsPresenter extends CommunityDetailsContranct.Communi
             @Override
             public void onFail(ApiException e) {
                 if (page == 1) {
-                 //   mView.ErrorData();
-                 //   mView.showErrorMsg(e.getMessage());
+                    //   mView.ErrorData();
+                    //   mView.showErrorMsg(e.getMessage());
                 } else {
                     mView.showErrorMsg(e.getMessage());
-                  //  mView.isLoadMore(true);
+                    //  mView.isLoadMore(true);
                 }
             }
 
