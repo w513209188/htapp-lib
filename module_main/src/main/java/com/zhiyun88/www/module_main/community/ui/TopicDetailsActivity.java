@@ -168,6 +168,11 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     private boolean isReply = false;
     private void showDiaLog() {
         CustomDialog customDialog = new CustomDialog(this, R.style.main_MyDialogStyle);
+        content_et = customDialog.findViewById(R.id.details_content);
+        LinearLayout have_name_ll = customDialog.findViewById(R.id.have_name_ll);
+        showName_tv = customDialog.findViewById(R.id.show_name);
+        commit_tv = customDialog.findViewById(R.id.details_commit);
+
         Window window = customDialog.getWindow();
         window.getDecorView().setPadding(15, 15, 15, 15);
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -178,6 +183,30 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         //设置点击Dialog外部任意区域关闭Dialog
         customDialog.setCanceledOnTouchOutside(true);
         window.setGravity(Gravity.BOTTOM);
+        if (isReply) {
+            content_et.setHint("回复: " + listBeans.get(index).getUser_name());
+        }else {
+            content_et.setHint("");
+        }
+        have_name_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                is_show = !is_show;
+                showName_tv.setSelected(is_show);
+            }
+        });
+        commit_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = content_et.getText().toString().trim();
+                if (isReply) {
+                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", listBeans.get(index).getId());
+                } else {
+                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", "0");
+                }
+                commit_tv.setEnabled(false);
+            }
+        });
         customDialog.show();
        /* is_show = false;
         View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
