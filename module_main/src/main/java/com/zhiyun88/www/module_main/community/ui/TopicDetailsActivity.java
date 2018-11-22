@@ -10,8 +10,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +42,7 @@ import com.zhiyun88.www.module_main.community.bean.QuestionInfoBean;
 import com.zhiyun88.www.module_main.community.config.CommunityConfig;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityDetailsContranct;
 import com.zhiyun88.www.module_main.community.mvp.presenter.CommunityDetailsPresenter;
+import com.zhiyun88.www.module_main.community.view.CustomDialog;
 import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.io.InputStream;
@@ -163,11 +167,22 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     private boolean is_show = false;
     private boolean isReply = false;
     private void showDiaLog() {
-
-        is_show = false;
+        CustomDialog customDialog = new CustomDialog(this, R.style.main_MyDialogStyle);
+        Window window = customDialog.getWindow();
+        window.getDecorView().setPadding(15, 15, 15, 15);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置宽高
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
+        //设置点击Dialog外部任意区域关闭Dialog
+        customDialog.setCanceledOnTouchOutside(true);
+        window.setGravity(Gravity.BOTTOM);
+        customDialog.show();
+       /* is_show = false;
         View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
-        dialog = StyledDialog.buildCustomBottomSheet(view).show();
-        dialog.setCanceledOnTouchOutside(true);
+        this.dialog = StyledDialog.buildCustomBottomSheet(view).show();
+        this.dialog.setCanceledOnTouchOutside(true);
         content_et = view.findViewById(R.id.details_content);
         LinearLayout have_name_ll = view.findViewById(R.id.have_name_ll);
         showName_tv = view.findViewById(R.id.show_name);
@@ -195,7 +210,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
                 }
                 commit_tv.setEnabled(false);
             }
-        });
+        });*/
     }
 
     @Override

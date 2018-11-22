@@ -10,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.wb.baselib.image.GlideManager;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.config.ISListConfig;
 import com.zhiyun88.www.module_main.R;
-import com.zhiyun88.www.module_main.community.ui.ReleaseTopicActivity;
 
 import java.util.List;
 
@@ -36,10 +34,10 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
-        layoutParams.height = gridLayoutManager.getWidth() / 3 - holder.imageView.getPaddingLeft();
-        holder.imageView.setLayoutParams(layoutParams);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
+        params.height = gridLayoutManager.getWidth()/gridLayoutManager.getSpanCount();
+        holder.imageView.setLayoutParams(params);
         if (position == pathList.size()) {
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {
