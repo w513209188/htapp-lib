@@ -1,6 +1,7 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ import com.zhiyun88.www.module_main.community.ui.ReleaseTopicActivity;
 import java.util.List;
 
 public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.ViewHolder>{
+    private GridLayoutManager gridLayoutManager;
     private Context mContext;
     private List<String> pathList;
 
-    public ImageShowAdapter(Context context, List<String> pathList) {
+    public ImageShowAdapter(Context context, List<String> pathList, GridLayoutManager gridLayoutManager) {
         this.mContext = context;
         this.pathList= pathList;
+        this.gridLayoutManager = gridLayoutManager;
     }
 
     @Override
@@ -34,6 +37,9 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
+        layoutParams.height = gridLayoutManager.getWidth() / 3 - holder.imageView.getPaddingLeft();
+        holder.imageView.setLayoutParams(layoutParams);
         if (position == pathList.size()) {
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {

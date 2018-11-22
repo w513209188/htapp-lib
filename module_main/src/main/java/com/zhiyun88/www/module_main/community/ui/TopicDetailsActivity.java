@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hss01248.dialog.StyledDialog;
@@ -162,6 +163,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     private boolean is_show = false;
     private boolean isReply = false;
     private void showDiaLog() {
+
         is_show = false;
         View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
         dialog = StyledDialog.buildCustomBottomSheet(view).show();

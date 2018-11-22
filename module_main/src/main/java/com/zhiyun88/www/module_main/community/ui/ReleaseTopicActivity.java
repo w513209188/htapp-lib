@@ -72,11 +72,11 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
                 Picasso.with(context).load(path).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(imageView);
             }
         });
-
-        select_image.setLayoutManager(new GridLayoutManager(select_image.getContext(), 3));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(select_image.getContext(), 3);
+        select_image.setLayoutManager(gridLayoutManager);
         select_image.addItemDecoration(new DividerGridItemDecoration(select_image.getContext()));
         result = new ArrayList<>();
-        imageShowAdapter = new ImageShowAdapter(this, result);
+        imageShowAdapter = new ImageShowAdapter(this, result,gridLayoutManager);
         select_image.setAdapter(imageShowAdapter);
     }
 
