@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
@@ -58,9 +59,11 @@ public class MyTrainAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         try {
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,myTrainListBean.getCover() , 4);
+            Picasso.with(mContext).load(myTrainListBean.getCover()).error(R.drawable.course_image).placeholder(R.drawable.course_image).into(viewHolder.imageView);
+           // GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,myTrainListBean.getCover() , 4);
         }catch (Exception e){
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,"http://www.baidu.com" , 4);
+            Picasso.with(mContext).load("http://www.baidu.com").error(R.drawable.course_image).placeholder(R.drawable.course_image).into(viewHolder.imageView);
+           // GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext ,"http://www.baidu.com" , 4);
         }
 
         viewHolder.title.setText(myTrainListBean.getTitle());

@@ -7,7 +7,6 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
-import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.bean.CommunityDiscussBean;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityDiscussContranct;
 import com.zhiyun88.www.module_main.community.mvp.model.CommunityDiscussModel;

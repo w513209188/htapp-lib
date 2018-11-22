@@ -6,11 +6,8 @@ import com.wb.baselib.bean.Result;
 import com.wb.baselib.http.HttpManager;
 import com.wb.baselib.http.exception.ApiException;
 import com.wb.baselib.http.observer.BaseObserver;
-import com.zhiyun88.www.module_main.community.bean.CommunityGroupBean;
 import com.zhiyun88.www.module_main.community.bean.GroupDetailsBean;
-import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityGroupContranct;
 import com.zhiyun88.www.module_main.community.mvp.contranct.GroupDetailsContranct;
-import com.zhiyun88.www.module_main.community.mvp.model.CommunityGroupModel;
 import com.zhiyun88.www.module_main.community.mvp.model.GroupDetailsModel;
 
 import io.reactivex.disposables.Disposable;
@@ -34,7 +31,7 @@ public class GroupDetailsPresenter extends GroupDetailsContranct.GroupDetailsPre
 
             @Override
             public void onFail(ApiException e) {
-                    mView.showErrorMsg(e.getMessage());
+                mView.showErrorMsg(e.getMessage());
             }
 
             @Override

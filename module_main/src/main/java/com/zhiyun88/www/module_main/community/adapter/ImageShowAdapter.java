@@ -1,6 +1,7 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,22 +9,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
+import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.config.ISListConfig;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.community.ui.ReleaseTopicActivity;
 
 import java.util.List;
 
 public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.ViewHolder>{
+    private GridLayoutManager gridLayoutManager;
     private Context mContext;
     private List<String> pathList;
 
-    public ImageShowAdapter(Context context, List<String> pathList) {
+    public ImageShowAdapter(Context context, List<String> pathList, GridLayoutManager gridLayoutManager) {
         this.mContext = context;
         this.pathList= pathList;
-        Log.e("ImageShowAdapter: ", pathList.size()+"");
+        this.gridLayoutManager = gridLayoutManager;
     }
 
     @Override
@@ -34,11 +37,13 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.e("onBindViewHolder: ", position+"||||||"+pathList.size());
+        ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
+        layoutParams.height = gridLayoutManager.getWidth() / 3 - holder.imageView.getPaddingLeft();
+        holder.imageView.setLayoutParams(layoutParams);
         if (position == pathList.size()) {
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {
-            GlideManager.getInstance().setCommonPhoto(holder.imageView, R.drawable.course_image, mContext, pathList.get(position), false);
+            Picasso.with(mContext).load(pathList.get(position)).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(holder.imageView);
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

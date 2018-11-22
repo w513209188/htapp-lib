@@ -59,7 +59,7 @@ public class CommunityMyGroupAdapter extends BaseAdapter {
         GlideManager.getInstance().setRoundPhoto(viewHolder.imageView, R.drawable.course_image, mContext, myItemListBean.getImg(), 4);
         viewHolder.title.setText(myItemListBean.getName());
         viewHolder.subtitle.setText("成员: " + myItemListBean.getUser_count() + "人");
-        viewHolder.context.setText(myItemListBean.getNotice());
+        viewHolder.context.setText(myItemListBean.getIntroduce());
         viewHolder.join.setSelected(true);
         viewHolder.join.setText("退出小组");
 

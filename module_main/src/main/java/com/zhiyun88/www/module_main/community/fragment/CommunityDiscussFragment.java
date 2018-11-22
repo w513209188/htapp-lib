@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
@@ -17,6 +15,7 @@ import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
 import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
+import com.wb.baselib.view.MyListView;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.CommunityDiscussAdapter;
 import com.zhiyun88.www.module_main.community.bean.DiscussListBean;
@@ -33,7 +32,7 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
 
     private MultipleStatusView multipleStatusView;
     private SmartRefreshLayout smartRefreshLayout;
-    private ListView listView;
+    private MyListView listView;
     private CommunityDiscussAdapter discussAdapter;
     private String type;
     private String groupId;
@@ -64,7 +63,7 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
-        setContentView(R.layout.main_fragment_information);
+        setContentView(R.layout.main_fragment_community);
         type = getArguments().getString("type");
         groupId = getArguments().getString("groupId","");
         multipleStatusView = getViewById(R.id.multiplestatusview);
@@ -171,9 +170,9 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
 
     @Override
     public void SuccessData(Object o) {
-       if (page == 1) {
-           discussListBeans.clear();
-       }
+        if (page == 1) {
+            discussListBeans.clear();
+        }
         discussListBeans.addAll((Collection<? extends DiscussListBean>) o);
         discussAdapter.notifyDataSetChanged();
         multipleStatusView.showContent();

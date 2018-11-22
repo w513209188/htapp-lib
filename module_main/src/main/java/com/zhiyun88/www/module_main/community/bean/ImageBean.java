@@ -3,10 +3,6 @@ package com.zhiyun88.www.module_main.community.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 public class ImageBean implements Parcelable {
 
     private String path;

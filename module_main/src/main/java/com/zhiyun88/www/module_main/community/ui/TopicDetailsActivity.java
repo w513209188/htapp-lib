@@ -1,6 +1,6 @@
 package com.zhiyun88.www.module_main.community.ui;
 
-import android.content.Intent;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,27 +8,38 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hss01248.dialog.StyledDialog;
-import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
+
+
+import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle2.LifecycleTransformer;
+
+import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
+import com.wangbo.smartrefresh.layout.api.RefreshLayout;
+import com.wangbo.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.MyListView;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.community.adapter.CommentAdapater;
 import com.zhiyun88.www.module_main.community.bean.DetailsCommentListBean;
 import com.zhiyun88.www.module_main.community.bean.QuestionInfoBean;
+import com.zhiyun88.www.module_main.community.config.CommunityConfig;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityDetailsContranct;
 import com.zhiyun88.www.module_main.community.mvp.presenter.CommunityDetailsPresenter;
+import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -40,16 +51,15 @@ import java.util.List;
 public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter> implements CommunityDetailsContranct.CommunityDetailsView {
 
     private TopBarView topBarView;
-    private ImageView like;
-    private TextView commit,comment_count,text,content;
-    private RelativeLayout details_rl;
-    private String url;
+    private ImageView like, headImage;
+    private TextView comment_count, text, htmlTextView, details_name, details_time, details_browse;
     private String question_id;
     private MyListView details_list;
     private CommentAdapater mAdapter;
     private MultipleStatusView multiplestatusview;
     private SmartRefreshLayout smartRefreshLayout;
     private int page = 1;
+    private int index;
 
     private Handler mHandler = new Handler() {
 
@@ -59,8 +69,9 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
                 case 1:
                     CharSequence charSequence = (CharSequence) msg.obj;
                     if (charSequence != null) {
-                        content.setText(charSequence);
-                        content.setMovementMethod(LinkMovementMethod.getInstance());
+                        htmlTextView.setText(charSequence);
+                        multiplestatusview.showContent();
+                        //  htmlTextView.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                     break;
                 default:
@@ -69,6 +80,10 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         }
     };
     private List<DetailsCommentListBean> listBeans;
+    private Dialog dialog;
+    private TextView commit_tv;
+    private ImageView showName_tv;
+    private EditText content_et;
 
     @Override
     protected CommunityDetailsPresenter onCreatePresenter() {
@@ -78,29 +93,31 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.main_activity_mu_community_details);
-        question_id = getIntent().getStringExtra("question_id");
-        url = getIntent().getStringExtra("h5");
+        try {
+            question_id = getIntent().getStringExtra("question_id");
+        }catch (NullPointerException e) {
+            showShortToast("参数错误");
+            return;
+        }
         multiplestatusview = getViewById(R.id.multiplestatusview);
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         topBarView = getViewById(R.id.topbarview);
-        content = getViewById(R.id.details_textview);
+        htmlTextView = getViewById(R.id.details_textview);
         comment_count = getViewById(R.id.comment_count);
         details_list = getViewById(R.id.p_mlv);
         text = getViewById(R.id.details_text);
         like = getViewById(R.id.details_like);
-        commit = getViewById(R.id.details_commit);
-        details_rl = getViewById(R.id.details_rl);
+        headImage = getViewById(R.id.details_head);
+        details_name = getViewById(R.id.details_name);
+        details_time = getViewById(R.id.details_time);
+        details_browse = getViewById(R.id.details_browse);
+        RefreshUtils.getInstance(smartRefreshLayout,this ).defaultRefreSh();
         smartRefreshLayout.setEnableRefresh(false);
         listBeans = new ArrayList<>();
         mAdapter = new CommentAdapater(this, listBeans);
         details_list.setAdapter(mAdapter);
         multiplestatusview.showLoading();
         mPresenter.getCommunityDetails(question_id);
-        initWebView();
-    }
-
-    private void initWebView() {
-
     }
 
     @Override
@@ -116,22 +133,67 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                like.setImageResource(R.drawable.details_like_org);
+                mPresenter.setLike(question_id);
                 like.setEnabled(false);
             }
         });
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                isReply=false;
+                showDiaLog();
             }
         });
-        content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mAdapter.setOnReplyListener(new CommunityConfig.OnReplyListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
-                StyledDialog.buildCustomBottomSheet(view);
+            public void setReplyClick(int position) {
+                index = position;
+                isReply=true;
+                showDiaLog();
+            }
+        });
+        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mPresenter.getCommentList(question_id, "1", page);
+            }
+        });
+    }
 
+    private boolean is_show = false;
+    private boolean isReply = false;
+    private void showDiaLog() {
+
+        is_show = false;
+        View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
+        dialog = StyledDialog.buildCustomBottomSheet(view).show();
+        dialog.setCanceledOnTouchOutside(true);
+        content_et = view.findViewById(R.id.details_content);
+        LinearLayout have_name_ll = view.findViewById(R.id.have_name_ll);
+        showName_tv = view.findViewById(R.id.show_name);
+        commit_tv = view.findViewById(R.id.details_commit);
+        if (isReply) {
+            content_et.setHint("回复: " + listBeans.get(index).getUser_name());
+        }else {
+            content_et.setHint("");
+        }
+        have_name_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                is_show = !is_show;
+                showName_tv.setSelected(is_show);
+            }
+        });
+        commit_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = content_et.getText().toString().trim();
+                if (isReply) {
+                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", listBeans.get(index).getId());
+                } else {
+                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", "0");
+                }
+                commit_tv.setEnabled(false);
             }
         });
     }
@@ -160,9 +222,18 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     public void SuccessData(Object o) {
         QuestionInfoBean questionInfoBean = (QuestionInfoBean) o;
         setActivityContent(questionInfoBean.getContent());
+
         topBarView.getCenterTextView().setText(questionInfoBean.getTitle());
-        comment_count.setText("全部评论 ("+0+")");
-        multiplestatusview.showContent();
+        if (questionInfoBean.getAvatar() == null || questionInfoBean.getAvatar().equals("")) {
+            Picasso.with(TopicDetailsActivity.this).load("www").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+        }else {
+            Picasso.with(TopicDetailsActivity.this).load(questionInfoBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+        }
+        details_name.setText(questionInfoBean.getUser_name());
+        details_time.setText(questionInfoBean.getCreated_at());
+        details_browse.setText(questionInfoBean.getRead_count() + "次浏览");
+
+        comment_count.setText("全部评论 (" + 0 + ")");
         mPresenter.getCommentList(question_id, "1", page);
     }
 
@@ -251,8 +322,21 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         }
         listBeans.addAll(list);
         mAdapter.notifyDataSetChanged();
+        comment_count.setText("全部评论 (" + total + ")");
         page++;
-        comment_count.setText("全部评论 ("+total+")");
+    }
 
+    @Override
+    public void sendSuccess(String msg) {
+        showShortToast(msg);
+        dialog.dismiss();
+        commit_tv.setEnabled(true);
+        page = 1;
+        mPresenter.getCommentList(question_id, "1", page);
+    }
+
+    @Override
+    public void setLikeSuccess(String msg) {
+        like.setImageResource(R.drawable.details_like_org);
     }
 }

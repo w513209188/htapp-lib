@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.http.HttpManager;
@@ -68,14 +69,14 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         ISNav.getInstance().init(new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
-                GlideManager.getInstance().setCommonPhoto(imageView, R.drawable.course_image, ReleaseTopicActivity.this, path, false);
+                Picasso.with(context).load(path).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(imageView);
             }
         });
-
-        select_image.setLayoutManager(new GridLayoutManager(select_image.getContext(), 3));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(select_image.getContext(), 3);
+        select_image.setLayoutManager(gridLayoutManager);
         select_image.addItemDecoration(new DividerGridItemDecoration(select_image.getContext()));
         result = new ArrayList<>();
-        imageShowAdapter = new ImageShowAdapter(this, result);
+        imageShowAdapter = new ImageShowAdapter(this, result,gridLayoutManager);
         select_image.setAdapter(imageShowAdapter);
     }
 

@@ -27,8 +27,7 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
         HttpManager.newInstance().commonRequest(mModel.getLibraryData(page), new BaseObserver<Result<MyLibraryBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<MyLibraryBean> libraryBeanResult) {
-                MyLibraryBean data = libraryBeanResult.getData();
-                if (data == null) {
+                if (libraryBeanResult.getData() == null) {
                     if (page == 1) {
                         mView.ErrorData();
                     } else {
@@ -36,7 +35,7 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
                         mView.isLoadMore(true);
                     }
                 } else {
-                    if (data.getList() == null || data.getList().size() == 0) {
+                    if (libraryBeanResult.getData().getList() == null || libraryBeanResult.getData().getList().size() == 0) {
                         if (page == 1) {
                             mView.NoData();
                         } else {
@@ -44,37 +43,37 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
                             mView.isLoadMore(false);
                         }
                     } else {
-                        if (data.getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                        if (libraryBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
                             //没有下一页了
                             mView.isLoadMore(false);
                         } else {
                             mView.isLoadMore(true);
                         }
-                        mView.SuccessData(data.getList());
+                        mView.SuccessData(libraryBeanResult.getData().getList());
                     }
 
                 }
             }
-                @Override
-                public void onFail (ApiException e){
-                    if (page == 1) {
-                        mView.ErrorData();
-                    } else {
-                        mView.showErrorMsg("服务器繁忙，请稍后尝试！");
-                        mView.isLoadMore(true);
-                    }
+            @Override
+            public void onFail (ApiException e){
+                if (page == 1) {
+                    mView.ErrorData();
+                } else {
+                    mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                    mView.isLoadMore(true);
                 }
+            }
 
-                @Override
-                public void onSubscribe (Disposable d){
-                    addSubscribe(d);
-                }
+            @Override
+            public void onSubscribe (Disposable d){
+                addSubscribe(d);
+            }
 
-                @Override
-                public void onComplete () {
+            @Override
+            public void onComplete () {
 
-                }
-            },mView.binLifecycle());
-        }
+            }
+        },mView.binLifecycle());
     }
+}
 

@@ -1,21 +1,16 @@
 package com.zhiyun88.www.module_main.community.api;
 
-import android.telecom.Call;
-
 import com.wb.baselib.bean.Result;
 import com.zhiyun88.www.module_main.community.bean.CommunityDetailsBean;
 import com.zhiyun88.www.module_main.community.bean.CommunityDiscussBean;
 import com.zhiyun88.www.module_main.community.bean.CommunityGroupBean;
 import com.zhiyun88.www.module_main.community.bean.DetailsCommentBean;
 import com.zhiyun88.www.module_main.community.bean.GroupDetailsBean;
-import com.zhiyun88.www.module_main.community.bean.ImageBean;
 import com.zhiyun88.www.module_main.community.bean.ImageListBean;
 import com.zhiyun88.www.module_main.community.bean.MyItemBean;
 import com.zhiyun88.www.module_main.community.bean.MyPartBean;
 import com.zhiyun88.www.module_main.community.config.CommunityHttpConfig;
-import com.zhiyun88.www.module_main.course.bean.CommentListBean;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -54,15 +49,16 @@ public interface CommunityServiceApi {
     @GET(CommunityHttpConfig.GROUPDETAILSTYPE)
     Observable<Result<CommunityDiscussBean>> getGroupTypeData(@Path("type") String type, @Query("group_id") String group_id, @Query("page") int page);
 
-   /* @GET(CommunityHttpConfig.DETAILS_LIKE)
+    @GET(CommunityHttpConfig.DETAILS_LIKE)
     Observable<Result> setDetailsLike(@Path("question_id") String question_id);
-
+ /*
     @FormUrlEncoded
     @POST(CommunityHttpConfig.DETAILS_COLLECT)
     Observable<Result> setDetailsCollect(@Field("question_id") String question_id,@Field("states") String states);*/
 
     @GET(CommunityHttpConfig.COMMUNITY_DETAILS)
     Observable<Result<CommunityDetailsBean>> getCommunityDetails(@Path("question_id") String question_id, @Query("st") String st);
+
     @FormUrlEncoded
     @POST(CommunityHttpConfig.RELEASETOPIC)
     Observable<Result> commitTopicData(@FieldMap() Map<String, String> map);
@@ -73,4 +69,8 @@ public interface CommunityServiceApi {
 
     @GET(CommunityHttpConfig.COMMENT)
     Observable<Result<DetailsCommentBean>> getCommentList(@Path("question_id") String question_id, @Query("st") String st, @Query("page") int page);
+
+    @FormUrlEncoded
+    @POST(CommunityHttpConfig.SENDCOMMENT)
+    Observable<Result> sendComment(@FieldMap Map<String, String> map);
 }

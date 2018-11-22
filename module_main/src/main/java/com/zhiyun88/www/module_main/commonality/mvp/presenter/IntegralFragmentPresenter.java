@@ -27,27 +27,35 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
         HttpManager.newInstance().commonRequest(mModel.getRecord(id, page), new BaseObserver<Result<RecordBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<RecordBean> recordBeanResult) {
-                if (recordBeanResult.getData() == null || recordBeanResult.getData().getList().size() == 0) {
+                if (recordBeanResult.getData() == null) {
                     if (page == 1) {
-                        mView.NoData();
+                        mView.ErrorData();
                     } else {
-                        mView.showErrorMsg(AppUtils.getString(R.string.network_error));
-                        mView.loadMore(true);
+                        mView.showErrorMsg("服务器繁忙，请稍后尝试！");
+                        mView.isLoadMore(true);
                     }
                 } else {
-                    if (recordBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
-                        //已经没有下一页了
-                        mView.loadMore(false);
+                    if (recordBeanResult.getData().getList() == null || recordBeanResult.getData().getList().size() == 0) {
+                        if (page == 1) {
+                            mView.NoData();
+                        } else {
+                            mView.showErrorMsg("已经没有数据了!");
+                            mView.isLoadMore(false);
+                        }
                     } else {
-                        //还有下一页
-                        mView.loadMore(true);
+                        if (recordBeanResult.getData().getList().size() < AppConfigManager.newInstance().getAppConfig().getMaxPage()) {
+                            //已经没有下一页了
+                            mView.isLoadMore(false);
+                        } else {
+                            //还有下一页
+                            mView.isLoadMore(true);
+                        }
+                        mView.SuccessRecordData(recordBeanResult.getData().getList());
                     }
-                    mView.SuccessRecordData(recordBeanResult.getData().getList());
                 }
             }
-
             @Override
-            public void onFail(ApiException e) {
+            public void onFail (ApiException e){
                 if (page == 1) {
                     mView.ErrorData();
                 } else {
@@ -57,19 +65,19 @@ public class IntegralFragmentPresenter extends IntegralFragmentContranct.Integra
             }
 
             @Override
-            public void onSubscribe(Disposable d) {
+            public void onSubscribe (Disposable d){
                 addSubscribe(d);
             }
 
             @Override
-            public void onComplete() {
+            public void onComplete () {
 
             }
-        }, mView.binLifecycle());
+        },mView.binLifecycle());
     }
 
     @Override
-    public void getRanking(String id) {
+    public void getRanking (String id){
         HttpManager.newInstance().commonRequest(mModel.getRanking(id), new BaseObserver<Result<RankingBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<RankingBean> rankingBeanResult) {

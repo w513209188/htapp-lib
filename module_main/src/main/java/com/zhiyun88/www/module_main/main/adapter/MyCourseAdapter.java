@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.wb.baselib.image.GlideManager;
+import com.squareup.picasso.Picasso;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
 import com.zhiyun88.www.module_main.main.bean.MyCourseListBean;
@@ -69,9 +69,11 @@ public class MyCourseAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         try {
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , myCourseListBean.getCover(), 4);
+            Picasso.with(mContext).load(myCourseListBean.getCover()).error(R.drawable.course_image).placeholder(R.drawable.course_image).into(viewHolder.imageView);
+           // GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , myCourseListBean.getCover(), 4);
         }catch (Exception e){
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://www.baidu.com", 4);
+            Picasso.with(mContext).load("http://www.baidu.com").error(R.drawable.course_image).placeholder(R.drawable.course_image).into(viewHolder.imageView);
+            //GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://www.baidu.com", 4);
         }
         viewHolder.course_pj_img.setOnClickListener(new View.OnClickListener() {
             @Override

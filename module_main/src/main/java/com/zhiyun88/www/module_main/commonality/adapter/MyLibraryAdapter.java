@@ -1,17 +1,21 @@
 package com.zhiyun88.www.module_main.commonality.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryListBean;
+import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
+import com.zhiyun88.www.module_main.library.ui.LibraryDetailsActivity;
 
 import java.util.List;
 
@@ -42,7 +46,7 @@ public class MyLibraryAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        MyLibraryListBean myLibraryListBean = getItem(position);
+        final MyLibraryListBean myLibraryListBean = getItem(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.main_item_library, null);
@@ -51,6 +55,7 @@ public class MyLibraryAdapter extends BaseAdapter{
             viewHolder.title = convertView.findViewById(R.id.library_title);
             viewHolder.collect = convertView.findViewById(R.id.library_collected);
             viewHolder.subtitle = convertView.findViewById(R.id.library_subtitle);
+            viewHolder.library_rl = convertView.findViewById(R.id.library_rl);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -63,20 +68,32 @@ public class MyLibraryAdapter extends BaseAdapter{
         } else {
             viewHolder.collect.setSelected(false);
         }
-        if (myLibraryListBean.getFile_type().equals("1")) {
+       /* if (myLibraryListBean.getExt().equals("pdf")) {
             viewHolder.type.setText("[PDF]");
             viewHolder.type.setTextColor(Color.parseColor("#e60303"));
-        } else if (myLibraryListBean.getFile_type().equals("2")) {
+        } else if (myLibraryListBean.getExt().equals("doc")|| myLibraryListBean.getExt().equals("docx")) {
             viewHolder.type.setText("[WORD]");
             viewHolder.type.setTextColor(Color.parseColor("#005aff"));
-        } else {
+        } else if (myLibraryListBean.getExt().equals("xlsx")){
             viewHolder.type.setText("[EXEL]");
             viewHolder.type.setTextColor(Color.parseColor("#00cb21"));
-        }
+        }else if (myLibraryListBean.getExt().equals("ppt")){
+            viewHolder.type.setText("[PPT]");
+            viewHolder.type.setTextColor(Color.parseColor("#ff7800"));
+        }*/
+        viewHolder.library_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, LibraryDetailsActivity.class);
+                intent.putExtra("h5", myLibraryListBean.getH5_detail());
+                mContext.startActivity(intent);
+            }
+        });
         return convertView;
     }
     class ViewHolder {
         ImageView imageView, collect;
         TextView title, subtitle, type;
+        RelativeLayout library_rl;
     }
 }

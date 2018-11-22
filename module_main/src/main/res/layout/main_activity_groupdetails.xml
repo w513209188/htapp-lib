@@ -1,94 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <com.wb.baselib.view.TopBarView
-        android:id="@+id/topbarview"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:bottomLineColor="@color/main_line_ea"
-        app:centerTextColor="#333333"
-        app:centerTextSize="18sp"
-        app:centerType="textView"
-        app:centerText="小组详情"
-        app:fillStatusBar="false"
-        app:leftImageResource="@drawable/main_back"
-        app:leftType="imageButton"
-        app:showBottomLine="true"
-        app:rightType="textView"
-        app:rightText="发帖"
-        app:rightTextSize="15sp"
-        app:rightTextColor="@color/main_text_blue_458"
-        app:titleBarHeight="45dp" />
+        android:background="@color/white"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/main_bg_grey_f8"/>
-
-    <RelativeLayout
-        android:padding="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/group_image"
-            android:layout_width="100dp"
-            android:layout_height="68dp" />
-
-
-        <TextView
-            android:id="@+id/group_title"
-            android:layout_toRightOf="@+id/group_image"
-            android:text="625562"
-            android:textSize="15sp"
-            android:textColor="@color/main_text_black_11"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/group_join"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingtoolbarlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/group_num"
-            android:layout_below="@+id/group_title"
-            android:layout_toRightOf="@+id/group_image"
-            android:layout_marginLeft="10dp"
-            android:text="625562"
-            android:textSize="12sp"
-            android:textColor="@color/main_bg_grey_87"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/group_join"
-            android:layout_alignParentRight="true"
-            android:text="625562"
-            android:gravity="center"
-            android:textSize="12sp"
-            android:background="@drawable/main_button_select"
-            android:textColor="@color/main_button_text_select"
-            android:layout_width="60dp"
-            android:layout_height="25dp" />
+            android:layout_height="wrap_content"
+            app:contentScrim="#ffffff"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
 
-        <TextView
-            android:id="@+id/group_content"
-            android:layout_below="@+id/group_image"
-            android:text="625562"
-            android:layout_marginTop="5dp"
-            android:textSize="15sp"
-            android:textColor="@color/main_text_black_33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </RelativeLayout>
+                <com.wb.baselib.view.TopBarView
+                    android:id="@+id/topbarview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:bottomLineColor="@color/main_line_ea"
+                    app:centerText="小组详情"
+                    app:centerTextColor="#333333"
+                    app:centerTextSize="18sp"
+                    app:centerType="textView"
+                    app:fillStatusBar="false"
+                    app:layout_collapseMode="pin"
+                    app:leftImageResource="@drawable/main_back"
+                    app:leftType="imageButton"
+                    app:rightText="发帖"
+                    app:rightTextColor="@color/main_text_blue_458"
+                    app:rightTextSize="15sp"
+                    app:rightType="textView"
+                    app:showBottomLine="true"
+                    app:titleBarHeight="45dp" />
 
-    <View
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/main_bg_grey_f8" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/group_image"
+                        android:layout_width="100dp"
+                        android:layout_height="68dp" />
+
+
+                    <TextView
+                        android:id="@+id/group_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toLeftOf="@+id/group_join"
+                        android:layout_toRightOf="@+id/group_image"
+                        android:textColor="@color/main_text_black_11"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/group_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/group_title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/group_image"
+                        android:textColor="@color/main_bg_grey_87"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/group_join"
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/main_button_select"
+                        android:gravity="center"
+                        android:textColor="@color/main_button_text_select"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/group_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/group_image"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/main_text_black_33"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <com.shizhefei.view.indicator.ScrollIndicatorView
+            android:id="@+id/spring_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/main_bg_grey_f8"/>
-
-
-    <include layout="@layout/main_commom_indicator"/>
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</android.support.design.widget.CoordinatorLayout>

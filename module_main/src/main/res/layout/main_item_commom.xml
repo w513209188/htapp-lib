@@ -53,7 +53,6 @@
                 android:layout_alignParentLeft="true"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="fsfsfsfsfsfsfsfsfsfsfsfsf"
                 android:textColor="@color/main_text_black_33"
                 android:textSize="@dimen/title3" />
 
@@ -62,11 +61,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/commom_title"
-                android:layout_marginRight="40dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="fsfsfsfs"
+                android:visibility="gone"
                 android:textColor="@color/main_text_grey_7c"
                 android:textSize="12sp"
                  />
