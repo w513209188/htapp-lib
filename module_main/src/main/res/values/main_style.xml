@@ -25,12 +25,6 @@
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
         <!--进出动画-->
-        <item name="android:windowAnimationStyle">tran</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.InputMethod</item>
     </style>
-
-  <!--  //进入和退出的动画命名
-    <style name="main_MyAnimation">
-        <item name="android:windowEnterAnimation">@anim/dialog_top_enter</item>
-        <item name="android:windowExitAnimation">@anim/dialog_top_exit</item>
-    </style>-->
 </resources>
