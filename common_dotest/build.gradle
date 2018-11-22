@@ -30,5 +30,6 @@ dependencies {
     compile 'com.zzhoujay.richtext:richtext:3.0.7'
     compile 'com.github.limedroid:XRichText:v1.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.w513209188:BaseLib:v1.7.4.1'
+//    compile 'com.github.w513209188:BaseLib:v1.7.4.1'
+    api deps.base
 }

@@ -107,6 +107,8 @@ public class HtmlTextView extends RelativeLayout {
      * @param txt
      */
     public void showTxt(String txt){
+        if(txt==null||txt.equals(""))
+            return;
         final int a=100,b=50;
         mRichTv.callback(new XRichText.Callback() {
             @Override
@@ -132,13 +134,13 @@ public class HtmlTextView extends RelativeLayout {
                 if (a > 0){
 
                     WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-
+            //width/a*b*4/3
 
                     int width = wm.getDefaultDisplay().getWidth();
                     int height =  wm.getDefaultDisplay().getHeight();
                     Log.e("试题的尺寸",width+"*"+height);
-                    holder.setWidth(width);
-                    holder.setHeight( width/a*b*4/3);
+                    holder.setWidth(100);
+                    holder.setHeight( 60);
                 }
             }
         }).text(txt);

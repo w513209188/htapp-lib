@@ -97,14 +97,14 @@ public class EssayQuestionFragment extends LazyFragment {
         if(analisys){
             //解析
             main_ll.setVisibility(View.VISIBLE);
-            look_jx_tv.setVisibility(View.GONE);
+//            look_jx_tv.setVisibility(View.GONE);
             question_et.setEnabled(false);
             question_et.setText(questionBankBean.getUser_answer()==null?"":questionBankBean.getUser_answer());
         }else {
             //非解析
             question_et.setEnabled(true);
             main_ll.setVisibility(View.GONE);
-            look_jx_tv.setVisibility(View.VISIBLE);
+//            look_jx_tv.setVisibility(View.VISIBLE);
         }
         da_tv.showTxt(questionBankBean.getRight_answer());
         jx_tv.showTxt(questionBankBean.getQues_analysis());
