@@ -24,6 +24,15 @@ public class PaperListBean implements Parcelable {
     private String states;
     private String deleted_at;
     private String ques_count;
+    private String ques_analysis;
+
+    public String getQues_analysis() {
+        return ques_analysis;
+    }
+
+    public void setQues_analysis(String ques_analysis) {
+        this.ques_analysis = ques_analysis;
+    }
 
     public String getId() {
         return id;
@@ -215,6 +224,7 @@ public class PaperListBean implements Parcelable {
         dest.writeString(this.states);
         dest.writeString(this.deleted_at);
         dest.writeString(this.ques_count);
+        dest.writeString(this.ques_analysis);
     }
 
     protected PaperListBean(Parcel in) {
@@ -238,6 +248,7 @@ public class PaperListBean implements Parcelable {
         this.states = in.readString();
         this.deleted_at = in.readString();
         this.ques_count = in.readString();
+        this.ques_analysis = in.readString();
     }
 
     public static final Creator<PaperListBean> CREATOR = new Creator<PaperListBean>() {

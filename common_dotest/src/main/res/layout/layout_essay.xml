@@ -48,11 +48,11 @@
                 android:textColorHint="@color/test_line" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/look_jx_tv"
                     android:layout_width="match_parent"
                     android:layout_marginRight="10dp"
@@ -121,6 +121,7 @@
                             app:isOption="false" />
                     </LinearLayout>
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/known_main"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,7 +149,9 @@
                             app:tcvTextColor="#ffffff" />
                     </LinearLayout>
 
-                    <include layout="@layout/layout_answer" />
+                    <include
+                        android:visibility="gone"
+                        layout="@layout/layout_answer" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

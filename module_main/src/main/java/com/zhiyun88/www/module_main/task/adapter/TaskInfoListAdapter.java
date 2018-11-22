@@ -33,15 +33,13 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             holder.type_img=convertView.findViewById(R.id.type_img);
             holder.progress_tv=convertView.findViewById(R.id.progress_tv);
             holder.wc_t_img=convertView.findViewById(R.id.wc_t_img);
-            holder.wc_t_ck = convertView.findViewById(R.id.wc_t_ck);
-            holder.wc_t_ckbg = convertView.findViewById(R.id.wc_t_ckbg);
             convertView.setTag(holder);
         }else {
             holder= (TaskInfoListHolder) convertView.getTag();
         }
         holder.title_tv.setText(taskData.getName());
         if(taskData.getType().equals("1")){
-            //直播
+        //直播
             holder.type_t_img.setImageResource(R.drawable.kc_t_img);
             holder.type_img.setImageResource(R.drawable.zb_p_img);
             if(taskData.getVideo_states().equals("1")){
@@ -59,8 +57,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
 //考试
             holder.type_t_img.setImageResource(R.drawable.ks_t_img);
             holder.type_img.setImageResource(R.drawable.ks_p_img);
-            holder.wc_t_img.setVisibility(View.GONE);
-            // holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+            holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
         }else  if(taskData.getType().equals("3")){
 //问卷
             holder.type_t_img.setImageResource(R.drawable.wj_t_img);
@@ -73,9 +70,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
         }
         try {
-            if (!taskData.getType().equals("2")) {
-                holder.wc_t_img.setVisibility(taskData.getComplete().equals("100")?View.VISIBLE:View.GONE);
-            }
+            holder.wc_t_img.setVisibility(taskData.getComplete().equals("100")?View.VISIBLE:View.GONE);
         }catch (Exception e){
             holder.wc_t_img.setVisibility(View.GONE);
         }
@@ -83,7 +78,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
         return convertView;
     }
     class TaskInfoListHolder{
-        TextView title_tv, progress_tv,wc_t_ck,wc_t_ckbg;
+        TextView title_tv,progress_tv;
         ImageView type_t_img,type_img,wc_t_img;
     }
 }
