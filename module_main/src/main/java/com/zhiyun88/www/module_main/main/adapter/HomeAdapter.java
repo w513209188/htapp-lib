@@ -140,9 +140,26 @@ public class HomeAdapter extends BaseAdapter {
             onLineHolder.mylistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(mContext, InformationDetailsActivity.class);
-                    intent.putExtra("h5", homeInformationBeanList.get(position).getUrl());
-                    mContext.startActivity(intent);
+//                    Intent intent = new Intent(mContext, InformationDetailsActivity.class);
+//                    intent.putExtra("h5", homeInformationBeanList.get(position).getUrl());
+//                    mContext.startActivity(intent);
+                    new FinestWebView.Builder(mContext)
+                            .titleDefault("正在加载...")
+                            .updateTitleFromHtml(true)
+                            .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
+                            .iconDefaultColorRes(R.color.main_live_3c)
+                            .showIconMenu(false)
+                            .titleSizeRes(R.dimen.title2)
+                            .webViewJavaScriptEnabled(true)
+                            .progressBarHeight(PhoneUtils.newInstance().dip2px(mContext, 3))
+                            .progressBarColorRes(R.color.main_live_3c)
+                            .titleColorRes(R.color.main_live_3c)
+                            .toolbarColorRes(R.color.statusbar_color)
+                            .statusBarColorRes(R.color.statusbar_color)
+                            .backPressToClose(false)
+                            .setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out, R.anim.slide_left_in, R.anim.slide_right_out)
+                            .showUrl(false)
+                            .show(homeInformationBeanList.get(position).getUrl());
                 }
             });
         }
