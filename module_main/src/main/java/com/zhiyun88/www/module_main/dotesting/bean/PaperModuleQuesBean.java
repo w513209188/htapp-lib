@@ -14,6 +14,25 @@ public class PaperModuleQuesBean implements Parcelable {
     private String question_score;
     private String report_id;
     private String ques_number;
+    private String ques_analysis;
+    private String user_answer;
+
+    public String getUser_answer() {
+        return user_answer;
+    }
+
+    public void setUser_answer(String user_answer) {
+        this.user_answer = user_answer;
+    }
+
+    public String getQues_analysis() {
+        return ques_analysis;
+    }
+
+    public void setQues_analysis(String ques_analysis) {
+        this.ques_analysis = ques_analysis;
+    }
+
     private List<PaperQuesOptionBean> ques_option;
 
     public String getId() {
@@ -106,6 +125,8 @@ public class PaperModuleQuesBean implements Parcelable {
         dest.writeString(this.question_score);
         dest.writeString(this.report_id);
         dest.writeString(this.ques_number);
+        dest.writeString(this.ques_analysis);
+        dest.writeString(this.user_answer);
         dest.writeTypedList(this.ques_option);
     }
 
@@ -118,6 +139,8 @@ public class PaperModuleQuesBean implements Parcelable {
         this.question_score = in.readString();
         this.report_id = in.readString();
         this.ques_number = in.readString();
+        this.ques_analysis = in.readString();
+        this.user_answer = in.readString();
         this.ques_option = in.createTypedArrayList(PaperQuesOptionBean.CREATOR);
     }
 

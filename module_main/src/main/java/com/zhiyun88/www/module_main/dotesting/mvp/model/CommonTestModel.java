@@ -27,6 +27,7 @@ import com.zhiyun88.www.module_main.dotesting.mvp.contranct.CommonTestContranct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -65,8 +66,12 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
         return HttpManager.newInstance().getService(DoTestApiService.class).submitTest(map);
     }
 
-    private void getPaperData(String id, String taskId, final ObservableEmitter<List<QuestionBankBean>> e) {
-        Observable<Result<PaperTestBean>> paperQuestion = HttpManager.newInstance().getService(DoTestApiService.class).getPaperQuestion(id, taskId);
+    private void getPaperData(String id, String taskId, final ObservableEmitter<List<QuestionBankBean>> es) {
+        Map<String,String> map=new HashMap<>();
+        map.put("paper_id",id);
+        map.put("task_id",taskId);
+        Log.e("---->>>",map.toString());
+        final Observable<Result<PaperTestBean>> paperQuestion = HttpManager.newInstance().getService(DoTestApiService.class).getPaperQuestion(map);
         HttpManager.newInstance().commonRequest(paperQuestion, new BaseObserver<Result<PaperTestBean>>(AppUtils.getContext()) {
             @Override
             public void onSubscribe(Disposable d) {
@@ -80,17 +85,21 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
 
             @Override
             public void onSuccess(Result<PaperTestBean> paperTestBeanResult) {
-                if (paperTestBeanResult.getData() == null ) {
-
+                if(paperTestBeanResult.getStatus()==200){
+                    if (paperTestBeanResult.getData() == null ) {
+                    }else {
+                        forPaperData(paperTestBeanResult.getData(), es);
+                    }
                 }else {
-                    forPaperData(paperTestBeanResult.getData(), e);
+                    ApiException apiException=new ApiException(paperTestBeanResult.getStatus(),paperTestBeanResult.getMsg());
+                    es.onError(apiException);
                 }
 
             }
 
             @Override
             public void onFail(ApiException e) {
-                Log.e("onFail: ", e.getMessage());
+                es.onError(e);
             }
         });
     }
@@ -119,7 +128,9 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
                 questionBankBean.setQuestionType(Integer.parseInt(paperModuleQuesBean.getQues_type()));
                 questionBankBean.setReport_id(paperModuleQuesBean.getReport_id());
                 questionBankBean.setRight_answer(paperModuleQuesBean.getRight_answer());
+                questionBankBean.setUser_answer(paperModuleQuesBean.getUser_answer());
                 questionBankBean.setAnswer_difficulty(paperModuleQuesBean.getQues_difficulty());
+                questionBankBean.setQues_analysis(paperModuleQuesBean.getQues_analysis());
                 List<UserOptionBean> userOptionBeans = new ArrayList<>();
                 if (paperModuleQuesBean.getQues_option() == null || paperModuleQuesBean.getQues_option().size() == 0) {
                 } else {
@@ -167,8 +178,8 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
 
 
     private void getAllJxQuestionData(String id, final ObservableEmitter<List<QuestionBankBean>> e) {
-        Observable<Result<QestionTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getAllJxQuestionNaire(id);
-        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<QestionTestBean>>(AppUtils.getContext()) {
+        Observable<Result<PaperTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getAllJxQuestionNaire(id);
+        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<PaperTestBean>>(AppUtils.getContext()) {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -180,10 +191,10 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
             }
 
             @Override
-            public void onSuccess(Result<QestionTestBean> qestionTestBeanResult) {
+            public void onSuccess(Result<PaperTestBean> qestionTestBeanResult) {
                 if (qestionTestBeanResult.getData() == null) {
                 }else {
-                    forQuestionData(qestionTestBeanResult.getData(), e);
+                    forPaperData(qestionTestBeanResult.getData(), e);
                 }
             }
 
@@ -195,8 +206,8 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
     }
 
     private void getErrorJxQuestionData(String id, final ObservableEmitter<List<QuestionBankBean>> e) {
-        Observable<Result<QestionTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getErrorJxData(id);
-        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<QestionTestBean>>(AppUtils.getContext()) {
+        Observable<Result<PaperTestBean>> questionNaire = HttpManager.newInstance().getService(DoTestApiService.class).getErrorJxData(id);
+        HttpManager.newInstance().commonRequest(questionNaire, new BaseObserver<Result<PaperTestBean>>(AppUtils.getContext()) {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -208,10 +219,10 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
             }
 
             @Override
-            public void onSuccess(Result<QestionTestBean> qestionTestBeanResult) {
+            public void onSuccess(Result<PaperTestBean> qestionTestBeanResult) {
                 if (qestionTestBeanResult.getData() == null) {
                 }else {
-                    forQuestionData(qestionTestBeanResult.getData(), e);
+                    forPaperData(qestionTestBeanResult.getData(), e);
                 }
             }
 

@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.jungan.www.common_dotest.bean.QuestionBankBean;
 import com.jungan.www.common_dotest.bean.UserOptionBean;
 import com.jungan.www.common_dotest.bean.UserPostBean;
@@ -28,6 +30,7 @@ import com.jungan.www.common_dotest.questionview.CommonQuestionBankView;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.prase.GsonUtils;
+import com.wb.baselib.view.MultipleStatusView;
 import com.zhiyun88.www.module_main.DialogUtils;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.dotesting.bean.AnswerDataBean;
@@ -53,16 +56,18 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     private boolean looksys = false;
     private String testName;
     //current_count
-
+    private MultipleStatusView multiplestatusview;
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.dotest_commontest_layout);
+        multiplestatusview=getViewById(R.id.multiplestatusview);
+        multiplestatusview.showContent();
+        multiplestatusview.showLoading();
         commonQuestionBankView = getViewById(R.id.dotest_lv);
         testId = getIntent().getStringExtra("testId");
         taskId = getIntent().getStringExtra("taskId");
         testType = Integer.parseInt(getIntent().getStringExtra("testType"));
         testName = getIntent().getStringExtra("testName");
-
         left_img = getViewById(R.id.left_img);
         mChronometer = getViewById(R.id.chronmer_ctr);
         current_count_tv = getViewById(R.id.current_count_tv);
@@ -71,6 +76,10 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         test_type_tv = getViewById(R.id.test_type_tv);
         test_pause = getViewById(R.id.test_pause);
         progressBar = getViewById(R.id.progressBar);
+        if(testType==3||testType==4){
+            mChronometer.setVisibility(View.GONE);
+            test_pause.setVisibility(View.GONE);
+        }
         mPresenter.getCommonTest(testId, taskId, testType);
         test_type_tv.setText(testName);
     }
@@ -85,6 +94,7 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         progressBar.setProgress(1);
         commonQuestionBankView.initData(questionBankBeans, getSupportFragmentManager(), testType==3||testType==4?true:false,false);
         isStartJs();
+        multiplestatusview.showContent();
     }
 
   /*   @Override
@@ -253,10 +263,9 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     private void commitTest() {
         UserPostBean u =commonQuestionBankView.getUserPostBean();
         Log.e("用户提交了数据", "-----" + GsonUtils.newInstance().GsonToString(u));
-//        List<QuestionBankBean> questionBankBeanList = commonQuestionBankView.getQuestionBankBeanList();
         SubmitTestBean submitTestBean = new SubmitTestBean();
         submitTestBean.setAnswer_data(u.getAnswer_data());
-        submitTestBean.setAnswer_time(mRecordTime+"");
+        submitTestBean.setAnswer_time(getChronometerSeconds(mChronometer));
         submitTestBean.setReport_id(u.getReport_id());
         if (testType == 1) {
                 submitTestBean.setType("2");
@@ -293,6 +302,9 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
      * 开始试卷的计时
      */
     private void isStartJs() {
+        if(testType==3||testType==4)
+            return;
+
         if (commonQuestionBankView.getQuestionBankBeanList() == null || commonQuestionBankView.getQuestionBankBeanList().size() == 0)
             return;
         if (mChronometer == null)
@@ -310,6 +322,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         super.onResume();
         if (mChronometer == null)
             return;
+        if(testType==3||testType==4)
+            return;
         isStartJs();
 //        commonQuestionBankView.setPause(false);
     }
@@ -322,6 +336,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         if (commonQuestionBankView.getQuestionBankBeanList() == null || commonQuestionBankView.getQuestionBankBeanList().size() == 0) {
             return;
         }
+        if(testType==3||testType==4)
+            return;
         mChronometer.stop();
         mRecordTime = SystemClock.elapsedRealtime();
         commonQuestionBankView.setPause(true);
@@ -330,10 +346,16 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(testType==3||testType==4)
+            return;
         commonQuestionBankView.setPause(true);
     }
 
     private void exitTest() {
+        if(testType==3||testType==4){
+            finish();
+            return;
+        }
         if (commonQuestionBankView.getUserPostBean() == null || commonQuestionBankView.getUserPostBean().getAnswer_data() == null || commonQuestionBankView.getUserPostDataList().size() == 0) {
             finish();
         } else {
@@ -393,7 +415,7 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
                     int type = data.getIntExtra("type", 2);
                     if (type == 1) {
                         //提交
-                        handler.sendEmptyMessageDelayed(1, 500);
+                        handler.sendEmptyMessageDelayed(1, 100);
                     } else {
                         //跳转
                         int page = data.getIntExtra("page", 0);
@@ -411,7 +433,6 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    Log.e("用户要提交了", "-----");
                     userPostTest();
                     break;
             }
@@ -421,7 +442,6 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
 
     @Override
     public void lookAnasysli(boolean isLook) {
-        Log.e("用户查看了解析", "----" + isLook);
         if (isLook) {
             looksys = true;
             commonQuestionBankView.setPause(true);
@@ -469,6 +489,54 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
 
     @Override
     public void submitSuccess(String msg) {
-        Log.e("submitSuccess: ", msg);
+        showDidlogMsg(msg);
+    }
+
+    @Override
+    public void showDidlogMsg(String msg) {
+        DialogUtils.newInstance().initDialog(CommonTestActivity.this)
+                .setContent(msg)
+                .setbtncentre("确定")
+                .hitBtn(true)
+                .setOnCentreClickListenter(new DialogUtils.OnCentreClickListenter() {
+                    @Override
+                    public void setCentreClickListener() {
+                       finish();
+                    }
+                });
+
+
+
+//        StyledDialog.buildMdAlert("信息", msg, new MyDialogListener() {
+//            @Override
+//            public void onFirst() {
+//
+//            }
+//
+//            @Override
+//            public void onSecond() {
+//                finish();
+//            }
+//        }).setBtnText("", "确定").setCancelable(false,false).show();
+    }
+
+    @Override
+    public void ShowLoadView() {
+        multiplestatusview.showLoading();
+    }
+
+    @Override
+    public void NoNetWork() {
+        multiplestatusview.showNoNetwork();
+    }
+
+    @Override
+    public void NoData() {
+        multiplestatusview.showEmpty();
+    }
+
+    @Override
+    public void ErrorData() {
+        multiplestatusview.showError();
     }
 }

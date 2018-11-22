@@ -20,6 +20,42 @@ public class TaskData implements Parcelable {
     private String complete;
     private String video_states;
     private String task_states;
+    private int again_number;
+    private String report_id;
+    private int states;
+    private String publish_date;
+
+    public int getAgain_number() {
+        return again_number;
+    }
+
+    public void setAgain_number(int again_number) {
+        this.again_number = again_number;
+    }
+
+    public String getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(String report_id) {
+        this.report_id = report_id;
+    }
+
+    public int getStates() {
+        return states;
+    }
+
+    public void setStates(int states) {
+        this.states = states;
+    }
+
+    public String getPublish_date() {
+        return publish_date;
+    }
+
+    public void setPublish_date(String publish_date) {
+        this.publish_date = publish_date;
+    }
 
     public String getTask_states() {
         return task_states;
@@ -94,6 +130,10 @@ public class TaskData implements Parcelable {
         dest.writeString(this.complete);
         dest.writeString(this.video_states);
         dest.writeString(this.task_states);
+        dest.writeInt(this.again_number);
+        dest.writeString(this.report_id);
+        dest.writeInt(this.states);
+        dest.writeString(this.publish_date);
     }
 
     protected TaskData(Parcel in) {
@@ -104,6 +144,10 @@ public class TaskData implements Parcelable {
         this.complete = in.readString();
         this.video_states = in.readString();
         this.task_states = in.readString();
+        this.again_number = in.readInt();
+        this.report_id = in.readString();
+        this.states = in.readInt();
+        this.publish_date = in.readString();
     }
 
     public static final Creator<TaskData> CREATOR = new Creator<TaskData>() {

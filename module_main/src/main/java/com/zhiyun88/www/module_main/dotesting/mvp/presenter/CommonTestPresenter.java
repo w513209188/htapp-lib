@@ -1,5 +1,7 @@
 package com.zhiyun88.www.module_main.dotesting.mvp.presenter;
 
+import android.util.Log;
+
 import com.jungan.www.common_dotest.bean.QuestionBankBean;
 import com.wb.baselib.app.AppUtils;
 import com.wb.baselib.bean.Result;
@@ -35,7 +37,8 @@ public class CommonTestPresenter extends CommonTestContranct.CommonTestPresenter
 
             @Override
             public void onFail(ApiException e) {
-                mView.showErrorMsg(e.getMessage());
+                Log.e("看看",e.getErrorCode()+"----");
+                mView.showDidlogMsg(e.getMessage());
             }
 
             @Override

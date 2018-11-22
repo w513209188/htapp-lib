@@ -4,6 +4,7 @@ import com.jungan.www.common_dotest.bean.QuestionBankBean;
 import com.wb.baselib.base.mvp.BaseModel;
 import com.wb.baselib.base.mvp.BasePreaenter;
 import com.wb.baselib.base.mvp.BaseView;
+import com.wb.baselib.base.mvp.MvpView;
 import com.wb.baselib.bean.Result;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
 
@@ -12,8 +13,9 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface CommonTestContranct {
-    interface CommonTestView extends BaseView {
+    interface CommonTestView extends MvpView {
         void submitSuccess(String msg);
+        void showDidlogMsg(String msg);
     }
 
     interface CommonTestModel extends BaseModel {

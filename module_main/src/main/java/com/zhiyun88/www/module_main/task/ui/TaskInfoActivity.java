@@ -52,9 +52,6 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
         task_pross_tv=getViewById(R.id.task_pross_tv);
         task_tb=getViewById(R.id.task_tb);
         task_status_tv=getViewById(R.id.task_status_tv);
-        taskDataLists=new ArrayList<>();
-        mAdapter=new TaskInfoListAdapter(taskDataLists,this);
-        mListView.setAdapter(mAdapter);
         try {
             taskId=getIntent().getData().getLastPathSegment();
 //            String uid = getIntent().getData().getQueryParameter("uid");
@@ -75,6 +72,9 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
             taskId = getIntent().getStringExtra("taskId");
             mPresenter.getTaskInfoList(taskId);
         }
+        taskDataLists=new ArrayList<>();
+        mAdapter=new TaskInfoListAdapter(taskDataLists,this,taskId);
+        mListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -89,16 +89,16 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TaskData taskData= (TaskData) parent.getItemAtPosition(position);
-                Intent intent=new Intent(TaskInfoActivity.this, CourseInfoActivity.class);
+
                 if(taskData.getType().equals("1")||taskData.getType().equals("4")){
+                    Intent intent=new Intent(TaskInfoActivity.this, CourseInfoActivity.class);
                     intent.putExtra("courseId",taskData.getId());
                     intent.putExtra("isCourseTaskInfo",false);
                     startActivity(intent);
-                }else if(taskData.getType().equals("2")){
-//                        ToActivityUtil.newInsance().toNextActivity(TaskInfoActivity.this, CuntActivity.class);
-                    ToActivityUtil.newInsance().toNextActivity(TaskInfoActivity.this, CommonTestActivity.class,new String[][]{{"testId","111"},{"taskId","184"},{"testType",taskData.getType()},{"testName",taskData.getName()}});
                 }else if(taskData.getType().equals("3")){
-                    showErrorMsg("期待中...");
+                    if(taskData.getComplete().equals("100"))
+                        return;
+                    ToActivityUtil.newInsance().toNextActivity(TaskInfoActivity.this, CommonTestActivity.class,new String[][]{{"testId",taskData.getId()},{"taskId",taskId},{"testType",taskData.getType().equals("3")?"1":"2"},{"testName",taskData.getName()}});
                 }
             }
         });

@@ -52,6 +52,7 @@ public class MyTrainAdapter extends BaseAdapter {
             viewHolder.title = convertView.findViewById(R.id.commom_title);
             viewHolder.time = convertView.findViewById(R.id.commom_time);
             viewHolder.cardview = convertView.findViewById(R.id.cardview);
+            viewHolder.commom_teacher=convertView.findViewById(R.id.commom_teacher);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -64,6 +65,7 @@ public class MyTrainAdapter extends BaseAdapter {
 
         viewHolder.title.setText(myTrainListBean.getTitle());
         String start = myTrainListBean.getStart_date().substring(0, 16);
+        viewHolder.commom_teacher.setVisibility(View.GONE);
         viewHolder.time.setVisibility(View.VISIBLE);
         viewHolder.time.setText(start+mContext.getString(R.string.main_classes));
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,6 @@ public class MyTrainAdapter extends BaseAdapter {
     class ViewHolder {
         CardView cardview;
         ImageView imageView;
-        TextView title,time;
+        TextView title,time,commom_teacher;
     }
 }

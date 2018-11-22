@@ -25,7 +25,7 @@ public interface DoTestApiService {
 
     @FormUrlEncoded
     @POST(DoTestHttpUrlConfig.PAPERQUESTION)
-    Observable<Result<PaperTestBean>> getPaperQuestion(@Field("paper_id") String naireId, @Field("task_id") String taskId);
+    Observable<Result<PaperTestBean>> getPaperQuestion(@FieldMap Map<String,String> map);
 
     @FormUrlEncoded
     @POST(DoTestHttpUrlConfig.SUBMIT)
@@ -36,8 +36,8 @@ public interface DoTestApiService {
 
 
     @GET(DoTestHttpUrlConfig.ALLJXDATA)
-    Observable<Result<QestionTestBean>> getAllJxQuestionNaire(@Path("id") String id);
+    Observable<Result<PaperTestBean>> getAllJxQuestionNaire(@Path("id") String id);
 
     @GET(DoTestHttpUrlConfig.ERRORJXDATA)
-    Observable<Result<QestionTestBean>> getErrorJxData(@Path("id") String id);
+    Observable<Result<PaperTestBean>> getErrorJxData(@Path("id") String id);
 }
