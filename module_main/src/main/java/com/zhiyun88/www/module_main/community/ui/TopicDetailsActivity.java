@@ -84,10 +84,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         }
     };
     private List<DetailsCommentListBean> listBeans;
-    private Dialog dialog;
-    private TextView commit_tv;
-    private ImageView showName_tv;
-    private EditText content_et;
+    private CustomDialog customDialog;
 
     @Override
     protected CommunityDetailsPresenter onCreatePresenter() {
@@ -119,6 +116,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         smartRefreshLayout.setEnableRefresh(false);
         listBeans = new ArrayList<>();
         mAdapter = new CommentAdapater(this, listBeans);
+        details_list.setDivider(null);
         details_list.setAdapter(mAdapter);
         multiplestatusview.showLoading();
         mPresenter.getCommunityDetails(question_id);
@@ -144,16 +142,14 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isReply=false;
-                showDiaLog();
+                showDiaLog(false);
             }
         });
         mAdapter.setOnReplyListener(new CommunityConfig.OnReplyListener() {
             @Override
             public void setReplyClick(int position) {
                 index = position;
-                isReply=true;
-                showDiaLog();
+                showDiaLog(true);
             }
         });
         smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -164,15 +160,8 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         });
     }
 
-    private boolean is_show = false;
-    private boolean isReply = false;
-    private void showDiaLog() {
-        CustomDialog customDialog = new CustomDialog(this, R.style.main_MyDialogStyle);
-        content_et = customDialog.findViewById(R.id.details_content);
-        LinearLayout have_name_ll = customDialog.findViewById(R.id.have_name_ll);
-        showName_tv = customDialog.findViewById(R.id.show_name);
-        commit_tv = customDialog.findViewById(R.id.details_commit);
-
+    private void showDiaLog(final boolean isReply) {
+        customDialog = new CustomDialog(this, R.style.main_MyDialogStyle);
         Window window = customDialog.getWindow();
         window.getDecorView().setPadding(15, 15, 15, 15);
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -184,27 +173,16 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         customDialog.setCanceledOnTouchOutside(true);
         window.setGravity(Gravity.BOTTOM);
         if (isReply) {
-            content_et.setHint("回复: " + listBeans.get(index).getUser_name());
-        }else {
-            content_et.setHint("");
+            customDialog.setIsReply(listBeans.get(index).getUser_name());
         }
-        have_name_ll.setOnClickListener(new View.OnClickListener() {
+        customDialog.setOnEditChangeListener(new CommunityConfig.OnEditChangeListener() {
             @Override
-            public void onClick(View v) {
-                is_show = !is_show;
-                showName_tv.setSelected(is_show);
-            }
-        });
-        commit_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = content_et.getText().toString().trim();
+            public void getEditChange(String content, boolean is_show) {
                 if (isReply) {
-                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", listBeans.get(index).getId());
+                    mPresenter.sendComment(question_id, content, is_show ? "1" : "0", listBeans.get(index).getId());
                 } else {
-                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", "0");
+                    mPresenter.sendComment(question_id, content, is_show ? "1" : "0", "0");
                 }
-                commit_tv.setEnabled(false);
             }
         });
         customDialog.show();
@@ -372,9 +350,8 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
 
     @Override
     public void sendSuccess(String msg) {
+        customDialog.setSendSuccess();
         showShortToast(msg);
-        dialog.dismiss();
-        commit_tv.setEnabled(true);
         page = 1;
         mPresenter.getCommentList(question_id, "1", page);
     }
