@@ -25,7 +25,6 @@ import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.ui.CommunityActivity;
 import com.zhiyun88.www.module_main.course.ui.CourseMainActivity;
 import com.zhiyun88.www.module_main.information.ui.InformationActivity;
-import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
 import com.zhiyun88.www.module_main.library.ui.LibraryActivity;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
 import com.zhiyun88.www.module_main.main.bean.HomeCourseBean;
@@ -140,9 +139,6 @@ public class HomeAdapter extends BaseAdapter {
             onLineHolder.mylistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Intent intent = new Intent(mContext, InformationDetailsActivity.class);
-//                    intent.putExtra("h5", homeInformationBeanList.get(position).getUrl());
-//                    mContext.startActivity(intent);
                     new FinestWebView.Builder(mContext)
                             .titleDefault("正在加载...")
                             .updateTitleFromHtml(true)

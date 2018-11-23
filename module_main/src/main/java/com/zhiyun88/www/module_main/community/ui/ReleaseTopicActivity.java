@@ -25,6 +25,7 @@ import com.zhiyun88.www.module_main.community.adapter.ImageShowAdapter;
 import com.zhiyun88.www.module_main.community.bean.ImageBean;
 import com.zhiyun88.www.module_main.community.mvp.contranct.ReleaseTopicContranct;
 import com.zhiyun88.www.module_main.community.mvp.presenter.ReleaseTopicPresenter;
+import com.zhiyun88.www.module_main.community.view.RecycleItemSpance;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,14 +70,15 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         ISNav.getInstance().init(new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
-                Picasso.with(context).load(path).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(imageView);
+                Picasso.with(context).load("file://"+path).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(imageView);
             }
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+         select_image.addItemDecoration(new RecycleItemSpance(15,3));
+        // select_image.addItemDecoration(new DividerGridItemDecoration(this));
         select_image.setLayoutManager(gridLayoutManager);
-      //  select_image.addItemDecoration(new DividerGridItemDecoration(select_image.getContext()));
         result = new ArrayList<>();
-        imageShowAdapter = new ImageShowAdapter(this, result,gridLayoutManager);
+        imageShowAdapter = new ImageShowAdapter(this, result);
         select_image.setAdapter(imageShowAdapter);
     }
 

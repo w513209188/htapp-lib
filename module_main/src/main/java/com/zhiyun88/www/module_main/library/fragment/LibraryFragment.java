@@ -1,6 +1,5 @@
 package com.zhiyun88.www.module_main.library.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -20,13 +19,11 @@ import com.wb.baselib.phone.PhoneUtils;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.zhiyun88.www.module_main.R;
-import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
 import com.zhiyun88.www.module_main.library.adapter.LibraryListAdapter;
 import com.zhiyun88.www.module_main.library.bean.LibraryDataListBean;
 import com.zhiyun88.www.module_main.library.config.LibraryConfig;
 import com.zhiyun88.www.module_main.library.mvp.contranct.LibraryFragmentContranct;
 import com.zhiyun88.www.module_main.library.mvp.presenter.LibraryFragmentPresenter;
-import com.zhiyun88.www.module_main.library.ui.LibraryDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -126,9 +123,6 @@ public class LibraryFragment extends MvpFragment<LibraryFragmentPresenter> imple
                         .setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out, R.anim.slide_left_in, R.anim.slide_right_out)
                         .showUrl(false)
                         .show(libraryDataListBeans.get(position).getH5_detail());
-//                Intent intent = new Intent(getActivity(), LibraryDetailsActivity.class);
-//                intent.putExtra("h5", libraryDataListBeans.get(position).getH5_detail());
-//                startActivity(intent);
 
             }
         });

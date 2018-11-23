@@ -2,7 +2,6 @@ package com.zhiyun88.www.module_main.commonality.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryListBean;
-import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
-import com.zhiyun88.www.module_main.library.ui.LibraryDetailsActivity;
 
 import java.util.List;
 
@@ -81,14 +78,6 @@ public class MyLibraryAdapter extends BaseAdapter{
             viewHolder.type.setText("[PPT]");
             viewHolder.type.setTextColor(Color.parseColor("#ff7800"));
         }*/
-        viewHolder.library_rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, LibraryDetailsActivity.class);
-                intent.putExtra("h5", myLibraryListBean.getH5_detail());
-                mContext.startActivity(intent);
-            }
-        });
         return convertView;
     }
     class ViewHolder {

@@ -1,6 +1,5 @@
 package com.zhiyun88.www.module_main.community.ui;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,17 +10,12 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.hss01248.dialog.StyledDialog;
 
 
 import com.squareup.picasso.Picasso;

@@ -1,9 +1,7 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +12,16 @@ import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.config.ISListConfig;
 import com.zhiyun88.www.module_main.R;
 
+import java.io.File;
 import java.util.List;
 
 public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.ViewHolder>{
-    private GridLayoutManager gridLayoutManager;
     private Context mContext;
     private List<String> pathList;
 
-    public ImageShowAdapter(Context context, List<String> pathList, GridLayoutManager gridLayoutManager) {
+    public ImageShowAdapter(Context context, List<String> pathList) {
         this.mContext = context;
         this.pathList= pathList;
-        this.gridLayoutManager = gridLayoutManager;
     }
 
     @Override
@@ -35,13 +32,10 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
-        params.height = gridLayoutManager.getWidth()/gridLayoutManager.getSpanCount();
-        holder.imageView.setLayoutParams(params);
         if (position == pathList.size()) {
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {
-            Picasso.with(mContext).load(pathList.get(position)).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(holder.imageView);
+            Picasso.with(mContext).load("file://"+pathList.get(position)).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(holder.imageView);
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

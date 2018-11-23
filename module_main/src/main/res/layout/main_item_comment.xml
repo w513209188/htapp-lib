@@ -69,15 +69,10 @@
 
     </RelativeLayout>
 
-    <com.wb.baselib.view.MyListView
-        android:scrollbars="none"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        android:id="@+id/comment_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+<include layout="@layout/main_item_reply"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"/>
 
     <View
         android:layout_width="match_parent"

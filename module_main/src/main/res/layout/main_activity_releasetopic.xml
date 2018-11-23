@@ -89,6 +89,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/show_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
