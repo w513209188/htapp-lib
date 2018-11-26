@@ -4,7 +4,9 @@ import com.wb.baselib.bean.Result;
 import com.zhiyun88.www.module_main.dotesting.bean.CountBean;
 import com.zhiyun88.www.module_main.dotesting.bean.PaperTestBean;
 import com.zhiyun88.www.module_main.dotesting.bean.QestionTestBean;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitBean;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
+import com.zhiyun88.www.module_main.dotesting.bean.WjBean;
 import com.zhiyun88.www.module_main.dotesting.config.DoTestHttpUrlConfig;
 
 import java.util.Map;
@@ -29,7 +31,7 @@ public interface DoTestApiService {
 
     @FormUrlEncoded
     @POST(DoTestHttpUrlConfig.SUBMIT)
-    Observable<Result> submitTest(@FieldMap() Map<String, String> map);
+    Observable<Result<SubmitBean>> submitTest(@FieldMap() Map<String, String> map);
 
     @GET(DoTestHttpUrlConfig.GETCUNTDATA)
     Observable<Result<CountBean>> getCuntData(@Path("id")String id);
@@ -40,4 +42,7 @@ public interface DoTestApiService {
 
     @GET(DoTestHttpUrlConfig.ERRORJXDATA)
     Observable<Result<PaperTestBean>> getErrorJxData(@Path("id") String id);
+
+    @GET(DoTestHttpUrlConfig.GETWJDCCOUNT)
+    Observable<Result<WjBean>> getWjCount(@Path("id") String id);
 }

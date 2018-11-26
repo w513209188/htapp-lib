@@ -30,4 +30,7 @@ public interface DoTestHttpUrlConfig {
     // 获取错题解析
     String ERRORJXDATA="api/app/question/error_analysis/id={id}";
 
+    // 获取问卷调查的报告
+    String GETWJDCCOUNT="api/app/question/ques_naire_report/id={id}";
+
 }
