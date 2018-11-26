@@ -71,7 +71,6 @@ public class hApp {
                         map1.put("httoken",token);
                         map1.put("Authorization","bearer "+o.getData().getRemember_token());
                         map1.put("uid",uid);
-                        Log.e("---->>>",map1.toString());
                         HttpConfig.HttpConfigBuilder httpConfig =
                                 new HttpConfig.HttpConfigBuilder()
                                 .setmBaseUrl(HttpManager.newInstance().getHttpConfig().getmBaseUrl())
@@ -85,9 +84,7 @@ public class hApp {
                                 .setIsReshConfig(true)
                                 .setmIsUseLog(HttpManager.newInstance().getHttpConfig().ismIsUseLog());
                         HttpConfig.newInstanceBuild(httpConfig);
-                        Log.e("刷新了",HttpManager.newInstance().getHttpConfig().getmBaseUrl());
                         MainActivity.startForResult((Activity) source);
-//                        ToActivityUtil.newInsance().toNextActivity((Activity) source, TestingActivity.class);
                     }
                 }else {
                     loginStatusCall.LoginError(o.getMsg(),o.getStatus());
