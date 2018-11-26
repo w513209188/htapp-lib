@@ -1,6 +1,5 @@
 package com.zhiyun88.www.module_main.community.ui;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,17 +10,12 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.hss01248.dialog.StyledDialog;
 
 
 import com.squareup.picasso.Picasso;
@@ -245,13 +239,25 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         QuestionInfoBean questionInfoBean = (QuestionInfoBean) o;
         setActivityContent(questionInfoBean.getContent());
 
-        topBarView.getCenterTextView().setText(questionInfoBean.getTitle());
-        if (questionInfoBean.getAvatar() == null || questionInfoBean.getAvatar().equals("")) {
-            Picasso.with(TopicDetailsActivity.this).load("www").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+        //topBarView.getCenterTextView().setText(questionInfoBean.getTitle());
+
+        if (questionInfoBean.getIs_anonymity().equals("0")) {
+            details_name.setText(questionInfoBean.getUser_name());
+            if (questionInfoBean.getAvatar() == null || questionInfoBean.getAvatar().equals("")) {
+                Picasso.with(TopicDetailsActivity.this).load("www").error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+            }else {
+                Picasso.with(TopicDetailsActivity.this).load(questionInfoBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+            }
         }else {
-            Picasso.with(TopicDetailsActivity.this).load(questionInfoBean.getAvatar()).error(R.drawable.user_head).placeholder(R.drawable.user_head).transform(new CircleTransform()).into(headImage);
+            details_name.setText("匿名");
+            if (questionInfoBean.getAvatar() == null || questionInfoBean.getAvatar().equals("")) {
+                Picasso.with(TopicDetailsActivity.this).load(R.drawable.name_no).error(R.drawable.name_no).placeholder(R.drawable.name_no).transform(new CircleTransform()).into(headImage);
+            }else {
+                Picasso.with(TopicDetailsActivity.this).load(R.drawable.name_no).error(R.drawable.name_no).placeholder(R.drawable.name_no).transform(new CircleTransform()).into(headImage);
+            }
+
+
         }
-        details_name.setText(questionInfoBean.getUser_name());
         details_time.setText(questionInfoBean.getCreated_at());
         details_browse.setText(questionInfoBean.getRead_count() + "次浏览");
 

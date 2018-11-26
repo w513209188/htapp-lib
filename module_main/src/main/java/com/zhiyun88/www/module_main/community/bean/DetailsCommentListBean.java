@@ -18,6 +18,24 @@ public class DetailsCommentListBean implements Parcelable {
     private String avatar;
     private ParentCommentBean parent;
 
+    @Override
+    public String toString() {
+        return "DetailsCommentListBean{" +
+                "id='" + id + '\'' +
+                ", question_id='" + question_id + '\'' +
+                ", parent_id='" + parent_id + '\'' +
+                ", content='" + content + '\'' +
+                ", reply_count='" + reply_count + '\'' +
+                ", is_anonymity='" + is_anonymity + '\'' +
+                ", created_id='" + created_id + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", parent=" + parent +
+                '}';
+    }
+
     public String getId() {
         return id;
     }

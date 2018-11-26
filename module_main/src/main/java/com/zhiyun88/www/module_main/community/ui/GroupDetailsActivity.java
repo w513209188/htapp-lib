@@ -76,9 +76,24 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
                     finish();
                 }
                 if (action == TopBarView.ACTION_RIGHT_TEXT) {
-                    Intent intent = new Intent(GroupDetailsActivity.this,ReleaseTopicActivity.class);
-                    intent.putExtra("groupId", groupId);
-                    startActivity(intent);
+                    if (groupInfoBean == null)return;
+                    if (groupInfoBean.getIs_group().equals("1")) {
+                        Intent intent = new Intent(GroupDetailsActivity.this,ReleaseTopicActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        startActivity(intent);
+                    }else {
+                        DialogUtils.newInstance().initDialog(GroupDetailsActivity.this)
+                                .setTitle("提示")
+                                .setContent("请先加入小组")
+                                .hitBtn(true)
+                                .setbtncentre("确定")
+                                .setOnCentreClickListenter(new DialogUtils.OnCentreClickListenter() {
+                                    @Override
+                                    public void setCentreClickListener() {
+
+                                    }
+                                });
+                    }
                 }
             }
         });

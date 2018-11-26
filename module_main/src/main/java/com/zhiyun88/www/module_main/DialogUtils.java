@@ -20,6 +20,7 @@ public class DialogUtils {
     private LinearLayout dialog_btn_ll;
     private OnClickListener onClickListener;
     private OnCentreClickListenter onCentreClickListenter;
+    private View view;
 
     private DialogUtils() {
     }
@@ -34,36 +35,42 @@ public class DialogUtils {
         return getDialog(context);
     }
 
-    public DialogUtils getDialog(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.main_custom_dialog, null);
-        dialog = StyledDialog.buildCustom(view, Gravity.CENTER).show();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog_title = view.findViewById(R.id.dialog_title);
-        dialog_content = view.findViewById(R.id.dialog_content);
-        dialog_yes = view.findViewById(R.id.dialog_yes);
-        dialog_no = view.findViewById(R.id.dialog_no);
-        dialog_btn_ll = view.findViewById(R.id.dialog_btn_ll);
-        dialog_centre_btn = view.findViewById(R.id.dialog_centre_btn);
+    private DialogUtils getDialog(Context context) {
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.main_custom_dialog, null);
+            dialog = StyledDialog.buildCustom(view, Gravity.CENTER).show();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog_title = view.findViewById(R.id.dialog_title);
+            dialog_content = view.findViewById(R.id.dialog_content);
+            dialog_yes = view.findViewById(R.id.dialog_yes);
+            dialog_no = view.findViewById(R.id.dialog_no);
+            dialog_btn_ll = view.findViewById(R.id.dialog_btn_ll);
+            dialog_centre_btn = view.findViewById(R.id.dialog_centre_btn);
+        }
+
         dialog_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (onClickListener == null)return;
                 onClickListener.setYesClickListener();
-                dialogDismiss();
+                closeDiaLog();
             }
         });
         dialog_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (onClickListener == null)return;
                 onClickListener.setNoClickListener();
-                dialogDismiss();
+                closeDiaLog();
             }
         });
         dialog_centre_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (onCentreClickListenter == null)return;
                 onCentreClickListenter.setCentreClickListener();
-                dialogDismiss();
+                closeDiaLog();
             }
         });
         return dialogUtils;
@@ -118,11 +125,12 @@ public class DialogUtils {
         this.onCentreClickListenter = onCentreClickListenter;
     }
 
-    public DialogUtils dialogDismiss() {
+    private void closeDiaLog() {
         if (dialog != null) {
-            dialog.dismiss();
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
-        return dialogUtils;
     }
 
     public interface OnClickListener {

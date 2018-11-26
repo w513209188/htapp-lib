@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryListBean;
-import com.zhiyun88.www.module_main.information.ui.InformationDetailsActivity;
-import com.zhiyun88.www.module_main.library.ui.LibraryDetailsActivity;
 
 import java.util.List;
 
@@ -68,7 +66,7 @@ public class MyLibraryAdapter extends BaseAdapter{
         } else {
             viewHolder.collect.setSelected(false);
         }
-       /* if (myLibraryListBean.getExt().equals("pdf")) {
+        if (myLibraryListBean.getExt().equals("pdf")) {
             viewHolder.type.setText("[PDF]");
             viewHolder.type.setTextColor(Color.parseColor("#e60303"));
         } else if (myLibraryListBean.getExt().equals("doc")|| myLibraryListBean.getExt().equals("docx")) {
@@ -80,15 +78,7 @@ public class MyLibraryAdapter extends BaseAdapter{
         }else if (myLibraryListBean.getExt().equals("ppt")){
             viewHolder.type.setText("[PPT]");
             viewHolder.type.setTextColor(Color.parseColor("#ff7800"));
-        }*/
-        viewHolder.library_rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, LibraryDetailsActivity.class);
-                intent.putExtra("h5", myLibraryListBean.getH5_detail());
-                mContext.startActivity(intent);
-            }
-        });
+        }
         return convertView;
     }
     class ViewHolder {

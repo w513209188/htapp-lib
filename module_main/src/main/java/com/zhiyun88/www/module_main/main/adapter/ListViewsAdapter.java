@@ -10,11 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.community.ui.TopicDetailsActivity;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
 import com.zhiyun88.www.module_main.main.bean.HomeCourseBean;
 import com.zhiyun88.www.module_main.main.bean.HomeInformationBean;
+import com.zhiyun88.www.module_main.utils.CircleTransform;
 
 import java.util.List;
 
@@ -57,7 +60,11 @@ public class ListViewsAdapter extends BaseAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , informationBean.getCover(), 4);
+        if (informationBean.getCover() == null || informationBean.getCover().equals("")) {
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://ww.baid.com", 4);
+        }else {
+            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , informationBean.getCover(), 4);
+        }
         viewHolder.title.setText(informationBean.getTitle());
         viewHolder.time.setText(informationBean.getCreated_at());
         viewHolder.browse.setText(informationBean.getClick_rate());
