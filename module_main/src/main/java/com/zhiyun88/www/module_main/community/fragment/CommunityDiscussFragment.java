@@ -4,13 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wangbo.smartrefresh.layout.SmartRefreshLayout;
@@ -21,6 +16,8 @@ import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.MyListView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxMessageBean;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.CommunityDiscussAdapter;
 import com.zhiyun88.www.module_main.community.bean.DiscussListBean;
@@ -31,6 +28,8 @@ import com.zhiyun88.www.module_main.community.ui.TopicDetailsActivity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 
 public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresenter> implements CommunityDiscussContranct.CommunityDiscussView {
@@ -43,12 +42,14 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
     private String groupId;
     private int page = 1;
     private List<DiscussListBean> discussListBeans;
+    private boolean isRefresh;
 
-    public static Fragment newInstance(String type, String groupId) {
+    public static Fragment newInstance(String type, String groupId, boolean isRefresh) {
         CommunityDiscussFragment discussFragment = new CommunityDiscussFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
         bundle.putString("groupId", groupId);
+        bundle.putBoolean("isRefresh", isRefresh);
         discussFragment.setArguments(bundle);
         return discussFragment;
     }
@@ -71,6 +72,7 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
         setContentView(R.layout.main_fragment_community);
         type = getArguments().getString("type");
         groupId = getArguments().getString("groupId","");
+        isRefresh = getArguments().getBoolean("isRefresh");
         multipleStatusView = getViewById(R.id.multiplestatusview);
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         listView = getViewById(R.id.p_lv);
@@ -78,13 +80,22 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
         discussAdapter = new CommunityDiscussAdapter(getActivity(),discussListBeans);
         listView.setAdapter(discussAdapter);
         RefreshUtils.getInstance(smartRefreshLayout,getActivity() ).defaultRefreSh();
+        smartRefreshLayout.setEnableRefresh(isRefresh);
         multipleStatusView.showLoading();
         if ("".equals(groupId)) {
             mPresenter.getDiscussData(type,page);
         }else {
             mPresenter.getGroupTypeData(type,groupId,page);
         }
-
+        RxBus.getIntanceBus().registerRxBus(RxMessageBean.class, new Consumer<RxMessageBean>() {
+            @Override
+            public void accept(RxMessageBean rxMessageBean) throws Exception {
+                if (rxMessageBean.getMessageType() == 852) {
+                    page = 1;
+                    mPresenter.getGroupTypeData(type,groupId,page);
+                }
+            }
+        });
         setListener();
     }
 

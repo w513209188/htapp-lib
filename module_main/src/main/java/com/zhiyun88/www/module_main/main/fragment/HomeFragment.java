@@ -1,7 +1,5 @@
 package com.zhiyun88.www.module_main.main.fragment;
 
-import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -12,26 +10,18 @@ import com.wangbo.smartrefresh.layout.api.RefreshLayout;
 import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.MvpFragment;
-import com.wb.baselib.permissions.PerMissionsManager;
-import com.wb.baselib.permissions.interfaces.PerMissionCall;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
-import com.xuexiang.xqrcode.ui.CaptureActivity;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.main.adapter.HomeAdapter;
-import com.zhiyun88.www.module_main.main.bean.BannerBean;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
-import com.zhiyun88.www.module_main.main.bean.HomeCourseBean;
-import com.zhiyun88.www.module_main.main.bean.HomeTransformerBean;
 import com.zhiyun88.www.module_main.main.mvp.contranct.HomeFragmentContranct;
 import com.zhiyun88.www.module_main.main.mvp.presenter.HomeFragmentPresenter;
 import com.zhiyun88.www.module_main.main.ui.SearchActivity;
-import com.zhiyun88.www.module_main.sys.CustomCaptureFragment;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 

@@ -36,7 +36,6 @@ public class DialogUtils {
     }
 
     private DialogUtils getDialog(Context context) {
-        if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.main_custom_dialog, null);
             dialog = StyledDialog.buildCustom(view, Gravity.CENTER).show();
             dialog.setCancelable(false);
@@ -47,7 +46,6 @@ public class DialogUtils {
             dialog_no = view.findViewById(R.id.dialog_no);
             dialog_btn_ll = view.findViewById(R.id.dialog_btn_ll);
             dialog_centre_btn = view.findViewById(R.id.dialog_centre_btn);
-        }
 
         dialog_yes.setOnClickListener(new View.OnClickListener() {
             @Override
