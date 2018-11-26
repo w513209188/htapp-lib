@@ -15,11 +15,11 @@ import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.http.HttpManager;
-import com.wb.baselib.image.GlideManager;
 import com.wb.baselib.view.TopBarView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxMessageBean;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.common.ImageLoader;
-import com.wngbo.www.common_postphoto.widget.DividerGridItemDecoration;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.ImageShowAdapter;
 import com.zhiyun88.www.module_main.community.bean.ImageBean;
@@ -181,6 +181,7 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     public void commitSuccess(String msg) {
         hidLoadDiaLog();
         showShortToast(msg);
+        RxBus.getIntanceBus().post(new RxMessageBean(852,"",""));
         finish();
     }
 
@@ -188,5 +189,6 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     protected void onDestroy() {
         super.onDestroy();
         result.clear();
+        RxBus.getIntanceBus().unSubscribe(this);
     }
 }

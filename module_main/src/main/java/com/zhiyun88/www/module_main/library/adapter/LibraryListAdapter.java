@@ -72,7 +72,7 @@ public class LibraryListAdapter extends BaseAdapter {
         } else if (dataListBean.getExt().equals("doc")|| dataListBean.getExt().equals("docx")) {
             viewHolder.type.setText("[WORD]");
             viewHolder.type.setTextColor(Color.parseColor("#005aff"));
-        } else if (dataListBean.getExt().equals("xlsx")){
+        } else if (dataListBean.getExt().equals("xlsx") || dataListBean.getExt().equals("xls")){
             viewHolder.type.setText("[EXEL]");
             viewHolder.type.setTextColor(Color.parseColor("#00cb21"));
         }else if (dataListBean.getExt().equals("ppt")){

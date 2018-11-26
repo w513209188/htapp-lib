@@ -51,8 +51,8 @@ public class CommunityActivity extends BaseActivity {
         str.add("热门");
         str.add("最新");
         mFragments.add(new CommunityGroupFragment());
-        mFragments.add(CommunityDiscussFragment.newInstance("1",""));
-        mFragments.add(CommunityDiscussFragment.newInstance("2",""));
+        mFragments.add(CommunityDiscussFragment.newInstance("1","", true));
+        mFragments.add(CommunityDiscussFragment.newInstance("2","", true));
         scrollIndicatorView.setSplitAuto(true);
         scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener() {
             @Override
