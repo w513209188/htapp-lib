@@ -12,6 +12,7 @@
         android:background="@drawable/details_shape_edittext_rect_gray"
         android:gravity="start"
         android:minLines="2"
+        android:hint="请输入你要评论的内容"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textColorHint="@color/main_text_grey_bf" />

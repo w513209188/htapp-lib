@@ -13,6 +13,7 @@
         app:centerTextColor="#333333"
         app:centerTextSize="18sp"
         app:centerType="textView"
+        app:centerText="话题详情"
         app:fillStatusBar="false"
         app:leftImageResource="@drawable/main_back"
         app:leftType="imageButton"

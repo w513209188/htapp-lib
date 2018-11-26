@@ -17,6 +17,7 @@
         app:centerType="textView"
         app:centerTextColor="#333333"
         app:centerTextSize="18sp"
+        app:centerText="首页"
         app:rightType="imageButton"
        app:rightImageResource="@drawable/main_search_black"
         />

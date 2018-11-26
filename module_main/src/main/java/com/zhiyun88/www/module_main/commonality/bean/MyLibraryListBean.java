@@ -17,6 +17,7 @@ public class MyLibraryListBean implements Parcelable {
     private String created_at;
     private String file_type;
     private String is_collection;
+    private String ext;
     private String h5_detail;
 
     public String getId() {
@@ -99,6 +100,14 @@ public class MyLibraryListBean implements Parcelable {
         this.h5_detail = h5_detail;
     }
 
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
+
     public MyLibraryListBean() {
     }
 
@@ -118,6 +127,7 @@ public class MyLibraryListBean implements Parcelable {
         dest.writeString(this.created_at);
         dest.writeString(this.file_type);
         dest.writeString(this.is_collection);
+        dest.writeString(this.ext);
         dest.writeString(this.h5_detail);
     }
 
@@ -131,6 +141,7 @@ public class MyLibraryListBean implements Parcelable {
         this.created_at = in.readString();
         this.file_type = in.readString();
         this.is_collection = in.readString();
+        this.ext = in.readString();
         this.h5_detail = in.readString();
     }
 

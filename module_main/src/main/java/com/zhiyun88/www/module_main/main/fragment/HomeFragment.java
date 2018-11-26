@@ -62,7 +62,6 @@ public class HomeFragment extends MvpFragment<HomeFragmentPresenter> implements 
         multiplestatusview.showLoading();
         listView = getViewById(R.id.p_lv);
         listView.setVerticalScrollBarEnabled(false);
-        topBarView.getCenterTextView().setText(R.string.main_curriculum_table);
 //        topBarView.getLeftImageButton().setVisibility(View.GONE);
         mPresenter.getHomeData();
         homeBeanList = new ArrayList<>();

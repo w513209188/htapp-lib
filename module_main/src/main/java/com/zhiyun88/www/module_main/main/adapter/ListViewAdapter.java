@@ -10,12 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wb.baselib.image.GlideManager;
+import com.squareup.picasso.Picasso;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.RoundTransform;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
 import com.zhiyun88.www.module_main.main.bean.HomeCourseBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewAdapter extends BaseAdapter{
@@ -59,12 +59,13 @@ public class ListViewAdapter extends BaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.image_type.setVisibility(View.VISIBLE);
-        try {
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , homeCourseBean.getCover()==null||homeCourseBean.getCover().equals("")?"http://ww.baid.com":homeCourseBean.getCover(), 4);
-        }catch (Exception e){
-            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://ww.baid.com", 4);
+        if (homeCourseBean.getCover()==null||homeCourseBean.getCover().equals("")) {
+            Picasso.with(mContext).load("http://ww.baid.com").error(R.drawable.course_image).placeholder(R.drawable.course_image).transform(new RoundTransform(4)).into(viewHolder.imageView);
+//            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , "http://ww.baid.com", 4);
+        }else {
+            Picasso.with(mContext).load(homeCourseBean.getCover()).error(R.drawable.course_image).placeholder(R.drawable.course_image).transform(new RoundTransform(4)).into(viewHolder.imageView);
+//            GlideManager.getInstance().setRoundPhoto(viewHolder.imageView,R.drawable.course_image ,mContext , homeCourseBean.getCover(), 4);
         }
-
         viewHolder.title.setText(homeCourseBean.getTitle());
         viewHolder.num.setText(homeCourseBean.getStudy_count()+"人在学");
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
