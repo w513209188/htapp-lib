@@ -23,6 +23,7 @@ import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxMessageBean;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.common.ImageLoader;
+import com.wngbo.www.common_postphoto.ui.ISCameraActivity;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.ImageShowAdapter;
 import com.zhiyun88.www.module_main.community.bean.ImageBean;
@@ -43,7 +44,6 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
 
     private TopBarView topBarView;
     private EditText topic_content, topic_title;
-    private List<String> result;
     String path = "";
     private String groupId;
     private String title;
@@ -53,6 +53,7 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     private LinearLayout have_name_ll;
     private ImageView show_name;
     private boolean is_show = false;
+    private ArrayList<String> multResult;
 
     @Override
     protected ReleaseTopicPresenter onCreatePresenter() {
@@ -73,22 +74,22 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         ISNav.getInstance().init(new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
-                Picasso.with( imageView.getContext() )
+                Picasso.with(imageView.getContext())
                         .load(Uri.fromFile(new File(path)))
                         .placeholder(R.drawable.course_image)
                         .error(R.drawable.course_image)
-                        .resize(PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this,250),PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this,250))
+                        .resize(PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this, 250), PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this, 250))
                         .centerCrop()
                         .tag(path)
                         .into(imageView);
             }
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-         select_image.addItemDecoration(new RecycleItemSpance(15,3));
+        select_image.addItemDecoration(new RecycleItemSpance(15, 3));
         // select_image.addItemDecoration(new DividerGridItemDecoration(this));
         select_image.setLayoutManager(gridLayoutManager);
-        result = new ArrayList<>();
-        imageShowAdapter = new ImageShowAdapter(this, result);
+        multResult = new ArrayList<>();
+        imageShowAdapter = new ImageShowAdapter(this, multResult);
         select_image.setAdapter(imageShowAdapter);
     }
 
@@ -111,14 +112,14 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
                         return;
                     }
                     path = "";
-                    if (result == null || result.size() == 0) {
+                    if (multResult == null || multResult.size() == 0) {
                         showLoadDiaLog("发表中...");
                         String showName = is_show ? "1" : "0";
                         mPresenter.commitTopicData(groupId, title, content, showName, path);
                     } else {
                         Map<String, File> map = new HashMap<>();
-                        for (int i = 0; i < result.size(); i++) {
-                            File file = new File(result.get(i));
+                        for (int i = 0; i < multResult.size(); i++) {
+                            File file = new File(multResult.get(i));
                             map.put("file" + i, file);
                         }
                         Map<String, RequestBody> bodyMap = HttpManager.newInstance().getRequestBodyMap(map, MediaType.parse("image/*"));
@@ -147,8 +148,20 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 666) {
             if (data == null) return;
-            result = data.getStringArrayListExtra("result");
-            imageShowAdapter.setData(result);
+            List<String> result = data.getStringArrayListExtra("result");
+            multResult.clear();
+            multResult.addAll(result);
+            /*if (resultCode == -1) {
+                multResult.addAll(result);
+            }else {
+                multResult.clear();
+            }
+            if (multResult.size() > 9) {
+                showShortToast("图片不能超过9张");
+                multResult.removeAll(result);
+                return;
+            }*/
+            imageShowAdapter.setData(multResult);
         }
     }
 
@@ -191,14 +204,14 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     public void commitSuccess(String msg) {
         hidLoadDiaLog();
         showShortToast(msg);
-        RxBus.getIntanceBus().post(new RxMessageBean(852,"",""));
+        RxBus.getIntanceBus().post(new RxMessageBean(852, "", ""));
         finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        result.clear();
+        multResult.clear();
         RxBus.getIntanceBus().unSubscribe(this);
     }
 }

@@ -43,6 +43,7 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
     private int page = 1;
     private List<DiscussListBean> discussListBeans;
     private boolean isRefresh;
+    private int index;
 
     public static Fragment newInstance(String type, String groupId, boolean isRefresh) {
         CommunityDiscussFragment discussFragment = new CommunityDiscussFragment();
@@ -93,6 +94,14 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
                 if (rxMessageBean.getMessageType() == 852) {
                     page = 1;
                     mPresenter.getGroupTypeData(type,groupId,page);
+                }else if (rxMessageBean.getMessageType() == 486) {
+                    String total = rxMessageBean.getMessage();
+                    discussListBeans.get(index).setComment_count(total);
+                    discussAdapter.notifyDataSetChanged();
+                }else if (rxMessageBean.getMessageType() == 487) {
+                    String likeCount = rxMessageBean.getMessage();
+                    discussListBeans.get(index).setLike_count(likeCount);
+                    discussAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -139,7 +148,12 @@ public class CommunityDiscussFragment extends MvpFragment<CommunityDiscussPresen
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                index = position;
                 //社区详情
+                DiscussListBean discussListBean = discussListBeans.get(position);
+                int readCount = Integer.parseInt(discussListBean.getRead_count())+1;
+                discussListBean.setRead_count(readCount+"");
+                discussAdapter.notifyDataSetChanged();
                 Intent intent = new Intent(getActivity(), TopicDetailsActivity.class);
                 intent.putExtra("question_id", discussListBeans.get(position).getId());
                 intent.putExtra("h5", discussListBeans.get(position).getH5_detail());

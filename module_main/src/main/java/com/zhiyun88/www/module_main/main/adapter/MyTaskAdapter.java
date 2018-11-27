@@ -68,7 +68,7 @@ public class MyTaskAdapter extends BaseAdapter {
             viewHolder.type.setTextColor(mContext.getResources().getColor(R.color.main_train_03));
         }else {
             viewHolder.type.setText("[考试]");
-            viewHolder.type.setTextColor(mContext.getResources().getColor(R.color.main_live_3c));
+            viewHolder.type.setTextColor(mContext.getResources().getColor(R.color.main_test_29));
         }
 
         viewHolder.title.setText(myTaskListBean.getName());

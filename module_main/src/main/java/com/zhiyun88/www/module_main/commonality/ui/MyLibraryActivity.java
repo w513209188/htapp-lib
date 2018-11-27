@@ -94,8 +94,9 @@ public class MyLibraryActivity extends MvpActivity<MyLibraryPresenter> implement
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (libraryListBeans == null)return;
                 new FinestWebView.Builder(MyLibraryActivity.this)
-                        .titleDefault("正在加载...")
-                        .updateTitleFromHtml(true)
+                        .titleDefault("文库详情")
+                        .updateTitleFromHtml(false)
+                        .webViewUseWideViewPort(true)
                         .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
                         .iconDefaultColorRes(R.color.main_live_3c)
                         .showIconMenu(false)
