@@ -9,5 +9,5 @@
     app:rightOption="@drawable/right_bg"
     android:id="@+id/html_htv"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="match_parent"/>
 </LinearLayout>
