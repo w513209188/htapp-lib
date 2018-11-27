@@ -107,8 +107,8 @@ public class LibraryFragment extends MvpFragment<LibraryFragmentPresenter> imple
                 //文库详情
 
                 new FinestWebView.Builder(getActivity())
-                        .titleDefault("正在加载...")
-                        .updateTitleFromHtml(true)
+                        .titleDefault("文库详情")
+                        .updateTitleFromHtml(false)
                         .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
                         .iconDefaultColorRes(R.color.main_live_3c)
                         .showIconMenu(false)

@@ -7,10 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.baijiahulian.livecore.models.imodels.IForbidChatModel;
 import com.squareup.picasso.Picasso;
 import com.wngbo.www.common_postphoto.ISNav;
+import com.wngbo.www.common_postphoto.common.Constant;
+import com.wngbo.www.common_postphoto.config.ISCameraConfig;
 import com.wngbo.www.common_postphoto.config.ISListConfig;
+import com.wngbo.www.common_postphoto.ui.ISListActivity;
 import com.zhiyun88.www.module_main.R;
+
+import org.junit.Ignore;
 
 import java.io.File;
 import java.util.List;
@@ -33,8 +39,10 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (position == pathList.size()) {
+            holder.photo_del.setVisibility(View.GONE);
             holder.imageView.setImageResource(R.drawable.add_image);
         }else {
+            holder.photo_del.setVisibility(View.VISIBLE);
             Picasso.with(mContext).load("file://"+pathList.get(position)).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(holder.imageView);
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +60,15 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
                 }
             }
         });
+        holder.photo_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constant.imageList == null || Constant.imageList.size() == 0)return;
+                Constant.imageList.remove(position);
+                pathList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -65,11 +82,12 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView imageView;
+        ImageView imageView,photo_del;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.show_image);
+            photo_del = itemView.findViewById(R.id.show_image_del);
         }
     }
 }

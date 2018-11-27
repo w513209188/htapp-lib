@@ -103,8 +103,8 @@ public class InformationFragment extends MvpFragment<InformationFragmentPresente
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (dataListBeans == null) return;
                 new FinestWebView.Builder(parent.getContext())
-                        .titleDefault("正在加载...")
-                        .updateTitleFromHtml(true)
+                        .titleDefault("资讯详情")
+                        .updateTitleFromHtml(false)
                         .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
                         .iconDefaultColorRes(R.color.main_live_3c)
                         .showIconMenu(false)

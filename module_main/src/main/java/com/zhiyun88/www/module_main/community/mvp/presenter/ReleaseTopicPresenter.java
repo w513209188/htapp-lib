@@ -33,6 +33,7 @@ public class ReleaseTopicPresenter extends ReleaseTopicContranct.ReleaseTopicPre
 
             @Override
             public void onFail(ApiException e) {
+                mView.closeLoadV();
                 mView.showErrorMsg(e.getMessage());
             }
 

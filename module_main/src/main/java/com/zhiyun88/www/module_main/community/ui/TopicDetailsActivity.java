@@ -29,6 +29,8 @@ import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.MyListView;
 import com.wb.baselib.view.TopBarView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxMessageBean;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.CommentAdapater;
 import com.zhiyun88.www.module_main.community.bean.DetailsCommentListBean;
@@ -79,6 +81,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     };
     private List<DetailsCommentListBean> listBeans;
     private CustomDialog customDialog;
+    private QuestionInfoBean questionInfoBean;
 
     @Override
     protected CommunityDetailsPresenter onCreatePresenter() {
@@ -236,7 +239,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
 
     @Override
     public void SuccessData(Object o) {
-        QuestionInfoBean questionInfoBean = (QuestionInfoBean) o;
+        questionInfoBean = (QuestionInfoBean) o;
         setActivityContent(questionInfoBean.getContent());
 
         //topBarView.getCenterTextView().setText(questionInfoBean.getTitle());
@@ -250,13 +253,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
             }
         }else {
             details_name.setText("匿名");
-            if (questionInfoBean.getAvatar() == null || questionInfoBean.getAvatar().equals("")) {
-                Picasso.with(TopicDetailsActivity.this).load(R.drawable.name_no).error(R.drawable.name_no).placeholder(R.drawable.name_no).transform(new CircleTransform()).into(headImage);
-            }else {
-                Picasso.with(TopicDetailsActivity.this).load(R.drawable.name_no).error(R.drawable.name_no).placeholder(R.drawable.name_no).transform(new CircleTransform()).into(headImage);
-            }
-
-
+            Picasso.with(TopicDetailsActivity.this).load(R.drawable.name_no).error(R.drawable.name_no).placeholder(R.drawable.name_no).transform(new CircleTransform()).into(headImage);
         }
         details_time.setText(questionInfoBean.getCreated_at());
         details_browse.setText(questionInfoBean.getRead_count() + "次浏览");
@@ -352,6 +349,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
         mAdapter.notifyDataSetChanged();
         comment_count.setText("全部评论 (" + total + ")");
         page++;
+        RxBus.getIntanceBus().post(new RxMessageBean(486,total+"",""));
     }
 
     @Override
@@ -365,5 +363,13 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
     @Override
     public void setLikeSuccess(String msg) {
         like.setImageResource(R.drawable.details_like_org);
+        int likeCount = Integer.parseInt(questionInfoBean.getLike_count()) + 1;
+        RxBus.getIntanceBus().post(new RxMessageBean(487,likeCount+"",""));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getIntanceBus().unSubscribe(this);
     }
 }
