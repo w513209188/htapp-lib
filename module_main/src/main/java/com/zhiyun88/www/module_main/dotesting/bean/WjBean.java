@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class WjBean implements Parcelable {
     private String point;
-    private String  v;
+    private String  comment;
 
     public String getPoint() {
         return point;
@@ -16,11 +16,11 @@ public class WjBean implements Parcelable {
     }
 
     public String getV() {
-        return v;
+        return comment;
     }
 
     public void setV(String v) {
-        this.v = v;
+        this.comment = v;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class WjBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.point);
-        dest.writeString(this.v);
+        dest.writeString(this.comment);
     }
 
     public WjBean() {
@@ -39,7 +39,7 @@ public class WjBean implements Parcelable {
 
     protected WjBean(Parcel in) {
         this.point = in.readString();
-        this.v = in.readString();
+        this.comment = in.readString();
     }
 
     public static final Parcelable.Creator<WjBean> CREATOR = new Parcelable.Creator<WjBean>() {

@@ -12,6 +12,8 @@ import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
+import com.wngbo.www.common_postphoto.ISNav;
+import com.wngbo.www.common_postphoto.common.Constant;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.call.LoginStatusCall;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;
@@ -52,6 +54,8 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
         task_pross_tv=getViewById(R.id.task_pross_tv);
         task_tb=getViewById(R.id.task_tb);
         task_status_tv=getViewById(R.id.task_status_tv);
+
+
         try {
             taskId=getIntent().getData().getLastPathSegment();
 //            String uid = getIntent().getData().getQueryParameter("uid");

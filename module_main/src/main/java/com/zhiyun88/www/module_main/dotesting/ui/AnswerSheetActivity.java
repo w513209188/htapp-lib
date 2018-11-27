@@ -37,12 +37,14 @@ public class AnswerSheetActivity extends BaseActivity implements TestViewpageCal
     private ListView griview;
     private TextView post_test_tv;
     private TopBarView dtk_tb;
+    private boolean anasy;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setStatusBarColor(Color.WHITE,0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dotest_answersheet_layout);
         questionBankBeanList=getIntent().getParcelableArrayListExtra("questionBankBeanList");
+        anasy=getIntent().getBooleanExtra("anasy",false);
         griview=getViewById(com.jungan.www.common_dotest.R.id.mgv);
         griview.setDivider(null);
         dtk_tb=getViewById(R.id.dtk_tb);
@@ -50,6 +52,7 @@ public class AnswerSheetActivity extends BaseActivity implements TestViewpageCal
         mAdapter=new AnswerSheetItemAdapter(answerSheetBeanLists,AnswerSheetActivity.this);
         griview.setAdapter(mAdapter);
         post_test_tv=getViewById(com.jungan.www.common_dotest.R.id.post_test_tv);
+        post_test_tv.setVisibility(anasy?View.GONE:View.VISIBLE);
         new Thread(new reshAnswerSheet()).start();
         setListener();
     }
