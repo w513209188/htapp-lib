@@ -27,6 +27,7 @@ import com.zhiyun88.www.module_main.community.config.CommunityConfig;
 import com.zhiyun88.www.module_main.community.mvp.contranct.CommunityMyGroupContranct;
 import com.zhiyun88.www.module_main.community.mvp.presenter.CommunityMyGroupPresenter;
 import com.zhiyun88.www.module_main.community.ui.GroupDetailsActivity;
+import com.zhiyun88.www.module_main.dotesting.ui.CommonTestActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -119,8 +120,8 @@ public class CommunityMyGroupFragment extends MvpFragment<CommunityMyGroupPresen
             @Override
             public void setOutItem(final String id, int position) {
                 clickIndex = position;
-                DialogUtils.newInstance().initDialog(getActivity())
-                        .setTitle("提示")
+                DialogUtils dialogUtils = new DialogUtils(getActivity());
+                dialogUtils.setTitle("提示")
                         .setContent("确定要退出小组?")
                         .setOnClickListenter(new DialogUtils.OnClickListener() {
                             @Override

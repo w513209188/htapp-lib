@@ -43,6 +43,7 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
     private GroupInfoBean groupInfoBean;
     private String groupId;
 
+
     @Override
     protected GroupDetailsPresenter onCreatePresenter() {
         return new GroupDetailsPresenter(this);
@@ -82,8 +83,8 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
                         intent.putExtra("groupId", groupId);
                         startActivity(intent);
                     }else {
-                        DialogUtils.newInstance().initDialog(GroupDetailsActivity.this)
-                                .setTitle("提示")
+                        DialogUtils dialogUtils = new DialogUtils(GroupDetailsActivity.this);
+                        dialogUtils.setTitle("提示")
                                 .setContent("请先加入小组")
                                 .hitBtn(true)
                                 .setbtncentre("确定")
@@ -102,8 +103,8 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
             public void onClick(View v) {
                 if (groupInfoBean == null) return;
                 if (groupInfoBean.getIs_group().equals("1")) {
-                    DialogUtils.newInstance().initDialog(GroupDetailsActivity.this)
-                            .setTitle("提示")
+                    DialogUtils dialogUtils = new DialogUtils(GroupDetailsActivity.this);
+                    dialogUtils.setTitle("提示")
                             .setContent("确定要退出小组?")
                             .setOnClickListenter(new DialogUtils.OnClickListener() {
                                 @Override

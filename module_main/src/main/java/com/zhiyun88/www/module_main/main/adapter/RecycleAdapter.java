@@ -1,18 +1,15 @@
 package com.zhiyun88.www.module_main.main.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.course.ui.CourseInfoActivity;

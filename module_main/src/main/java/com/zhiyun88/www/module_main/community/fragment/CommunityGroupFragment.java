@@ -134,8 +134,8 @@ public class CommunityGroupFragment extends MvpFragment<CommunityGroupPresenter>
                 index = position;
                 state = is_group;
                 if (is_group.equals("1")) {
-                    DialogUtils.newInstance().initDialog(getActivity())
-                            .setTitle("提示")
+                    DialogUtils dialogUtils = new DialogUtils(getActivity());
+                    dialogUtils.setTitle("提示")
                             .setContent("确定要退出小组?")
                             .setOnClickListenter(new DialogUtils.OnClickListener() {
                                 @Override
