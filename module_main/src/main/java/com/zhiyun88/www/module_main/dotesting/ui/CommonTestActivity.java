@@ -60,6 +60,7 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     private String testName;
     //current_count
     private MultipleStatusView multiplestatusview;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.dotest_commontest_layout);
@@ -165,8 +166,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
             if (commonQuestionBankView.currentPage() > commonQuestionBankView.getQuestionBankBeanList().size() - 1)
                 return;
             if (v.getId() == R.id.test_pause) {
-                DialogUtils.newInstance().initDialog(CommonTestActivity.this)
-                        .setContent("休息一下,继续答题")
+                DialogUtils dialogUtils = new DialogUtils(CommonTestActivity.this);
+                dialogUtils.setContent("休息一下,继续答题")
                         .setbtncentre("继续答题")
                         .hitBtn(true)
                         .setOnCentreClickListenter(new DialogUtils.OnCentreClickListenter() {
@@ -233,8 +234,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         mRecordTime = SystemClock.elapsedRealtime();
         commonQuestionBankView.setPause(true);
         if (commonQuestionBankView.getUserDoTestNum() < commonQuestionBankView.getQuestionBankBeanList().size()) {
-            DialogUtils.newInstance().initDialog(CommonTestActivity.this)
-                    .setContent("您还有题目未作答,确认交卷吗?")
+            DialogUtils dialogUtils = new DialogUtils(CommonTestActivity.this);
+            dialogUtils.setContent("您还有题目未作答,确认交卷吗?")
                     .setOnClickListenter(new DialogUtils.OnClickListener() {
                         @Override
                         public void setYesClickListener() {
@@ -365,8 +366,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
             mChronometer.stop();
             mRecordTime = SystemClock.elapsedRealtime();
             commonQuestionBankView.setPause(true);
-            DialogUtils.newInstance().initDialog(CommonTestActivity.this)
-                    .setContent("退出默认放弃本次考试")
+            DialogUtils dialogUtils = new DialogUtils(CommonTestActivity.this);
+            dialogUtils.setContent("退出默认放弃本次考试")
                     .setOnClickListenter(new DialogUtils.OnClickListener() {
                         @Override
                         public void setYesClickListener() {
@@ -502,8 +503,8 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
 
     @Override
     public void showDidlogMsg(String msg) {
-        DialogUtils.newInstance().initDialog(CommonTestActivity.this)
-                .setContent(msg)
+        DialogUtils dialogUtils = new DialogUtils(CommonTestActivity.this);
+        dialogUtils.setContent(msg)
                 .setbtncentre("确定")
                 .hitBtn(true)
                 .setOnCentreClickListenter(new DialogUtils.OnCentreClickListenter() {

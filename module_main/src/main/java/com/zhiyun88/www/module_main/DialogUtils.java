@@ -2,7 +2,9 @@ package com.zhiyun88.www.module_main;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,40 +14,35 @@ import android.widget.TextView;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
 
-public class DialogUtils {
+public class DialogUtils extends Dialog {
 
     private TextView dialog_title, dialog_content, dialog_yes, dialog_no,dialog_centre_btn;
     private Dialog dialog;
-    private static DialogUtils dialogUtils;
     private LinearLayout dialog_btn_ll;
     private OnClickListener onClickListener;
     private OnCentreClickListenter onCentreClickListenter;
     private View view;
 
-    private DialogUtils() {
-    }
-    public static DialogUtils newInstance() {
-        if (dialogUtils == null) {
-            dialogUtils = new DialogUtils();
-        }
-        return dialogUtils;
+    public DialogUtils(@NonNull Context context) {
+        this(context,0);
     }
 
-    public DialogUtils initDialog(Context context) {
-        return getDialog(context);
+    private DialogUtils(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+        initDialog(context);
     }
 
-    private DialogUtils getDialog(Context context) {
-            view = LayoutInflater.from(context).inflate(R.layout.main_custom_dialog, null);
-            dialog = StyledDialog.buildCustom(view, Gravity.CENTER).show();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog_title = view.findViewById(R.id.dialog_title);
-            dialog_content = view.findViewById(R.id.dialog_content);
-            dialog_yes = view.findViewById(R.id.dialog_yes);
-            dialog_no = view.findViewById(R.id.dialog_no);
-            dialog_btn_ll = view.findViewById(R.id.dialog_btn_ll);
-            dialog_centre_btn = view.findViewById(R.id.dialog_centre_btn);
+    private DialogUtils initDialog(Context context) {
+        view = LayoutInflater.from(context).inflate(R.layout.main_custom_dialog, null);
+        dialog = StyledDialog.buildCustom(view, Gravity.CENTER).show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog_title = view.findViewById(R.id.dialog_title);
+        dialog_content = view.findViewById(R.id.dialog_content);
+        dialog_yes = view.findViewById(R.id.dialog_yes);
+        dialog_no = view.findViewById(R.id.dialog_no);
+        dialog_btn_ll = view.findViewById(R.id.dialog_btn_ll);
+        dialog_centre_btn = view.findViewById(R.id.dialog_centre_btn);
 
         dialog_yes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,36 +68,37 @@ public class DialogUtils {
                 closeDiaLog();
             }
         });
-        return dialogUtils;
+        return this;
     }
+
 
     public DialogUtils setTitle(String title) {
         dialog_title.setText(title);
-        return dialogUtils;
+        return this;
     }
 
     public DialogUtils setContent(String content) {
         dialog_content.setText(content);
-        return dialogUtils;
+        return this;
     }
 
     public DialogUtils setBtn1Txt(String btn1Txt) {
         dialog_yes.setText(btn1Txt);
-        return dialogUtils;
+        return this;
     }
 
     public DialogUtils setBtn2Txt(String btn2Txt) {
         dialog_no.setText(btn2Txt);
-        return dialogUtils;
+        return this;
     }
     public DialogUtils setbtncentre(String btnCentreTxt) {
         dialog_centre_btn.setText(btnCentreTxt);
-        return dialogUtils;
+        return this;
     }
 
     public DialogUtils setBtn2TxtColor(@ColorInt int btn2TxtColor) {
         dialog_no.setTextColor(btn2TxtColor);
-        return dialogUtils;
+        return this;
     }
 
     public DialogUtils hitBtn(boolean isHit) {
@@ -111,7 +109,7 @@ public class DialogUtils {
             dialog_btn_ll.setVisibility(View.VISIBLE);
             dialog_centre_btn.setVisibility(View.GONE);
         }
-        return dialogUtils;
+        return this;
     }
 
 
