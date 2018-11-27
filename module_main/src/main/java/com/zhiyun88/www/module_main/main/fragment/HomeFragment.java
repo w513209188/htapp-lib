@@ -1,5 +1,6 @@
 package com.zhiyun88.www.module_main.main.fragment;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -10,6 +11,8 @@ import com.wangbo.smartrefresh.layout.api.RefreshLayout;
 import com.wangbo.smartrefresh.layout.listener.OnRefreshListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.fragment.MvpFragment;
+import com.wb.baselib.permissions.PerMissionsManager;
+import com.wb.baselib.permissions.interfaces.PerMissionCall;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
@@ -20,6 +23,7 @@ import com.zhiyun88.www.module_main.main.bean.HomeBean;
 import com.zhiyun88.www.module_main.main.mvp.contranct.HomeFragmentContranct;
 import com.zhiyun88.www.module_main.main.mvp.presenter.HomeFragmentPresenter;
 import com.zhiyun88.www.module_main.main.ui.SearchActivity;
+import com.zhiyun88.www.module_main.sys.CustomCaptureActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,23 +68,25 @@ public class HomeFragment extends MvpFragment<HomeFragmentPresenter> implements 
     @Override
     protected void setListener() {
         super.setListener();
+        topBarView.getCenterSearchEditText().setHint("请输入关键字");
+        topBarView.getCenterSearchEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToActivityUtil.newInsance().toNextActivity(getActivity(),SearchActivity.class );
+            }
+        });
         topBarView.setListener(new TopBarView.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
                 if (action == TopBarView.ACTION_RIGHT_BUTTON) {
-                    //打开搜索页
-                    ToActivityUtil.newInsance().toNextActivity(getActivity(),SearchActivity.class );
+                    PerMissionsManager.newInstance().getUserPerMissions(getActivity(), new PerMissionCall() {
+                        @Override
+                        public void userPerMissionStatus(boolean b) {
+                            ToActivityUtil.newInsance().toNextActivity(getActivity(),CustomCaptureActivity.class );
+                        }
+                    },new String[]{Manifest.permission.CAMERA});
+
                 }else if(action==TopBarView.ACTION_LEFT_BUTTON){
-//                    openPageForResult(CustomCaptureFragment.class, null, 111);
-//                    PerMissionsManager.newInstance().getUserPerMissions(getActivity(), new PerMissionCall() {
-//                        @Override
-//                        public void userPerMissionStatus(boolean is) {
-//                            if (is) {
-//                                Intent intent = new Intent(getActivity(), CaptureActivity.class);
-//                                startActivityForResult(intent, REQUEST_CODE);
-//                            }
-//                        }
-//                    },new String[]{Manifest.permission.CAMERA});
                             getActivity().finish();
                 }
             }

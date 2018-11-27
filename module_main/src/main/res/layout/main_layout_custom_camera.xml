@@ -8,17 +8,17 @@
         android:id="@+id/preview_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <com.xuexiang.xqrcode.view.ViewfinderView
+    <com.uuzuche.lib_zxing.view.ViewfinderView
         android:id="@+id/viewfinder_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:inner_corner_length="30dp"
-        app:inner_corner_width="5dp"
-        app:inner_marginTop="120dp"
-        app:inner_scan_isCircle="false"
-        app:inner_scan_speed="10"
-        app:inner_height="300dp"
-        app:inner_width="300dp" />
-
+        app:inner_width="200dp"
+        app:inner_height="200dp"
+        app:inner_margintop="200dp"
+        app:inner_corner_length="15dp"
+        app:inner_corner_color="@color/main_text_blue_458"
+        app:inner_corner_width="3dp"
+        app:inner_scan_speed="30"
+        app:inner_scan_iscircle="true"
+        />
 </FrameLayout>

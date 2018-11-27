@@ -2,6 +2,7 @@ package com.zhiyun88.www.module_main.community.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,10 @@ import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.wb.baselib.app.AppUtils;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.http.HttpManager;
+import com.wb.baselib.phone.PhoneUtils;
 import com.wb.baselib.view.TopBarView;
 import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxMessageBean;
@@ -70,7 +73,14 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         ISNav.getInstance().init(new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
-                Picasso.with(context).load("file://"+path).placeholder(R.drawable.course_image).error(R.drawable.course_image).into(imageView);
+                Picasso.with( imageView.getContext() )
+                        .load(Uri.fromFile(new File(path)))
+                        .placeholder(R.drawable.course_image)
+                        .error(R.drawable.course_image)
+                        .resize(PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this,250),PhoneUtils.newInstance().dip2px(ReleaseTopicActivity.this,250))
+                        .centerCrop()
+                        .tag(path)
+                        .into(imageView);
             }
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);

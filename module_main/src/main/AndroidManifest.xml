@@ -99,5 +99,6 @@
         <activity android:name=".dotesting.ui.AnswerSheetActivity"/>
         <activity android:name=".dotesting.ui.CuntActivity"/>
         <activity android:name=".dotesting.ui.WjCountActivity"/>
+        <activity android:name=".sys.CustomCaptureActivity"/>
     </application>
 </manifest>
