@@ -30,10 +30,13 @@ import com.jungan.www.common_dotest.questionview.CommonQuestionBankView;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.prase.GsonUtils;
+import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
+import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.DialogUtils;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.dotesting.bean.AnswerDataBean;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitBean;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
 import com.zhiyun88.www.module_main.dotesting.mvp.contranct.CommonTestContranct;
 import com.zhiyun88.www.module_main.dotesting.mvp.presenter.CommonTestPresenter;
@@ -489,8 +492,13 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     }
 
     @Override
-    public void submitSuccess(String msg) {
-        showDidlogMsg(msg);
+    public void submitSuccess(SubmitBean msg) {
+            if(msg.getType().equals("3")){
+                ToActivityUtil.newInsance().toNextActivity(CommonTestActivity.this,WjCountActivity.class,new String[][]{{"reportId",msg.getReport_id()}});
+            }else {
+                showDidlogMsg(msg.getMsg());
+            }
+
     }
 
     @Override

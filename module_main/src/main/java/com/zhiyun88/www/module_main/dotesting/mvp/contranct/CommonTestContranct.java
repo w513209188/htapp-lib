@@ -6,6 +6,7 @@ import com.wb.baselib.base.mvp.BasePreaenter;
 import com.wb.baselib.base.mvp.BaseView;
 import com.wb.baselib.base.mvp.MvpView;
 import com.wb.baselib.bean.Result;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitBean;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
 
 import java.util.List;
@@ -14,13 +15,13 @@ import io.reactivex.Observable;
 
 public interface CommonTestContranct {
     interface CommonTestView extends MvpView {
-        void submitSuccess(String msg);
+        void submitSuccess(SubmitBean msg);
         void showDidlogMsg(String msg);
     }
 
     interface CommonTestModel extends BaseModel {
         Observable<List<QuestionBankBean>> getCommonTest(String id, String taskId, int testType);
-        Observable<Result> submitTest(SubmitTestBean submitTestBean);
+        Observable<Result<SubmitBean>> submitTest(SubmitTestBean submitTestBean);
     }
 
     abstract class CommonTestPresenter extends BasePreaenter<CommonTestView, CommonTestModel> {

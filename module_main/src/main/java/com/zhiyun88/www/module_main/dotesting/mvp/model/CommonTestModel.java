@@ -20,6 +20,7 @@ import com.zhiyun88.www.module_main.dotesting.bean.QestionTestBean;
 import com.zhiyun88.www.module_main.dotesting.bean.QuesOptionBean;
 import com.zhiyun88.www.module_main.dotesting.bean.QuestionBean;
 import com.zhiyun88.www.module_main.dotesting.bean.QuestionNaireBean;
+import com.zhiyun88.www.module_main.dotesting.bean.SubmitBean;
 import com.zhiyun88.www.module_main.dotesting.bean.SubmitTestBean;
 import com.zhiyun88.www.module_main.dotesting.config.TestTypeConfig;
 import com.zhiyun88.www.module_main.dotesting.mvp.contranct.CommonTestContranct;
@@ -57,7 +58,7 @@ public class CommonTestModel implements CommonTestContranct.CommonTestModel {
     }
 
     @Override
-    public Observable<Result> submitTest(SubmitTestBean submitTestBean) {
+    public Observable<Result<SubmitBean>> submitTest(SubmitTestBean submitTestBean) {
         HashMap<String, String> map = new HashMap<>();
         map.put("report_id", submitTestBean.getReport_id());
         map.put("type", submitTestBean.getType());
