@@ -31,9 +31,13 @@ public class mApp extends BaseApplication {
         LogTools.setDebug(true);
         HttpConfig.HttpConfigBuilder httpConfig =
                 new HttpConfig.HttpConfigBuilder()
+                        .setUseCustGson(true)
                         .setmBaseUrl("http://test-px.huatu.com")
                 .setmIsUseLog(true);
         HttpConfig.newInstanceBuild(httpConfig);
         hApp.newInstance().initVideoPlay(this);
+//        ZXingLibrary.initDisplayOpinion(this);
+
+
     }
 }
