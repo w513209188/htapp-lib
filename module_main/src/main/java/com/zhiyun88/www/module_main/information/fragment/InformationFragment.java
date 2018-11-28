@@ -18,6 +18,8 @@ import com.wb.baselib.base.fragment.MvpFragment;
 import com.wb.baselib.phone.PhoneUtils;
 import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.view.MultipleStatusView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxMessageBean;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.information.adapter.InformationListAdapter;
 import com.zhiyun88.www.module_main.information.bean.InformationDataListBean;
@@ -27,6 +29,8 @@ import com.zhiyun88.www.module_main.information.mvp.presenter.InformationFragmen
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 
 public class InformationFragment extends MvpFragment<InformationFragmentPresenter> implements InformationFragmentContranct.InformationFragmentView{
@@ -102,6 +106,10 @@ public class InformationFragment extends MvpFragment<InformationFragmentPresente
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (dataListBeans == null) return;
+                InformationDataListBean dataListBean = dataListBeans.get(position);
+                int clickCount = Integer.parseInt(dataListBean.getClick_rate())+1;
+                dataListBean.setClick_rate(clickCount+"");
+                informationListAdapter.notifyDataSetChanged();
                 new FinestWebView.Builder(parent.getContext())
                         .titleDefault("资讯详情")
                         .updateTitleFromHtml(false)

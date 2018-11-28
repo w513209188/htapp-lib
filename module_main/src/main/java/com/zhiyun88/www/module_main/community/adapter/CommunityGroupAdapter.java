@@ -98,10 +98,14 @@ public class CommunityGroupAdapter extends BaseAdapter {
                 viewHolder.join.setSelected(true);
                 viewHolder.join.setText("退出小组");
                 listBeans.get(index).setIs_group("1");
+                int userCount = Integer.parseInt(listBeans.get(position).getUser_count()) + 1;
+                listBeans.get(position).setUser_count(userCount+"");
             }else {
                 viewHolder.join.setSelected(false);
                 viewHolder.join.setText("加入小组");
                 listBeans.get(index).setIs_group("0");
+                int userCount = Integer.parseInt(listBeans.get(position).getUser_count()) - 1;
+                listBeans.get(position).setUser_count(userCount+"");
             }
             viewHolder.join.setEnabled(true);
             notifyDataSetChanged();

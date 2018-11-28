@@ -66,9 +66,9 @@ public class CommunityGroupFragment extends MvpFragment<CommunityGroupPresenter>
         smartRefreshLayout = getViewById(R.id.refreshLayout);
         listView = getViewById(R.id.p_lv);
         listBeans = new ArrayList<>();
-        communityGroupAdapter = new CommunityGroupAdapter(getActivity(),listBeans);
+        communityGroupAdapter = new CommunityGroupAdapter(getActivity(), listBeans);
         listView.setAdapter(communityGroupAdapter);
-        RefreshUtils.getInstance(smartRefreshLayout,getActivity() ).defaultRefreSh();
+        RefreshUtils.getInstance(smartRefreshLayout, getActivity()).defaultRefreSh();
         multipleStatusView.showLoading();
         mPresenter.getGroupList(page);
         RxBus.getIntanceBus().registerRxBus(RxMessageBean.class, new Consumer<RxMessageBean>() {
@@ -78,145 +78,154 @@ public class CommunityGroupFragment extends MvpFragment<CommunityGroupPresenter>
                     for (int i = 0; i < listBeans.size(); i++) {
                         if (rxMessageBean.getMessage().equals(listBeans.get(i).getId())) {
                             listBeans.get(i).setIs_group(rxMessageBean.getExtras());
+                            if (rxMessageBean.getExtras().equals("0")) {
+                                int userCount = Integer.parseInt(listBeans.get(i).getUser_count()) - 1;
+                                listBeans.get(i).setUser_count(userCount + "");
+                            }else {
+                                int userCount = Integer.parseInt(listBeans.get(i).getUser_count()) + 1;
+                                listBeans.get(i).setUser_count(userCount + "");
+                            }
                             communityGroupAdapter.notifyDataSetChanged();
                         }
                     }
-                }else if (rxMessageBean.getMessageType() == 593) {
-                    for (int i = 0; i < listBeans.size(); i++) {
-                        if (rxMessageBean.getMessage().equals(listBeans.get(i).getId())) {
-                            listBeans.get(i).setIs_group("0");
-                            communityGroupAdapter.notifyDataSetChanged();
+
+                    }else if (rxMessageBean.getMessageType() == 593) {
+                        for (int i =  0; i < listBeans.size(); i++) {
+                            if (rxMessageBean.getMessage().equals(listBeans.get(i).getId())) {
+                                listBeans.get(i).setIs_group("0");
+                                communityGroupAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }
-            }
-        });
-        setListener();
-    }
+            });
 
-    @Override
-    protected void setListener() {
-        super.setListener();
-        multipleStatusView.setOnRetryClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                multipleStatusView.showLoading();
-                page = 1;
-                mPresenter.getGroupList(page);
-            }
-        });
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                page = 1;
-                mPresenter.getGroupList(page);
-            }
-        });
-        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getGroupList(page);
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //小组详情
-                Intent intent = new Intent(getActivity(),GroupDetailsActivity.class);
-                intent.putExtra("groupId", listBeans.get(position).getId());
-                startActivityForResult(intent,555);
-            }
-        });
-        communityGroupAdapter.setOnItemJoinListener(new CommunityConfig.OnItemJoinListener() {
-
-            @Override
-            public void setJoinInfo(final String id, final String is_group, int position, final TextView join) {
-                index = position;
-                state = is_group;
-                if (is_group.equals("1")) {
-                    DialogUtils dialogUtils = new DialogUtils(getActivity());
-                    dialogUtils.setTitle("提示")
-                            .setContent("确定要退出小组?")
-                            .setOnClickListenter(new DialogUtils.OnClickListener() {
-                                @Override
-                                public void setYesClickListener() {
-                                    mPresenter.setGroup(id,"0");
-                                    join.setEnabled(false);
-                                }
-
-                                @Override
-                                public void setNoClickListener() {
-
-                                }
-                            });
-                }else {
-                    mPresenter.setGroup(id,"1" );
-                    join.setEnabled(false);
-                }
-            }
-        });
-    }
-
-
-    @Override
-    public void ShowLoadView() {
-        multipleStatusView.showLoading();
-    }
-
-    @Override
-    public void NoNetWork() {
-        multipleStatusView.showNoNetwork();
-    }
-
-    @Override
-    public void NoData() {
-        multipleStatusView.showEmpty();
-    }
-
-    @Override
-    public void ErrorData() {
-        multipleStatusView.showError();
-    }
-
-    @Override
-    public void showErrorMsg(String msg) {
-        showShortToast(msg);
-    }
-
-    @Override
-    public void showLoadV(String msg) {
-        showLoadDiaLog(msg);
-    }
-
-    @Override
-    public void closeLoadV() {
-        hidLoadDiaLog();
-    }
-
-    @Override
-    public void SuccessData(Object o) {
-        if (page == 1) {
-            listBeans.clear();
+            setListener();
         }
-        listBeans.addAll((Collection<? extends ListBean>) o);
-        communityGroupAdapter.notifyDataSetChanged();
-        multipleStatusView.showContent();
-        page++;
-    }
 
-    @Override
-    public LifecycleTransformer binLifecycle() {
-        return bindToLifecycle();
-    }
+        @Override
+        protected void setListener () {
+            super.setListener();
+            multipleStatusView.setOnRetryClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    multipleStatusView.showLoading();
+                    page = 1;
+                    mPresenter.getGroupList(page);
+                }
+            });
+            smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                    page = 1;
+                    mPresenter.getGroupList(page);
+                }
+            });
+            smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    mPresenter.getGroupList(page);
+                }
+            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //小组详情
+                    Intent intent = new Intent(getActivity(), GroupDetailsActivity.class);
+                    intent.putExtra("groupId", listBeans.get(position).getId());
+                    startActivityForResult(intent, 555);
+                }
+            });
+            communityGroupAdapter.setOnItemJoinListener(new CommunityConfig.OnItemJoinListener() {
 
-    @Override
-    public void joinGroup() {
-        communityGroupAdapter.updataItem(index,listView,state);
-    }
+                @Override
+                public void setJoinInfo(final String id, final String is_group, int position, final TextView join) {
+                    index = position;
+                    state = is_group;
+                    if (is_group.equals("1")) {
+                        DialogUtils dialogUtils = new DialogUtils(getActivity());
+                        dialogUtils.setTitle("提示")
+                                .setContent("确定要退出小组?")
+                                .setOnClickListenter(new DialogUtils.OnClickListener() {
+                                    @Override
+                                    public void setYesClickListener() {
+                                        mPresenter.setGroup(id, "0");
+                                        join.setEnabled(false);
+                                    }
 
-    @Override
-    public void isLoadMore(boolean isLoadMore) {
-        RefreshUtils.getInstance(smartRefreshLayout,getActivity() ).isLoadData(isLoadMore);
-    }
+                                    @Override
+                                    public void setNoClickListener() {
 
-}
+                                    }
+                                });
+                    } else {
+                        mPresenter.setGroup(id, "1");
+                        join.setEnabled(false);
+                    }
+                }
+            });
+        }
+
+
+        @Override
+        public void ShowLoadView () {
+            multipleStatusView.showLoading();
+        }
+
+        @Override
+        public void NoNetWork () {
+            multipleStatusView.showNoNetwork();
+        }
+
+        @Override
+        public void NoData () {
+            multipleStatusView.showEmpty();
+        }
+
+        @Override
+        public void ErrorData () {
+            multipleStatusView.showError();
+        }
+
+        @Override
+        public void showErrorMsg (String msg){
+            showShortToast(msg);
+        }
+
+        @Override
+        public void showLoadV (String msg){
+            showLoadDiaLog(msg);
+        }
+
+        @Override
+        public void closeLoadV () {
+            hidLoadDiaLog();
+        }
+
+        @Override
+        public void SuccessData (Object o){
+            if (page == 1) {
+                listBeans.clear();
+            }
+            listBeans.addAll((Collection<? extends ListBean>) o);
+            communityGroupAdapter.notifyDataSetChanged();
+            multipleStatusView.showContent();
+            page++;
+        }
+
+        @Override
+        public LifecycleTransformer binLifecycle () {
+            return bindToLifecycle();
+        }
+
+        @Override
+        public void joinGroup () {
+            communityGroupAdapter.updataItem(index, listView, state);
+        }
+
+        @Override
+        public void isLoadMore ( boolean isLoadMore){
+            RefreshUtils.getInstance(smartRefreshLayout, getActivity()).isLoadData(isLoadMore);
+        }
+
+    }

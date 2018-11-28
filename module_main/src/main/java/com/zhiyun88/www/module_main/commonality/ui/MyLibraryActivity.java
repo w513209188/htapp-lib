@@ -23,6 +23,7 @@ import com.zhiyun88.www.module_main.commonality.adapter.MyLibraryAdapter;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryListBean;
 import com.zhiyun88.www.module_main.commonality.mvp.contranct.MyLibraryContranct;
 import com.zhiyun88.www.module_main.commonality.mvp.presenter.MyLibraryPresenter;
+import com.zhiyun88.www.module_main.library.config.LibraryConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +37,8 @@ public class MyLibraryActivity extends MvpActivity<MyLibraryPresenter> implement
     private List<MyLibraryListBean> libraryListBeans;
     private MyLibraryAdapter myLibraryAdapter;
     private ListView listView;
+    private int index;
+    private String isCollected;
 
     @Override
     protected MyLibraryPresenter onCreatePresenter() {
@@ -113,6 +116,14 @@ public class MyLibraryActivity extends MvpActivity<MyLibraryPresenter> implement
                         .show(libraryListBeans.get(position).getH5_detail());
             }
         });
+        myLibraryAdapter.setOnClickCollection(new LibraryConfig.OnClickCollected() {
+            @Override
+            public void setCollection(String libraryId, String userId, String is_click, int position) {
+                index = position;
+                isCollected = is_click;
+                mPresenter.setLibraryCollection(libraryId,userId ,is_click );
+            }
+        });
     }
 
     @Override
@@ -174,5 +185,10 @@ public class MyLibraryActivity extends MvpActivity<MyLibraryPresenter> implement
     @Override
     public void isLoadMore(boolean isLoadMore) {
         RefreshUtils.getInstance(smartRefreshLayout,this ).isLoadData(isLoadMore);
+    }
+
+    @Override
+    public void setCollectedSuccess() {
+        myLibraryAdapter.updateItem(index,listView,isCollected);
     }
 }

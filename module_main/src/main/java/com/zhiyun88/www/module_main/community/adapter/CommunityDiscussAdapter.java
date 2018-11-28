@@ -1,6 +1,15 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +56,17 @@ public class CommunityDiscussAdapter extends ListBaseAdapter {
         }
 
         if (discussListBean.getIs_top().equals("1")) {
-            SpanUtil.create().addSection(discussListBean.getTitle()+" ")
+            SpannableStringBuilder sb = new SpannableStringBuilder();
+            String title = discussListBean.getTitle();
+            sb.append(title);
+            Drawable d = context.getResources().getDrawable(R.drawable.ding) ;
+            d.setBounds(0, 0,25, 25);//设置图片大小
+            sb.setSpan(new ImageSpan(d,ImageSpan.ALIGN_BASELINE), title.length()-1, title.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            //回复
+            viewHolder.title.setText(sb);
+         /*   SpanUtil.create().addSection(discussListBean.getTitle()+" ")
                     .addImage(context, R.drawable.ding)
-                    .showIn(viewHolder.title);
+                    .showIn(viewHolder.title);*/
         }else {
             viewHolder.title.setText(discussListBean.getTitle());
 

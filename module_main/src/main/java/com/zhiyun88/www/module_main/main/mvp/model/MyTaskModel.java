@@ -16,7 +16,7 @@ public class MyTaskModel implements MyTaskContranct.MyTaskModel {
         map.put("user_id", HttpManager.newInstance().getHttpConfig().getmMapHeader().get("uid"));
       //  map.put("type", type+"");
         map.put("is_complete", complete_type+"");
-      //  map.put("page", page+"");
+        map.put("page", page+"");
         return HttpManager.newInstance().getService(MainServiceApi.class).getMyTaskData(map);
     }
 }

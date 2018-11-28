@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -71,7 +73,7 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
                     if (charSequence != null) {
                         htmlTextView.setText(charSequence);
                         multiplestatusview.showContent();
-                        //  htmlTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                        htmlTextView.setMovementMethod(LinkMovementMethod.getInstance());
                     }
                     break;
                 default:
@@ -183,38 +185,6 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
             }
         });
         customDialog.show();
-       /* is_show = false;
-        View view = LayoutInflater.from(TopicDetailsActivity.this).inflate(R.layout.main_custom_dialog_bottom, null);
-        this.dialog = StyledDialog.buildCustomBottomSheet(view).show();
-        this.dialog.setCanceledOnTouchOutside(true);
-        content_et = view.findViewById(R.id.details_content);
-        LinearLayout have_name_ll = view.findViewById(R.id.have_name_ll);
-        showName_tv = view.findViewById(R.id.show_name);
-        commit_tv = view.findViewById(R.id.details_commit);
-        if (isReply) {
-            content_et.setHint("回复: " + listBeans.get(index).getUser_name());
-        }else {
-            content_et.setHint("");
-        }
-        have_name_ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                is_show = !is_show;
-                showName_tv.setSelected(is_show);
-            }
-        });
-        commit_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = content_et.getText().toString().trim();
-                if (isReply) {
-                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", listBeans.get(index).getId());
-                } else {
-                    mPresenter.sendComment(question_id, str, is_show ? "1" : "0", "0");
-                }
-                commit_tv.setEnabled(false);
-            }
-        });*/
     }
 
     @Override
@@ -273,11 +243,10 @@ public class TopicDetailsActivity extends MvpActivity<CommunityDetailsPresenter>
                     public Drawable getDrawable(String source) {
                         Drawable drawable;
                         drawable = getImageNetwork(source);
-                        if (drawable != null) {
-                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                        } else if (drawable == null) {
-                            return null;
+                        if (drawable == null) {
+                            drawable = getResources().getDrawable(R.drawable.image_failure);
                         }
+                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                         return drawable;
                     }
                 };

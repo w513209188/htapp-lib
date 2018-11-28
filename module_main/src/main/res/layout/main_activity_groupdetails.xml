@@ -57,6 +57,7 @@
                     android:padding="15dp">
 
                     <ImageView
+                        android:scaleType="fitXY"
                         android:id="@+id/group_image"
                         android:layout_width="100dp"
                         android:layout_height="68dp" />
@@ -100,10 +101,15 @@
                         android:layout_marginTop="5dp"
                         android:textColor="@color/main_text_black_33"
                         android:textSize="15sp" />
+
                 </RelativeLayout>
-
             </android.support.design.widget.CollapsingToolbarLayout>
-
+            <View
+                android:layout_below="@+id/group_rl"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/main_bg_grey_f8"
+                />
             <com.shizhefei.view.indicator.ScrollIndicatorView
                 android:id="@+id/spring_indicator"
                 android:layout_width="match_parent"

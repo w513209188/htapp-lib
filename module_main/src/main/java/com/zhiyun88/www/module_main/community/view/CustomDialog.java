@@ -47,7 +47,7 @@ public class CustomDialog extends Dialog {
         showName_tv = (ImageView) view.findViewById(R.id.show_name);
         commit_tv = (TextView) view.findViewById(R.id.details_commit);
         if (user_name == null || user_name.equals("")) {
-            content_et.setHint("");
+            content_et.setHint("请输入你要评论的内容");
         } else {
             content_et.setHint("回复: " + user_name);
         }
