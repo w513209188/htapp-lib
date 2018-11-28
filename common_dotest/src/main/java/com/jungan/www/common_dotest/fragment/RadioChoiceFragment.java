@@ -50,6 +50,10 @@ public class RadioChoiceFragment extends LazyFragment {
         mAdapter=new RadioChoiceAdapter(questionBankBean,getActivity(),isAnalisys);
         mListView.setAdapter(mAdapter);
         test_type_tv.setText(StrUtils.Instance().getTestTypeStr(questionBankBean.getQuestionType()));
+
+
+
+
         setListener();
     }
     @Override

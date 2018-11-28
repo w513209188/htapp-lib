@@ -63,6 +63,7 @@
         </RelativeLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/dotest_cunt_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -180,9 +181,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:textSize="16sp"
+                android:drawableLeft="@drawable/sz_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="参考解析"
+                android:text="解析"
                 android:textColor="#000000" />
 
             <com.jungan.www.common_dotest.view.HtmlTextView xmlns:app="http://schemas.android.com/apk/res-auto"

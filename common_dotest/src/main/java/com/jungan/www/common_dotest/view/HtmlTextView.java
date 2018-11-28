@@ -2,8 +2,16 @@ package com.jungan.www.common_dotest.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.solver.Cache;
+import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +19,15 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baijiayun.glide.request.target.SimpleTarget;
+import com.baijiayun.glide.request.transition.Transition;
+import com.bumptech.glide.Glide;
 import com.jungan.www.common_dotest.R;
+import com.jungan.www.common_dotest.adapter.CommonQuestionOptionAdapter;
 import com.jungan.www.common_dotest.call.HtmlTextViewCall;
+import com.jungan.www.common_dotest.ds;
 import com.jungan.www.common_dotest.utils.StrUtils;
+import com.jungan.www.common_dotest.utils.UILKit;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.config.ISLookConfig;
 import com.zzhoujay.richtext.ImageHolder;
@@ -22,10 +36,17 @@ import com.zzhoujay.richtext.RichText;
 import com.zzhoujay.richtext.callback.Callback;
 import com.zzhoujay.richtext.callback.LinkFixCallback;
 import com.zzhoujay.richtext.callback.OnImageClickListener;
+import com.zzhoujay.richtext.callback.SimpleImageFixCallback;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import cn.droidlover.xrichtext.ImageLoader;
 import cn.droidlover.xrichtext.XRichText;
+import me.wcy.htmltext.HtmlImageLoader;
+import me.wcy.htmltext.HtmlText;
+import me.wcy.htmltext.OnTagClickListener;
 
 public class HtmlTextView extends RelativeLayout {
     private boolean isOption;
@@ -33,7 +54,8 @@ public class HtmlTextView extends RelativeLayout {
     private TextView option_tv;
     private HtmlTextViewCall htmlTextViewCall;
     private RelativeLayout main_rel;
-    private XRichText mRichTv;
+//    private XRichText mRichTv;
+    private TextView      mRichTv;
     private View mView;
     private Context mContext;
     public void setOption(boolean option) {
@@ -42,6 +64,7 @@ public class HtmlTextView extends RelativeLayout {
     }
     private void initData(){
         if(isOption){
+            Log.e("进来了","------");
             LayoutParams params = new LayoutParams(dip2px(getContext(),35),dip2px(getContext(),35));
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             params.setMargins(dip2px(getContext(),10),dip2px(getContext(),10),0,dip2px(getContext(),10));
@@ -72,6 +95,7 @@ public class HtmlTextView extends RelativeLayout {
         initView(context,attrs);
     }
     private void initView(Context context,AttributeSet attributeSet){
+         UILKit.init(mContext);        //初始化UIL
         TypedArray array=getContext().obtainStyledAttributes(attributeSet, R.styleable.HtmlTextView);
         isOption=array.getBoolean(R.styleable.HtmlTextView_isOption,false);
         errorOption=array.getResourceId(R.styleable.HtmlTextView_errorOption,R.drawable.error_bg);
@@ -113,86 +137,67 @@ public class HtmlTextView extends RelativeLayout {
     public void showTxt(String txt){
         if(txt==null||txt.equals(""))
             return;
-        final int a=100,b=50;
-        mRichTv.callback(new XRichText.Callback() {
-            @Override
-            public void onImageClick(List<String> urlList, int position) {
-                if(urlList==null){
-                    return;
-                }
-                ISLookConfig isLookConfig=new ISLookConfig.Builder().setLock(false).setStartNum(0).setPhotoPaths(urlList).build();
-                ISNav.getInstance().toLookPhotoActivity(mContext,isLookConfig);
-                if(htmlTextViewCall==null)
-                    return;
-                htmlTextViewCall.imageClicked(urlList, position);
-            }
-            @Override
-            public boolean onLinkClick(String url) {
-                if(htmlTextViewCall==null){
-                }else {
-                    htmlTextViewCall.linkFixCall(url);
-                }
-                return true;
-            }
-            @Override
-            public void onFix(XRichText.ImageHolder holder) {
-                holder.setStyle(XRichText.Style.LEFT);
-                if (a > 0){
+        mRichTv.setMovementMethod(LinkMovementMethod.getInstance());
+        String sample=txt;//"<p><strong>字体测试字体测试字体测试字体测试字体测试</strong></p><p><em><strong>字体测试字体测试字体测试字体测试字体测试</strong></em></p><p><span style=\"text-decoration: underline;\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\"><img src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" title=\"1542888683164610.jpg\" _src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" alt=\"0-3.jpg\"></span></p>";
+        HtmlText.from(sample)
+                .setImageLoader(new HtmlImageLoader() {
+                    @Override
+                    public void loadImage(String url, final Callback callback) {
+                        com.baijiayun.glide.Glide.with(mContext).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                callback.onLoadComplete(resource);
+                            }
+                        });
+                    }
 
-                    WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-            //width/a*b*4/3
+                    @Override
+                    public Drawable getDefaultDrawable() {
+                        return ContextCompat.getDrawable(mContext, R.drawable.test_qst);
+                    }
 
-                    int width = wm.getDefaultDisplay().getWidth();
-                    int height =  wm.getDefaultDisplay().getHeight();
-                    Log.e("试题的尺寸",width+"*"+height);
-                    holder.setWidth(200);
-                    holder.setHeight( 80);
-                }
-            }
-        }).text(txt);
+                    @Override
+                    public Drawable getErrorDrawable() {
+                        return ContextCompat.getDrawable(mContext, R.drawable.test_qst);
+                    }
+
+                    @Override
+                    public int getMaxWidth() {
+                        return getTextWidth(mRichTv);
+                    }
+
+                    @Override
+                    public boolean fitWidth() {
+                        return false;
+                    }
+                })
+                .setOnTagClickListener(new OnTagClickListener() {
+                    @Override
+                    public void onImageClick(Context context, List<String> imageUrlList, int position) {
+                        // image click
+                        if(imageUrlList==null){
+                            return;
+                        }
+                        ISLookConfig isLookConfig=new ISLookConfig.Builder().setLock(false).setStartNum(0).setPhotoPaths(imageUrlList).build();
+                        ISNav.getInstance().toLookPhotoActivity(mContext,isLookConfig);
+                        if(htmlTextViewCall==null)
+                            return;
+                        htmlTextViewCall.imageClicked(imageUrlList, position);
+                    }
+
+                    @Override
+                    public void onLinkClick(Context context, String url) {
+                        // link click
+                    }
+                })
+                .into(mRichTv);
 
 
-
-//                 RichText
-//                .from(txt) // 数据源
-//                .autoFix(false) // 是否自动修复，默认true
-//                .autoPlay(true) // gif图片是否自动播放
-//                .showBorder(false) // 是否显示图片边框
-//                .borderColor(Color.RED) // 图片边框颜色
-//                .borderSize(10) // 边框尺寸
-//                .borderRadius(50) // 图片边框圆角弧度
-//                .scaleType(ImageHolder.ScaleType.fit_auto) // 图片缩放方式
-//                .size(ImageHolder.MATCH_PARENT, ImageHolder.WRAP_CONTENT)
-//                .linkFix(new LinkFixCallback() {
-//                    @Override
-//                    public void fix(LinkHolder holder) {
-//                        if(htmlTextViewCall==null)
-//                            return;
-//                        htmlTextViewCall.linkFixCall(holder.getUrl());
-//                    }
-//                }) // 设置链接自定义回调
-//                .noImage(true) // 不显示并且不加载图片
-//                .resetSize(false) // 默认false，是否忽略img标签中的宽高尺寸（只在img标签中存在宽高时才有效），true：忽略标签中的尺寸并触发SIZE_READY回调，false：使用img标签中的宽高尺寸，不触发SIZE_READY回调
-//                .clickable(true) // 是否可点击，默认只有设置了点击监听才可点击
-//                .imageClick(new OnImageClickListener() {
-//                    @Override
-//                    public void imageClicked(List<String> imageUrls, int position) {
-//                        if(htmlTextViewCall==null)
-//                            return;
-//                        htmlTextViewCall.imageClicked(imageUrls, position);
-//                    }
-//                }) // 设置图片点击回调
-//                .done(new Callback() {
-//                    @Override
-//                    public void done(boolean imageLoadDone) {
-//                        if(htmlTextViewCall==null)
-//                            return;
-//                        htmlTextViewCall.done(imageLoadDone);
-//                    }
-//                }) // 解析完成回调
-//                .into(txt_tv); // 设置目标TextView
     }
-
+    private int getTextWidth(TextView textView) {
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        return dm.widthPixels - textView.getPaddingLeft() - textView.getPaddingRight();
+    }
     /**
      * 根据数字自动设置 A-Z
      * @param num

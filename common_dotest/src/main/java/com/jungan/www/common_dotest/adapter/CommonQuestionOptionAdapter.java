@@ -1,13 +1,24 @@
 package com.jungan.www.common_dotest.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.baijiayun.glide.Glide;
+import com.baijiayun.glide.request.target.SimpleTarget;
+import com.baijiayun.glide.request.transition.Transition;
 import com.jungan.www.common_dotest.R;
 import com.jungan.www.common_dotest.bean.UserOptionBean;
 import com.jungan.www.common_dotest.call.OptionCall;
@@ -16,6 +27,12 @@ import com.jungan.www.common_dotest.utils.StrUtils;
 import com.jungan.www.common_dotest.view.HtmlTextView;
 
 import java.util.List;
+
+import cn.droidlover.xrichtext.XRichText;
+import me.wcy.htmltext.HtmlImageLoader;
+import me.wcy.htmltext.HtmlText;
+import me.wcy.htmltext.OnTagClickListener;
+
 public class CommonQuestionOptionAdapter extends BaseAdapter {
     private List<UserOptionBean> stringList;
     private Context mContext;
@@ -66,7 +83,14 @@ public class CommonQuestionOptionAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         CommonQuestionOptionHolder holder=null;
         final UserOptionBean userOptionBean= (UserOptionBean) getItem(position);
-
+//        if(convertView==null){
+//            holder=new CommonQuestionOptionHolder();
+//            convertView=LayoutInflater.from(mContext).inflate(R.layout.layout_option,null);
+//            holder.tv_tv=convertView.findViewById(R.id.tv_tv);
+//            convertView.setTag(holder);
+//        }else {
+//            holder= (CommonQuestionOptionHolder) convertView.getTag();
+//        }
         if(convertView==null){
             holder=new CommonQuestionOptionHolder();
             convertView=questionType== QuestionTypeConfig.RADIO_CHOICE||questionType==QuestionTypeConfig.MATERIAL_RADIO_CHOICE? LayoutInflater.from(mContext).inflate(R.layout.layout_option,null):LayoutInflater.from(mContext).inflate(R.layout.layout_duooption,null);
@@ -160,5 +184,7 @@ public class CommonQuestionOptionAdapter extends BaseAdapter {
     class CommonQuestionOptionHolder{
         HtmlTextView html_htv;
         LinearLayout main_ll;
+//        XRichText tv_tv;
     }
+
 }

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
+        android:visibility="gone"
         android:layout_margin="10dp"
         android:textColor="#ffffff"
         android:id="@+id/test_type_tv"

@@ -1,6 +1,7 @@
 package com.jungan.www.common_dotest.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +20,11 @@ import com.jungan.www.common_dotest.bean.QuestionBankBean;
 import com.jungan.www.common_dotest.bean.WdBean;
 import com.jungan.www.common_dotest.call.OptionCall;
 import com.jungan.www.common_dotest.call.UserLookAnalisysCall;
+import com.jungan.www.common_dotest.config.QuestionTypeConfig;
 import com.jungan.www.common_dotest.utils.GlideCircleTransform;
 import com.jungan.www.common_dotest.view.HtmlTextView;
 import com.jungan.www.common_dotest.view.MyListView;
+import com.wb.baselib.utils.SpanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +55,7 @@ public class RadioChoiceAdapter extends BaseAdapter {
         }else {
             return 2;
         }
+//        return 2;
 
     }
 
@@ -100,7 +104,16 @@ public class RadioChoiceAdapter extends BaseAdapter {
         }else {
             holder= (RadioChoiceOneHolder) convertView.getTag();
         }
-        holder.html_htv.showTxt(questionBankBean.getQuestionStem());
+        String httml="";
+        if(questionBankBean.getQuestionType()==1){
+            httml="<font color='#458bfd'>（单选题）</font>";
+        }else if(questionBankBean.getQuestionType()==2){
+            httml="<font color='#458bfd'>（多选题）</font>";
+        }else if(questionBankBean.getQuestionType()==5){
+            httml="<font color='#458bfd'>（问答题）</font>";
+        }
+
+        holder.html_htv.showTxt(httml+questionBankBean.getQuestionStem());
         return convertView;
     }
     private View getTwoView(int option,View convertView){
@@ -109,22 +122,23 @@ public class RadioChoiceAdapter extends BaseAdapter {
             holder=new RadioChoiceTwoHolder();
             convertView= LayoutInflater.from(mContext).inflate(R.layout.layout_mylistview,null);
             holder.myListView=convertView.findViewById(R.id.mylistview);
-            mAdapter=new CommonQuestionOptionAdapter(questionBankBean.getUserOption(),mContext,questionBankBean.getQuestionType(),analisys,questionBankBean.getRight_answer(),questionBankBean.getUser_answer());
-            holder.myListView.setAdapter(mAdapter);
-            mAdapter.setmCall(new OptionCall() {
-                @Override
-                public void getUserSelectOption(String option,int type) {
-                    if(mCall==null)
-                        return;
-                    mCall.getUserSelectOption(option,type);
-
-                }
-            });
             convertView.setTag(holder);
         }else {
             holder= (RadioChoiceTwoHolder) convertView.getTag();
         }
 
+
+        mAdapter=new CommonQuestionOptionAdapter(questionBankBean.getUserOption(),mContext,questionBankBean.getQuestionType(),analisys,questionBankBean.getRight_answer(),questionBankBean.getUser_answer());
+        holder.myListView.setAdapter(mAdapter);
+        mAdapter.setmCall(new OptionCall() {
+            @Override
+            public void getUserSelectOption(String option,int type) {
+                if(mCall==null)
+                    return;
+                mCall.getUserSelectOption(option,type);
+
+            }
+        });
 
         return convertView;
     }
@@ -224,8 +238,18 @@ public class RadioChoiceAdapter extends BaseAdapter {
 
             }
 
-            holder.user_right_tv.setText("正确答案："+questionBankBean.getRight_answer());
-            holder.user_answer_tv.setText("我的作答："+questionBankBean.getUser_answer());
+            SpanUtil.create()
+                    .addForeColorSection("正确答案\t", Color.BLACK)
+                    .addForeColorSection(questionBankBean.getRight_answer(),Color.rgb(68,193,253))
+                    .showIn(  holder.user_right_tv);
+
+//          .setText("正确答案："+questionBankBean.getRight_answer());
+
+            SpanUtil.create()
+                    .addForeColorSection("我的答案\t", Color.BLACK)
+                    .addForeColorSection(questionBankBean.getUser_answer(),Color.RED)
+                    .showIn(  holder.user_answer_tv);
+//            holder.user_answer_tv.setText("我的作答："+questionBankBean.getUser_answer());
             if(questionBankBean.getAnswer_difficulty().equals("3")){
                 //难
                 holder.nd_img.setImageResource(R.drawable.public_difficult);

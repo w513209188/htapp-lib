@@ -4,7 +4,7 @@
     android:id="@+id/main_rel"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <TextView
         android:visibility="gone"
         android:layout_centerVertical="true"
@@ -17,13 +17,22 @@
         android:text="A"
         android:layout_width="35dp"
         android:layout_height="35dp" />
-    <cn.droidlover.xrichtext.XRichText
+    <!--<cn.droidlover.xrichtext.XRichText-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:text="fsfsfsdfsdfsdfs"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_toRightOf="@+id/option_tv"-->
+        <!--android:id="@+id/txt_tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+    <TextView
         android:layout_centerVertical="true"
-        android:text="fsfsfsdfsdfsdfs"
         android:gravity="center_vertical"
         android:layout_margin="10dp"
         android:layout_toRightOf="@+id/option_tv"
         android:id="@+id/txt_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </RelativeLayout>
