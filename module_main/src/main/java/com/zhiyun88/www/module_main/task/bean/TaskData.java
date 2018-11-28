@@ -12,7 +12,7 @@ public class TaskData implements Parcelable {
      * type : 4
      * complete : 0
      */
-
+    private String parent_type;
     private String id;
     private String name;
     private String count;
@@ -21,9 +21,34 @@ public class TaskData implements Parcelable {
     private String video_states;
     private String task_states;
     private int again_number;
-    private String report_id;
+    private int report_id;
     private int states;
     private String publish_date;
+    private int exam_count;
+
+    public int getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(int report_id) {
+        this.report_id = report_id;
+    }
+
+    public int getExam_count() {
+        return exam_count;
+    }
+
+    public void setExam_count(int exam_count) {
+        this.exam_count = exam_count;
+    }
+
+    public String getParent_type() {
+        return parent_type;
+    }
+
+    public void setParent_type(String parent_type) {
+        this.parent_type = parent_type;
+    }
 
     public int getAgain_number() {
         return again_number;
@@ -33,13 +58,6 @@ public class TaskData implements Parcelable {
         this.again_number = again_number;
     }
 
-    public String getReport_id() {
-        return report_id;
-    }
-
-    public void setReport_id(String report_id) {
-        this.report_id = report_id;
-    }
 
     public int getStates() {
         return states;
@@ -123,6 +141,7 @@ public class TaskData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.parent_type);
         dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeString(this.count);
@@ -131,12 +150,14 @@ public class TaskData implements Parcelable {
         dest.writeString(this.video_states);
         dest.writeString(this.task_states);
         dest.writeInt(this.again_number);
-        dest.writeString(this.report_id);
+        dest.writeInt(this.report_id);
         dest.writeInt(this.states);
         dest.writeString(this.publish_date);
+        dest.writeInt(this.exam_count);
     }
 
     protected TaskData(Parcel in) {
+        this.parent_type = in.readString();
         this.id = in.readString();
         this.name = in.readString();
         this.count = in.readString();
@@ -145,9 +166,10 @@ public class TaskData implements Parcelable {
         this.video_states = in.readString();
         this.task_states = in.readString();
         this.again_number = in.readInt();
-        this.report_id = in.readString();
+        this.report_id = in.readInt();
         this.states = in.readInt();
         this.publish_date = in.readString();
+        this.exam_count = in.readInt();
     }
 
     public static final Creator<TaskData> CREATOR = new Creator<TaskData>() {

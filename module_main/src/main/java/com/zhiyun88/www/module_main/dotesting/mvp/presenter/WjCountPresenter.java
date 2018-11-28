@@ -22,17 +22,26 @@ public class WjCountPresenter extends WjCountContranct.WjCountPresenter {
         HttpManager.newInstance().commonRequest(mModel.getWjCountData(id), new BaseObserver<Result<WjBean>>(AppUtils.getContext()) {
             @Override
             public void onSuccess(Result<WjBean> o) {
+                if(o.getStatus()==200){
+                    if(o==null){
+                        mView.ErrorData();
+                    }else {
+                        mView.SuccessData(o.getData());
 
+                    }
+                }else {
+                    mView.ErrorData();
+                }
             }
 
             @Override
             public void onFail(ApiException e) {
-
+                mView.ErrorData();
             }
 
             @Override
             public void onSubscribe(Disposable d) {
-
+                addSubscribe(d);
             }
 
             @Override

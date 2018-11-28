@@ -109,7 +109,6 @@ public class RadioChoiceAdapter extends BaseAdapter {
             holder=new RadioChoiceTwoHolder();
             convertView= LayoutInflater.from(mContext).inflate(R.layout.layout_mylistview,null);
             holder.myListView=convertView.findViewById(R.id.mylistview);
-            convertView.setTag(holder);
             mAdapter=new CommonQuestionOptionAdapter(questionBankBean.getUserOption(),mContext,questionBankBean.getQuestionType(),analisys,questionBankBean.getRight_answer(),questionBankBean.getUser_answer());
             holder.myListView.setAdapter(mAdapter);
             mAdapter.setmCall(new OptionCall() {
@@ -121,9 +120,12 @@ public class RadioChoiceAdapter extends BaseAdapter {
 
                 }
             });
+            convertView.setTag(holder);
         }else {
             holder= (RadioChoiceTwoHolder) convertView.getTag();
         }
+
+
         return convertView;
     }
     private View getThreeView(int option ,View convertView){

@@ -63,7 +63,7 @@ public class AnswerSheetFragment extends LazyFragment {
         mAdapter=new AnswerSheetItemAdapter(answerSheetBeanLists,getActivity());
         griview.setAdapter(mAdapter);
         post_test_tv=getViewById(R.id.post_test_tv);
-        post_test_tv.setVisibility(isShowPost?View.VISIBLE:View.GONE);
+//        post_test_tv.setVisibility(isShowPost?View.VISIBLE:View.GONE);
         new Thread(new reshAnswerSheet()).start();
         setListener();
     }

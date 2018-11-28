@@ -16,6 +16,7 @@ import com.wb.baselib.utils.ToActivityUtil;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.dotesting.ui.CommonTestActivity;
 import com.zhiyun88.www.module_main.dotesting.ui.CuntActivity;
+import com.zhiyun88.www.module_main.dotesting.ui.WjCountActivity;
 import com.zhiyun88.www.module_main.task.bean.TaskData;
 import com.zhiyun88.www.module_main.task.ui.TaskInfoActivity;
 
@@ -58,7 +59,19 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
                 if(taskData.getStates()==1){
                     Toast.makeText(mContext,"报告不能查看！",Toast.LENGTH_LONG).show();
                 }else {
-                    ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
+                    if(taskData.getParent_type().equals("2")){
+                        //培训
+                        ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
+                    }else {
+                        if(taskData.getType().equals("3")){
+                            //问卷
+                            ToActivityUtil.newInsance().toNextActivity(mContext, WjCountActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""}});
+                        }else if(taskData.getType().equals("2")){
+                            //考试
+                            ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
+                        }
+                    }
+
                 }
 
             }
@@ -68,8 +81,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             @Override
             public void onClick(View v) {
                 //重考
-
-                if(taskData.getAgain_number()==0){
+                if(taskData.getAgain_number()-taskData.getExam_count()<=0){
                     Toast.makeText(mContext,"考试次数用尽！",Toast.LENGTH_LONG).show();
                 }else {
                     ToActivityUtil.newInsance().toNextActivity(mContext, CommonTestActivity.class,new String[][]{{"testId",taskData.getId()},{"taskId",taskId},{"testType",taskData.getType().equals("3")?"1":"2"},{"testName",taskData.getName()}});
@@ -95,27 +107,68 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             holder.wc_t_img.setVisibility(View.VISIBLE);
             holder.rest_rel.setVisibility(View.GONE);
             holder.progress_tv.setVisibility(View.VISIBLE);
+            try {
+                holder.wc_t_img.setVisibility(taskData.getComplete().equals("100")?View.VISIBLE:View.GONE);
+            }catch (Exception e){
+                holder.wc_t_img.setVisibility(View.GONE);
+            }
         }else  if(taskData.getType().equals("2")){
 //考试
-            holder.type_t_img.setImageResource(R.drawable.ks_t_img);
-            holder.type_img.setImageResource(R.drawable.ks_p_img);
-            holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+            if(taskData.getParent_type().equals("2")){
+                //培训
+                holder.type_t_img.setImageResource(R.drawable.ks_t_img);
+                holder.type_img.setImageResource(R.drawable.ks_p_img);
+                holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+                holder.wc_t_img.setVisibility(View.GONE);
+                holder.rest_rel.setVisibility(View.VISIBLE);
+                holder.progress_tv.setVisibility(View.GONE);
+//                holder.rest_test_tv.setText("重考"+taskData.getAgain_number());
 
-            holder.wc_t_img.setVisibility(View.GONE);
-            holder.rest_rel.setVisibility(View.VISIBLE);
-            holder.progress_tv.setVisibility(View.GONE);
+                holder.rest_rel.setVisibility(View.VISIBLE);
+                holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
 
-            holder.rest_test_tv.setText("重考"+taskData.getAgain_number());
+                holder.rest_test_tv.setVisibility(View.GONE);
+
+            }else {
+                //考试
+                holder.type_t_img.setImageResource(R.drawable.ks_t_img);
+                holder.type_img.setImageResource(R.drawable.ks_p_img);
+                holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+                holder.wc_t_img.setVisibility(View.GONE);
+                holder.rest_rel.setVisibility(View.VISIBLE);
+                holder.progress_tv.setVisibility(View.GONE);
+                holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
+                if(taskData.getAgain_number()==0){
+                    //无限答题
+                    holder.rest_test_tv.setVisibility(View.VISIBLE);
+                    holder.rest_test_tv.setText("重考");
+                }else {
+                    if(taskData.getAgain_number()-taskData.getExam_count()>0){
+                        //还可以答题
+                        holder.rest_test_tv.setVisibility(View.VISIBLE);
+                        holder.rest_test_tv.setText("重考"+(taskData.getAgain_number()-taskData.getExam_count()));
+                    }else {
+                        holder.rest_test_tv.setVisibility(View.GONE);
+                    }
+                }
+
+
+
+
+
+
+            }
         }else  if(taskData.getType().equals("3")){
 //问卷
             holder.type_t_img.setImageResource(R.drawable.wj_t_img);
             holder.type_img.setImageResource(R.drawable.wj_p_img);
-            holder.progress_tv.setText("完成"+taskData.getComplete()+"%");
+            holder.wc_t_img.setVisibility(View.GONE);
+            holder.progress_tv.setVisibility(View.GONE);
 
+            holder.rest_rel.setVisibility(View.VISIBLE);
+            holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
+            holder.rest_test_tv.setVisibility(View.GONE);
 
-            holder.wc_t_img.setVisibility(View.VISIBLE);
-            holder.rest_rel.setVisibility(View.GONE);
-            holder.progress_tv.setVisibility(View.VISIBLE);
 //            holder.wc_t_img.setVisibility(View.GONE);
 //            holder.rest_rel.setVisibility(View.VISIBLE);
 //            holder.progress_tv.setVisibility(View.GONE);
@@ -130,13 +183,12 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             holder.wc_t_img.setVisibility(View.VISIBLE);
             holder.rest_rel.setVisibility(View.GONE);
             holder.progress_tv.setVisibility(View.VISIBLE);
+            try {
+                holder.wc_t_img.setVisibility(taskData.getComplete().equals("100")?View.VISIBLE:View.GONE);
+            }catch (Exception e){
+                holder.wc_t_img.setVisibility(View.GONE);
+            }
         }
-        try {
-            holder.wc_t_img.setVisibility(taskData.getComplete().equals("100")?View.VISIBLE:View.GONE);
-        }catch (Exception e){
-            holder.wc_t_img.setVisibility(View.GONE);
-        }
-
         return convertView;
     }
     class TaskInfoListHolder{

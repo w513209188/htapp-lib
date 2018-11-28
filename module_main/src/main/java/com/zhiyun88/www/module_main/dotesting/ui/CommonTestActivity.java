@@ -186,8 +186,10 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
                 mRecordTime = SystemClock.elapsedRealtime();
                 commonQuestionBankView.setPause(true);
             } else if (v.getId() == R.id.answer_sheet) {
+
                 Intent intent = new Intent(CommonTestActivity.this, AnswerSheetActivity.class);
                 intent.putExtra("questionBankBeanList", (ArrayList) commonQuestionBankView.getQuestionBankBeanList());
+                intent.putExtra("anasy",testType==3||testType==4?true:false);
                 startActivityForResult(intent, 1003);
             } else if (v.getId() == R.id.chronmer_ctr) {
 

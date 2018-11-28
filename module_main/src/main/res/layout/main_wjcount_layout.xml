@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.wb.baselib.view.TopBarView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.wb.baselib.view.TopBarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/wj_tb"
         app:fillStatusBar="false"
         app:titleBarHeight="45dp"
         app:centerType="textView"
         app:centerText="问卷报告"
         app:leftType="imageButton"
-        app:leftDrawable="@drawable/back"
+        app:leftDrawable="@drawable/left_fh_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.wb.baselib.view.MultipleStatusView

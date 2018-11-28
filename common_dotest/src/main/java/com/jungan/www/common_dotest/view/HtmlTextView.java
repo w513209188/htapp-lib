@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.jungan.www.common_dotest.R;
 import com.jungan.www.common_dotest.call.HtmlTextViewCall;
 import com.jungan.www.common_dotest.utils.StrUtils;
+import com.wngbo.www.common_postphoto.ISNav;
+import com.wngbo.www.common_postphoto.config.ISLookConfig;
 import com.zzhoujay.richtext.ImageHolder;
 import com.zzhoujay.richtext.LinkHolder;
 import com.zzhoujay.richtext.RichText;
@@ -33,6 +35,7 @@ public class HtmlTextView extends RelativeLayout {
     private RelativeLayout main_rel;
     private XRichText mRichTv;
     private View mView;
+    private Context mContext;
     public void setOption(boolean option) {
         isOption = option;
         initData();
@@ -65,6 +68,7 @@ public class HtmlTextView extends RelativeLayout {
 
     public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext=context;
         initView(context,attrs);
     }
     private void initView(Context context,AttributeSet attributeSet){
@@ -116,6 +120,8 @@ public class HtmlTextView extends RelativeLayout {
                 if(urlList==null){
                     return;
                 }
+                ISLookConfig isLookConfig=new ISLookConfig.Builder().setLock(false).setStartNum(0).setPhotoPaths(urlList).build();
+                ISNav.getInstance().toLookPhotoActivity(mContext,isLookConfig);
                 if(htmlTextViewCall==null)
                     return;
                 htmlTextViewCall.imageClicked(urlList, position);
@@ -139,8 +145,8 @@ public class HtmlTextView extends RelativeLayout {
                     int width = wm.getDefaultDisplay().getWidth();
                     int height =  wm.getDefaultDisplay().getHeight();
                     Log.e("试题的尺寸",width+"*"+height);
-                    holder.setWidth(100);
-                    holder.setHeight( 60);
+                    holder.setWidth(200);
+                    holder.setHeight( 80);
                 }
             }
         }).text(txt);
