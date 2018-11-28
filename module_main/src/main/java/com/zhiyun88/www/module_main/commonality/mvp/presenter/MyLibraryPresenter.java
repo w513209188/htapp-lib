@@ -75,5 +75,30 @@ public class MyLibraryPresenter extends MyLibraryContranct.MyLibraryPresenter {
             }
         },mView.binLifecycle());
     }
+    @Override
+    public void setLibraryCollection(String libraryId, String userId, String isClick) {
+        HttpManager.newInstance().commonRequest(mModel.setLibraryCollection(libraryId, userId, isClick), new BaseObserver<Result>(AppUtils.getContext()) {
+            @Override
+            public void onSuccess(Result result) {
+                mView.showErrorMsg(result.getMsg());
+                mView.setCollectedSuccess();
+            }
+
+            @Override
+            public void onFail(ApiException e) {
+                mView.showErrorMsg(e.getMessage());
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                addSubscribe(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }, mView.binLifecycle());
+    }
 }
 

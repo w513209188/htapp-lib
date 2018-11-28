@@ -5,6 +5,7 @@ import com.wb.baselib.http.HttpManager;
 import com.zhiyun88.www.module_main.commonality.api.CommonalityServiceApi;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryBean;
 import com.zhiyun88.www.module_main.commonality.mvp.contranct.MyLibraryContranct;
+import com.zhiyun88.www.module_main.library.api.LibraryServiceApi;
 
 import io.reactivex.Observable;
 
@@ -14,5 +15,8 @@ public class MyLibraryModel implements MyLibraryContranct.MyLibraryModel {
     public Observable<Result<MyLibraryBean>> getLibraryData(int page) {
         return HttpManager.newInstance().getService(CommonalityServiceApi.class).getLibraryData(page);
     }
-
+    @Override
+    public Observable<Result> setLibraryCollection(String libraryId, String userId, String isClick) {
+        return HttpManager.newInstance().getService(LibraryServiceApi.class).setLibraryCollection(libraryId,userId,isClick);
+    }
 }

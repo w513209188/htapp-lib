@@ -24,6 +24,7 @@ import com.youth.banner.listener.OnBannerClickListener;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.ui.CommunityActivity;
 import com.zhiyun88.www.module_main.course.ui.CourseMainActivity;
+import com.zhiyun88.www.module_main.information.bean.InformationDataListBean;
 import com.zhiyun88.www.module_main.information.ui.InformationActivity;
 import com.zhiyun88.www.module_main.library.ui.LibraryActivity;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
@@ -134,11 +135,15 @@ public class HomeAdapter extends BaseAdapter {
                     ToActivityUtil.newInsance().toNextActivity(mContext, InformationActivity.class);
                 }
             });
-            ListViewsAdapter listViewsAdapter = new ListViewsAdapter(mContext,homeInformationBeanList);
+            final ListViewsAdapter listViewsAdapter = new ListViewsAdapter(mContext,homeInformationBeanList);
             onLineHolder.mylistView.setAdapter(listViewsAdapter);
             onLineHolder.mylistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    HomeInformationBean informationBean = homeInformationBeanList.get(position);
+                    int clickCount = Integer.parseInt(informationBean.getClick_rate())+1;
+                    informationBean.setClick_rate(clickCount+"");
+                    listViewsAdapter.notifyDataSetChanged();
                     new FinestWebView.Builder(mContext)
                             .titleDefault("资讯详情")
                             .updateTitleFromHtml(false)

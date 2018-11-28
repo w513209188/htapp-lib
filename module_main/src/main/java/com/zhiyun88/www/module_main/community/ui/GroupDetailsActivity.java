@@ -197,13 +197,18 @@ public class GroupDetailsActivity extends MvpActivity<GroupDetailsPresenter> imp
             join.setText("退出小组");
             join.setSelected(true);
             groupInfoBean.setIs_group("1");
+            int userCount = Integer.parseInt(groupInfoBean.getUser_count()) + 1;
+            groupInfoBean.setUser_count(userCount+"");
             is_group = "1";
         }else {
             join.setText("加入小组");
             join.setSelected(false);
             groupInfoBean.setIs_group("0");
+            int userCount = Integer.parseInt(groupInfoBean.getUser_count()) - 1;
+            groupInfoBean.setUser_count(userCount+"");
             is_group = "0";
         }
+        num.setText("成员: "+ groupInfoBean.getUser_count()+"人");
         RxBus.getIntanceBus().post(new RxMessageBean(592,groupInfoBean.getId(),is_group));
         join.setEnabled(true);
     }

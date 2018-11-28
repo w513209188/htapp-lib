@@ -11,11 +11,14 @@ import io.reactivex.Observable;
 public interface MyLibraryContranct {
     interface MyLibraryView extends MvpView {
         void isLoadMore(boolean isLoadMore);
+        void setCollectedSuccess();
     }
     interface MyLibraryModel extends BaseModel {
         Observable<Result<MyLibraryBean>> getLibraryData(int page);
+        Observable<Result> setLibraryCollection(String libraryId, String userId, String isClick);
     }
     abstract class MyLibraryPresenter extends BasePreaenter<MyLibraryView,MyLibraryModel> {
         public abstract void getLibraryData(int page);
+        public abstract void setLibraryCollection(String libraryId, String userId,String isClick);
     }
 }

@@ -8,18 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wb.baselib.image.GlideManager;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.commonality.bean.MyLibraryListBean;
+import com.zhiyun88.www.module_main.library.adapter.LibraryListAdapter;
+import com.zhiyun88.www.module_main.library.config.LibraryConfig;
 
 import java.util.List;
 
 public class MyLibraryAdapter extends BaseAdapter{
     private Context mContext;
     private List<MyLibraryListBean> libraryListBeans;
+    private LibraryConfig.OnClickCollected mOnItemClickListener;
 
     public MyLibraryAdapter(Context context, List<MyLibraryListBean> libraryListBeans) {
         this.mContext = context;
@@ -42,8 +46,8 @@ public class MyLibraryAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final ViewHolder viewHolder;
         final MyLibraryListBean myLibraryListBean = getItem(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -79,11 +83,40 @@ public class MyLibraryAdapter extends BaseAdapter{
             viewHolder.type.setText("[PPT]");
             viewHolder.type.setTextColor(Color.parseColor("#ff7800"));
         }
+        viewHolder.collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener == null) return;
+                mOnItemClickListener.setCollection(myLibraryListBean.getId(), "30860", myLibraryListBean.getIs_collection(), position);
+                viewHolder.collect.setEnabled(false);
+            }
+        });
         return convertView;
     }
     class ViewHolder {
         ImageView imageView, collect;
         TextView title, subtitle, type;
         RelativeLayout library_rl;
+    }
+
+    public void setOnClickCollection(LibraryConfig.OnClickCollected listener) {
+        mOnItemClickListener = listener;
+    }
+
+    public void updateItem(int index, ListView mListView, String isCollected) {
+        int position = mListView.getFirstVisiblePosition();
+        if (index - position >= 0) {
+            View mView = mListView.getChildAt(index - position);
+           ViewHolder holder = (ViewHolder) mView.getTag();
+            if (isCollected.equals("1")) {
+                holder.collect.setSelected(false);
+                libraryListBeans.get(index).setIs_collection("0");
+            } else {
+                holder.collect.setSelected(true);
+                libraryListBeans.get(index).setIs_collection("1");
+            }
+            holder.collect.setEnabled(true);
+            notifyDataSetChanged();
+        }
     }
 }

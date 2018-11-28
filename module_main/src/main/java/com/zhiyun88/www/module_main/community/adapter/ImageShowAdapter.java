@@ -1,14 +1,20 @@
 package com.zhiyun88.www.module_main.community.adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.baijiahulian.livecore.models.imodels.IForbidChatModel;
 import com.squareup.picasso.Picasso;
+import com.wb.baselib.permissions.PerMissionsManager;
+import com.wb.baselib.permissions.interfaces.PerMissionCall;
+import com.wb.baselib.utils.ToastUtils;
 import com.wngbo.www.common_postphoto.ISNav;
 import com.wngbo.www.common_postphoto.common.Constant;
 import com.wngbo.www.common_postphoto.config.ISCameraConfig;
@@ -49,14 +55,24 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
             @Override
             public void onClick(View v) {
                 if (pathList.size() < 9 && position == pathList.size()) {
-                    ISListConfig config = new ISListConfig.Builder()
-                            .multiSelect(true)
-                            .rememberSelected(true)
-                            .maxNum(9)
-                            .needCamera(true)
-                            // .backResId()
-                            .build();
-                    ISNav.getInstance().toListActivity(mContext, config, 666);
+                    PerMissionsManager.newInstance().getUserPerMissions((Activity) mContext, new PerMissionCall() {
+                        @Override
+                        public void userPerMissionStatus(boolean b) {
+                            if (b) {
+                                ISListConfig config = new ISListConfig.Builder()
+                                        .multiSelect(true)
+                                        .rememberSelected(true)
+                                        .maxNum(9)
+                                        .needCamera(true)
+                                        // .backResId()
+                                        .build();
+                                ISNav.getInstance().toListActivity(mContext, config, 666);
+                            }else {
+                                ToastUtils.showToast(mContext,"无相应权限" );
+                            }
+                        }
+                    },new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE});
+
                 }
             }
         });

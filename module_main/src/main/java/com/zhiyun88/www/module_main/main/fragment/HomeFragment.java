@@ -17,6 +17,8 @@ import com.wb.baselib.utils.RefreshUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
+import com.wb.rxbus.taskBean.RxBus;
+import com.wb.rxbus.taskBean.RxMessageBean;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.main.adapter.HomeAdapter;
 import com.zhiyun88.www.module_main.main.bean.HomeBean;
@@ -27,6 +29,8 @@ import com.zhiyun88.www.module_main.sys.CustomCaptureActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 
 public class HomeFragment extends MvpFragment<HomeFragmentPresenter> implements HomeFragmentContranct.HomeFragmentView {

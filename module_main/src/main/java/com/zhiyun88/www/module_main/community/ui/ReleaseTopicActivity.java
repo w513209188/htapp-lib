@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +23,9 @@ import com.wb.baselib.view.TopBarView;
 import com.wb.rxbus.taskBean.RxBus;
 import com.wb.rxbus.taskBean.RxMessageBean;
 import com.wngbo.www.common_postphoto.ISNav;
+import com.wngbo.www.common_postphoto.common.Constant;
 import com.wngbo.www.common_postphoto.common.ImageLoader;
+import com.wngbo.www.common_postphoto.config.ISListConfig;
 import com.wngbo.www.common_postphoto.ui.ISCameraActivity;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.community.adapter.ImageShowAdapter;
@@ -53,7 +56,7 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     private LinearLayout have_name_ll;
     private ImageView show_name;
     private boolean is_show = false;
-    private ArrayList<String> multResult;
+    private List<String> result;
 
     @Override
     protected ReleaseTopicPresenter onCreatePresenter() {
@@ -88,8 +91,8 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         select_image.addItemDecoration(new RecycleItemSpance(15, 3));
         // select_image.addItemDecoration(new DividerGridItemDecoration(this));
         select_image.setLayoutManager(gridLayoutManager);
-        multResult = new ArrayList<>();
-        imageShowAdapter = new ImageShowAdapter(this, multResult);
+        result = new ArrayList<>();
+        imageShowAdapter = new ImageShowAdapter(this, result);
         select_image.setAdapter(imageShowAdapter);
     }
 
@@ -112,14 +115,14 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
                         return;
                     }
                     path = "";
-                    if (multResult == null || multResult.size() == 0) {
+                    if (result == null || result.size() == 0) {
                         showLoadDiaLog("发表中...");
                         String showName = is_show ? "1" : "0";
                         mPresenter.commitTopicData(groupId, title, content, showName, path);
                     } else {
                         Map<String, File> map = new HashMap<>();
-                        for (int i = 0; i < multResult.size(); i++) {
-                            File file = new File(multResult.get(i));
+                        for (int i = 0; i < result.size(); i++) {
+                            File file = new File(result.get(i));
                             map.put("file" + i, file);
                         }
                         Map<String, RequestBody> bodyMap = HttpManager.newInstance().getRequestBodyMap(map, MediaType.parse("image/*"));
@@ -148,20 +151,8 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 666) {
             if (data == null) return;
-            List<String> result = data.getStringArrayListExtra("result");
-            multResult.clear();
-            multResult.addAll(result);
-            /*if (resultCode == -1) {
-                multResult.addAll(result);
-            }else {
-                multResult.clear();
-            }
-            if (multResult.size() > 9) {
-                showShortToast("图片不能超过9张");
-                multResult.removeAll(result);
-                return;
-            }*/
-            imageShowAdapter.setData(multResult);
+            result = data.getStringArrayListExtra("result");
+            imageShowAdapter.setData(result);
         }
     }
 
@@ -211,7 +202,8 @@ public class ReleaseTopicActivity extends MvpActivity<ReleaseTopicPresenter> imp
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        multResult.clear();
+        if (Constant.imageList != null || Constant.imageList.size() != 0)Constant.imageList.clear();
+        result.clear();
         RxBus.getIntanceBus().unSubscribe(this);
     }
 }
