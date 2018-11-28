@@ -80,7 +80,7 @@
                         android:textColor="@color/cornflowerblue"
                         android:layout_toRightOf="@+id/rest_test_tv"
                         android:id="@+id/look_result_tv"
-                        android:text="查看结果"
+                        android:text="查看报告"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </RelativeLayout>

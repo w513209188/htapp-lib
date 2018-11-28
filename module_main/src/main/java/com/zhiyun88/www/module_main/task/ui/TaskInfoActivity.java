@@ -170,7 +170,7 @@ public class TaskInfoActivity extends MvpActivity<TaskInfoPresenter> implements 
             }else if(taskInfoListBean.getTask_info().getTask_states().equals("2")){
                 task_status_tv.setText("已结束");
             }else{
-                task_status_tv.setText("进行中");
+                task_status_tv.setText("待完成");
             }
             task_tb.getCenterTextView().setText(taskInfoListBean.getTask_info().getName());
         }

@@ -21,7 +21,6 @@
         <TextView
             android:id="@+id/end_time_tv"
             android:layout_toLeftOf="@+id/task_pross_tv"
-            android:text="/?"
             android:textSize="16sp"
             android:textColor="@color/main_text_66"
             android:layout_width="match_parent"
@@ -31,7 +30,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/task_status_tv"
-            android:text="/?"
             android:textSize="16sp"
             android:textColor="@color/main_text_black_33"
             android:layout_width="wrap_content"
@@ -40,7 +38,6 @@
             android:textColor="@color/main_text_red_1"
             android:id="@+id/task_status_tv"
             android:layout_alignParentRight="true"
-            android:text="/?"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

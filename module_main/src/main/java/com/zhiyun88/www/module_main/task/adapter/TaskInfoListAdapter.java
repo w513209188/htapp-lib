@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wb.baselib.adapter.ListBaseAdapter;
+import com.wb.baselib.app.AppUtils;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.zhiyun88.www.module_main.R;
 import com.zhiyun88.www.module_main.dotesting.ui.CommonTestActivity;
@@ -25,6 +26,7 @@ import java.util.List;
 public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
     private Context mContext;
     private String taskId;
+    private int currentFlags=1;
     public TaskInfoListAdapter(List<TaskData> list, Context context,String taskI) {
         super(list, context);
         this.mContext=context;
@@ -50,7 +52,7 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
         }else {
             holder= (TaskInfoListHolder) convertView.getTag();
         }
-        holder.title_tv.setText(taskData.getName());
+        holder.title_tv.setText((currentFlags+position)+"."+taskData.getName());
 
         holder.look_result_tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +63,15 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
                 }else {
                     if(taskData.getParent_type().equals("2")){
                         //培训
-                        ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
+                        if(taskData.getType().equals("3")){
+                            //问卷
+                            ToActivityUtil.newInsance().toNextActivity(mContext, WjCountActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""}});
+                        }else if(taskData.getType().equals("2")){
+                            //考试
+                            ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
+                        }
+
+//                        ToActivityUtil.newInsance().toNextActivity(mContext, CuntActivity.class,new String[][]{{"reportId",taskData.getReport_id()+""},{"testId",taskData.getId()},{"taskId",taskId},{"testName",taskData.getName()}});
                     }else {
                         if(taskData.getType().equals("3")){
                             //问卷
@@ -81,11 +91,17 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             @Override
             public void onClick(View v) {
                 //重考
-                if(taskData.getAgain_number()-taskData.getExam_count()<=0){
-                    Toast.makeText(mContext,"考试次数用尽！",Toast.LENGTH_LONG).show();
-                }else {
+                if(taskData.getReport_id()==0){
+                    //未答题
                     ToActivityUtil.newInsance().toNextActivity(mContext, CommonTestActivity.class,new String[][]{{"testId",taskData.getId()},{"taskId",taskId},{"testType",taskData.getType().equals("3")?"1":"2"},{"testName",taskData.getName()}});
+                }else {
+                    if(taskData.getAgain_number()-taskData.getExam_count()<=0){
+                        Toast.makeText(mContext,"考试次数用尽！",Toast.LENGTH_LONG).show();
+                    }else {
+                        ToActivityUtil.newInsance().toNextActivity(mContext, CommonTestActivity.class,new String[][]{{"testId",taskData.getId()},{"taskId",taskId},{"testType",taskData.getType().equals("3")?"1":"2"},{"testName",taskData.getName()}});
+                    }
                 }
+
             }
         });
 
@@ -97,12 +113,15 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
             if(taskData.getVideo_states().equals("1")){
                 //已结束
                 holder.progress_tv.setText("已结束");
+                holder.progress_tv.setTextColor(mContext.getColor(R.color.sbc_header_text));
             }else  if(taskData.getVideo_states().equals("2")){
                 //未开始
                 holder.progress_tv.setText("未开始");
+                holder.progress_tv.setTextColor(mContext.getColor(R.color.sbc_header_text));
             }else  if(taskData.getVideo_states().equals("3")){
                 //正在直播
                 holder.progress_tv.setText("正在直播");
+                holder.progress_tv.setTextColor(mContext.getColor(R.color.viewfinder_laser));
             }
             holder.wc_t_img.setVisibility(View.VISIBLE);
             holder.rest_rel.setVisibility(View.GONE);
@@ -126,8 +145,13 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
 
                 holder.rest_rel.setVisibility(View.VISIBLE);
                 holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
-
-                holder.rest_test_tv.setVisibility(View.GONE);
+                if(taskData.getReport_id()==0){
+                    //第一次答题
+                    holder.rest_test_tv.setVisibility(View.VISIBLE);
+                    holder.rest_test_tv.setText("开始答题");
+                }else {
+                    holder.rest_test_tv.setVisibility(View.GONE);
+                }
 
             }else {
                 //考试
@@ -138,24 +162,25 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
                 holder.rest_rel.setVisibility(View.VISIBLE);
                 holder.progress_tv.setVisibility(View.GONE);
                 holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
-                if(taskData.getAgain_number()==0){
-                    //无限答题
+                if(taskData.getReport_id()==0){
+                    //第一次答题
                     holder.rest_test_tv.setVisibility(View.VISIBLE);
-                    holder.rest_test_tv.setText("重考");
+                    holder.rest_test_tv.setText("开始答题");
                 }else {
-                    if(taskData.getAgain_number()-taskData.getExam_count()>0){
-                        //还可以答题
+                    if(taskData.getAgain_number()==0){
+                        //无限答题
                         holder.rest_test_tv.setVisibility(View.VISIBLE);
-                        holder.rest_test_tv.setText("重考"+(taskData.getAgain_number()-taskData.getExam_count()));
+                        holder.rest_test_tv.setText("重考");
                     }else {
-                        holder.rest_test_tv.setVisibility(View.GONE);
+                        if(taskData.getAgain_number()-taskData.getExam_count()>0){
+                            //还可以答题
+                            holder.rest_test_tv.setVisibility(View.VISIBLE);
+                            holder.rest_test_tv.setText("重考"+(taskData.getAgain_number()-taskData.getExam_count()));
+                        }else {
+                            holder.rest_test_tv.setVisibility(View.GONE);
+                        }
                     }
                 }
-
-
-
-
-
 
             }
         }else  if(taskData.getType().equals("3")){
@@ -167,7 +192,13 @@ public class TaskInfoListAdapter extends ListBaseAdapter<TaskData> {
 
             holder.rest_rel.setVisibility(View.VISIBLE);
             holder.look_result_tv.setVisibility(taskData.getReport_id()==0?View.GONE:View.VISIBLE);
-            holder.rest_test_tv.setVisibility(View.GONE);
+            if(taskData.getReport_id()==0){
+                holder.rest_test_tv.setVisibility(View.VISIBLE);
+                holder.rest_test_tv.setText("开始答题");
+            }else {
+                holder.rest_test_tv.setVisibility(View.GONE);
+            }
+
 
 //            holder.wc_t_img.setVisibility(View.GONE);
 //            holder.rest_rel.setVisibility(View.VISIBLE);

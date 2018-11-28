@@ -17,8 +17,11 @@ import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.wb.baselib.base.activity.BaseActivity;
 import com.wb.baselib.phone.PhoneUtils;
+import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.TopBarView;
 import com.zhiyun88.www.module_main.R;
+import com.zhiyun88.www.module_main.sign.ui.UserSignActivity;
+
 public class CustomCaptureActivity extends BaseActivity {
 
     private CaptureFragment captureFragment;
@@ -73,23 +76,24 @@ public class CustomCaptureActivity extends BaseActivity {
     };
     private void openUrl(String  url){
         try {
-            new FinestWebView.Builder(CustomCaptureActivity.this)
-                    .titleDefault("正在加载...")
-                    .updateTitleFromHtml(true)
-                    .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
-                    .iconDefaultColorRes(R.color.main_text_blue_458)
-                    .showIconMenu(false)
-                    .titleSizeRes(R.dimen.title2)
-                    .webViewJavaScriptEnabled(true)
-                    .progressBarHeight(PhoneUtils.newInstance().dip2px(CustomCaptureActivity.this, 3))
-                    .progressBarColorRes(R.color.main_text_blue_458)
-                    .titleColorRes(R.color.main_text_blue_458)
-                    .toolbarColorRes(R.color.statusbar_color)
-                    .statusBarColorRes(R.color.statusbar_color)
-                    .backPressToClose(false)
-                    .setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out, R.anim.slide_left_in, R.anim.slide_right_out)
-                    .showUrl(false)
-                    .show(url);
+            ToActivityUtil.newInsance().toNextActivity(CustomCaptureActivity.this, UserSignActivity.class,new String[][]{{"signJson",url}});
+//            new FinestWebView.Builder(CustomCaptureActivity.this)
+//                    .titleDefault("正在加载...")
+//                    .updateTitleFromHtml(true)
+//                    .toolbarScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
+//                    .iconDefaultColorRes(R.color.main_text_blue_458)
+//                    .showIconMenu(false)
+//                    .titleSizeRes(R.dimen.title2)
+//                    .webViewJavaScriptEnabled(true)
+//                    .progressBarHeight(PhoneUtils.newInstance().dip2px(CustomCaptureActivity.this, 3))
+//                    .progressBarColorRes(R.color.main_text_blue_458)
+//                    .titleColorRes(R.color.main_text_blue_458)
+//                    .toolbarColorRes(R.color.statusbar_color)
+//                    .statusBarColorRes(R.color.statusbar_color)
+//                    .backPressToClose(false)
+//                    .setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out, R.anim.slide_left_in, R.anim.slide_right_out)
+//                    .showUrl(false)
+//                    .show(url);
         }catch (Exception e){
             showLongToast("打开url错误！");
         }

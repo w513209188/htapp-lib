@@ -3,10 +3,12 @@ package com.zhiyun88.www.module_main.dotesting.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.jungan.www.common_dotest.questionview.CommonQuestionBankView;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.wb.baselib.base.activity.MvpActivity;
 import com.wb.baselib.prase.GsonUtils;
+import com.wb.baselib.utils.SpanUtil;
 import com.wb.baselib.utils.ToActivityUtil;
 import com.wb.baselib.view.MultipleStatusView;
 import com.wb.baselib.view.TopBarView;
@@ -93,7 +96,14 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
         List<QuestionBankBean> questionBankBeans = (List<QuestionBankBean>) o;
         testsSize = questionBankBeans.size();
 //        current_count_tv.setText("1");
-        current_count_tv.setText("1/" + testsSize);
+//        current_count_tv.setText("1/" + testsSize);
+        SpanUtil.create()
+                .addForeColorSection("1", Color.rgb(68,193,253))
+                .setAbsSize("1",38) //设置绝对字体
+                .addForeColorSection("/"+testsSize,Color.BLACK)
+                .showIn(current_count_tv);
+
+
         progressBar.setMax(testsSize);
         progressBar.setProgress(1);
         commonQuestionBankView.initData(questionBankBeans, getSupportFragmentManager(), testType==3||testType==4?true:false,false);
@@ -133,7 +143,15 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
             public void currentPage(int c) {
                 Log.e("查看这个调用次数", "--------");
                 if (c + 1 <= testsSize) {
-                    current_count_tv.setText((c + 1) + "/"+testsSize);
+//                    current_count_tv.setText((c + 1) + "/"+testsSize);
+                    String hh=(c+1)+"";
+                    SpanUtil.create()
+                            .addForeColorSection(hh, Color.rgb(68,193,253))
+                            .setAbsSize(hh,38) //设置绝对字体
+                            .addForeColorSection("/"+testsSize,Color.BLACK)
+                            .showIn(current_count_tv);
+
+
                     progressBar.setProgress(c + 1);
                 }
                 if (looksys) {
@@ -405,7 +423,13 @@ public class CommonTestActivity extends MvpActivity<CommonTestPresenter> impleme
     public void currentPage(int c) {
         if (c + 1 <= testsSize) {
             commonQuestionBankView.setTestPage(c);
-            current_count_tv.setText((c + 1) + "/" + testsSize);
+//            current_count_tv.setText((c + 1) + "/" + testsSize);
+        String hh=(c+1)+"";
+            SpanUtil.create()
+                    .addForeColorSection(hh, Color.rgb(68,193,253))
+                    .setAbsSize(hh,38) //设置绝对字体
+                    .addForeColorSection("/"+testsSize,Color.BLACK)
+                    .showIn(current_count_tv);
             progressBar.setProgress(c + 1);
             //       save_img.setImageResource(commonQuestionBankView.getQuestionBankBeanList().get(c).getIsCollect()==0?R.drawable.public_collection:R.drawable.public_collection_y);
         }

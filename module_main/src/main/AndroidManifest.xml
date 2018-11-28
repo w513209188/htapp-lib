@@ -103,5 +103,6 @@
         <activity android:name=".dotesting.ui.CuntActivity"/>
         <activity android:name=".dotesting.ui.WjCountActivity"/>
         <activity android:name=".sys.CustomCaptureActivity"/>
+        <activity android:name=".sign.ui.UserSignActivity"/>
     </application>
 </manifest>
