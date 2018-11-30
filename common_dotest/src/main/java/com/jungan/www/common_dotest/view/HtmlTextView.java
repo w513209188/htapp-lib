@@ -138,7 +138,7 @@ public class HtmlTextView extends RelativeLayout {
         if(txt==null||txt.equals(""))
             return;
         mRichTv.setMovementMethod(LinkMovementMethod.getInstance());
-        String sample=txt;//"<p><strong>字体测试字体测试字体测试字体测试字体测试</strong></p><p><em><strong>字体测试字体测试字体测试字体测试字体测试</strong></em></p><p><span style=\"text-decoration: underline;\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\"><img src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" title=\"1542888683164610.jpg\" _src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" alt=\"0-3.jpg\"></span></p>";
+        String sample="<u>njnkjnsvdn</u>";//"<p><strong>字体测试字体测试字体测试字体测试字体测试</strong></p><p><em><strong>字体测试字体测试字体测试字体测试字体测试</strong></em></p><p><span style=\"text-decoration: underline;\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\">字体测试字体测试字体测试字体测试字体测试</span></p><p><span style=\"text-decoration: line-through; color: rgb(255, 0, 0);\"><img src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" title=\"1542888683164610.jpg\" _src=\"http://test-px.huatu.com//uploads/ueditor/image/20181122/1542888683164610.jpg\" alt=\"0-3.jpg\"></span></p>";
         HtmlText.from(sample)
                 .setImageLoader(new HtmlImageLoader() {
                     @Override

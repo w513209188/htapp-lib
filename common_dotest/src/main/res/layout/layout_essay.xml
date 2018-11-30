@@ -78,6 +78,7 @@
                         android:layout_height="10dp"
                         android:background="@color/test_line" />
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -108,9 +109,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:drawablePadding="5dp"
+                            android:drawableLeft="@drawable/sz_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="参考解析"
+                            android:text="解析"
                             android:textColor="#000000" />
 
                         <com.jungan.www.common_dotest.view.HtmlTextView xmlns:app="http://schemas.android.com/apk/res-auto"
